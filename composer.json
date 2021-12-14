@@ -1,0 +1,117 @@
+{
+  "name": "oro/commerce-crm-application",
+  "description": "OroCommerce - an open-source Business to Business Commerce application.\\This package contains a sample application.",
+  "license": "OSL-3.0",
+  "authors": [
+    {
+      "name": "Oro, Inc",
+      "homepage": "https://www.orocommerce.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"": "src/"},
+    "classmap": [
+      "src/AppKernel.php"
+    ],
+    "exclude-from-classmap": [
+      "**/Tests/"
+    ]
+  },
+  "repositories": {
+    "composer": {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    }
+  },
+  "require": {
+    "php": "~7.4.14 || ~8.0.0",
+    "oro/crm": "4.2.*",
+    "oro/platform-serialised-fields": "4.2.*",
+    "oro/oauth2-server": "4.2.*",
+    "oro/crm-hangouts-call-bundle": "4.2.*",
+    "oro/crm-dotmailer": "4.2.*",
+    "oro/crm-zendesk": "4.2.*",
+    "oro/commerce": "4.2.*",
+    "oro/commerce-crm": "4.2.*",
+    "oro/cookie-consent": "4.2.*"
+  },
+  "require-dev": {
+    "behat/behat": "~3.8.1",
+    "behat/gherkin": "~4.7.1",
+    "behat/mink": "~1.8.1",
+    "behat/mink-extension": "~2.3.1",
+    "behat/mink-selenium2-driver": "~1.4.0",
+    "behat/symfony2-extension": "~2.1.5",
+    "friendsofphp/php-cs-fixer": "~2.18.2",
+    "johnkary/phpunit-speedtrap": "~3.3.0",
+    "nelmio/alice": "~3.8.0",
+    "oro/twig-inspector": "1.0.*",
+    "phpmd/phpmd": "2.8.*",
+    "phpunit/phpunit": "~9.5.1",
+    "sebastian/phpcpd": "6.0.*",
+    "squizlabs/php_codesniffer": "3.5.*",
+    "symfony/browser-kit": "~4.4.24",
+    "symfony/css-selector": "~4.4.24",
+    "symfony/debug": "~4.4.24",
+    "symfony/debug-bundle": "~4.4.24",
+    "symfony/dom-crawler": "~4.4.24",
+    "symfony/phpunit-bridge": "~4.4.24",
+    "symfony/stopwatch": "~4.4.24",
+    "symfony/var-dumper": "~4.4.24",
+    "symfony/var-exporter": "~4.4.24",
+    "symfony/web-profiler-bundle": "~4.4.24",
+    "theofidry/alice-data-fixtures": "~1.4.0"
+  },
+  "config": {
+    "bin-dir": "bin",
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@build-parameters",
+      "@set-permissions",
+      "@install-assets",
+      "@set-assets-version"
+    ],
+    "post-update-cmd": [
+      "@build-parameters",
+      "@set-permissions",
+      "@update-assets",
+      "@set-assets-version"
+    ],
+    "build-parameters": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    ],
+    "set-permissions": [
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions"
+    ],
+    "install-assets": [
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+    ],
+    "update-assets": [
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::updateAssets"
+    ],
+    "set-assets-version": [
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+    ],
+    "set-parameters": [
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ParametersHandler::set"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "symfony": {
+      "require": "4.4.*"
+    },
+    "symfony-web-dir": "public",
+    "symfony-var-dir": "var",
+    "symfony-bin-dir": "bin",
+    "symfony-tests-dir": "tests",
+    "incenteev-parameters": {
+      "file": "config/parameters.yml"
+    }
+  }
+}
