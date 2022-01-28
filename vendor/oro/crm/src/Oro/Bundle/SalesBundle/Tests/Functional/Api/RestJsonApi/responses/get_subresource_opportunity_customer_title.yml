@@ -1,0 +1,7 @@
+data:
+    type: b2bcustomers
+    id: '<toString(@b2b_customer1->id)>'
+    meta:
+        title: 'B2B Customer 1'
+    attributes:
+        name: 'B2B Customer 1'

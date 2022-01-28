@@ -1,0 +1,7 @@
+layout:
+    actions:
+        - '@appendOption':
+            id: __line_item_form_fields
+            optionName: vars
+            optionValue:
+                skipInputWidgets: '=false'

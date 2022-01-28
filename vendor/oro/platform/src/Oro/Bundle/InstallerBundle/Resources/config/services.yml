@@ -1,0 +1,44 @@
+services:
+    oro_installer.yaml_persister:
+        class: Oro\Bundle\InstallerBundle\Persister\YamlPersister
+        arguments:
+            - '%kernel.project_dir%/config'
+            - '%kernel.environment%'
+
+    oro_installer.script_manager:
+        class: Oro\Bundle\InstallerBundle\ScriptManager
+        arguments:
+            - '@kernel'
+
+    oro_installer.assets_install_command_listener:
+        class: Oro\Bundle\InstallerBundle\EventListener\AssetsInstallCommandListener
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: beforeExecute }
+            - { name: kernel.event_listener, event: console.terminate, method: afterExecute }
+
+    oro_installer.platform_update_checker:
+        class: Oro\Bundle\InstallerBundle\ChainPlatformUpdateChecker
+        arguments:
+            - !tagged_iterator oro.installer.platform_update_checker
+
+    oro_installer.requirements_provider:
+        class: Oro\Bundle\InstallerBundle\Provider\PlatformRequirementsProvider
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '%kernel.project_dir%'
+            - {
+                  liip_imagine.jpegoptim.binary: '%liip_imagine.jpegoptim.binary%',
+                  liip_imagine.pngquant.binary: '%liip_imagine.pngquant.binary%'
+              }
+        tags:
+            - { name: oro.requirements_provider }
+
+    oro_installer.requirements_provider.database.mysql:
+        class: Oro\Bundle\InstallerBundle\Provider\MysqlDatabaseRequirementsProvider
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro.requirements_provider }

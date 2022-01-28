@@ -1,0 +1,13 @@
+--2022-01-26 20:50:25--  https://es.wikipedia.org/wiki/Gr%C3%A1ficos_vectoriales_escalables
+Resolving es.wikipedia.org (es.wikipedia.org)... 208.80.154.224, 2620:0:861:ed1a::1
+Connecting to es.wikipedia.org (es.wikipedia.org)|208.80.154.224|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 114761 (112K) [text/html]
+Saving to: ‘Gráficos_vectoriales_escalables’
+
+     0K .......... .......... .......... .......... .......... 44% 1.42M 0s
+    50K .......... .......... .......... .......... .......... 89% 1.78M 0s
+   100K .......... ..                                         100%  232M=0.06s
+
+2022-01-26 20:50:25 (1.77 MB/s) - ‘Gráficos_vectoriales_escalables’ saved [114761/114761]
+

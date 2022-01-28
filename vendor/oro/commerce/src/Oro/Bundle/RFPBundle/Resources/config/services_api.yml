@@ -1,0 +1,5 @@
+services:
+    oro_rfp.api.update_price_by_value_and_currency:
+        class: Oro\Bundle\CurrencyBundle\Api\Processor\UpdatePriceByValueAndCurrency
+        tags:
+            - { name: oro.api.processor, action: customize_form_data, event: pre_submit|post_validate, class: Oro\Bundle\RFPBundle\Entity\RequestProductItem }

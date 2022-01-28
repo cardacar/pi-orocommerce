@@ -1,0 +1,24 @@
+{% extends 'OroNavigationBundle:Menu:menu.html.twig' %}
+
+{% block list %}
+    {% import 'OroNavigationBundle:Menu:menu.html.twig' as oro_menu %}
+    <ul{{ oro_menu.attributes(listAttributes) }}>
+        {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+            {% import _self as oro_menu %}
+            {{ block('children') }}
+        {% endif -%}
+    </ul>
+    {% if (not item.hasChildren and item.parent is null) %}
+        <div class="no-data">{{ 'oro.navigation.messages.no_items'|trans }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block label %}
+    {{ oro_title_render(item.label) }}
+{% endblock %}
+
+{% block list_wrapper %}
+    {% if item.hasChildren and item.parent is null %}
+        {{ block('list') }}
+    {% endif %}
+{% endblock %}

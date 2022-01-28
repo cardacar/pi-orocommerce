@@ -1,0 +1,49 @@
+{% block _category_picture_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' category-picture__image',
+        'alt': category.defaultTitle,
+        'itemprop': 'image'
+    }) %}
+
+    {% if category.largeImage %}
+        {% set attr = layout_attr_defaults(attr, {
+            src: filtered_image_url(category.largeImage, 'product_original')
+        }) %}
+
+        <div class="category-picture" itemprop="hasOfferCatalog" itemscope itemtype="http://schema.org/OfferCatalog">
+            <div itemprop="name" content="{{ category.defaultTitle }}">
+                <img {{ block('block_attributes') }}>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block _breadcrumbs_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~data-page-component-module': ' oroproduct/js/app/components/breadcrumbs-navigation-block'
+    }) %}
+    {{ block_widget(block) }}
+{% endblock %}
+
+{% block _breadcrumbs_filters_widget %}
+    <span class="filters-info"></span>
+{% endblock %}
+
+{% block _category_title_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' category-title'
+    }) %}
+
+    <h1 {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </h1>
+{% endblock %}
+
+{% block _category_long_descriptions_widget %}
+    {%- if long_descriptions.wysiwygStyle|length -%}
+        {%- spaceless -%}
+            <style type="text/css">{{ long_descriptions.wysiwygStyle|render_content }}</style>
+        {%- endspaceless -%}
+    {%- endif -%}
+    <div class="category-long-description cms-typography">{{ long_descriptions.wysiwyg|render_content }}</div>
+{% endblock %}

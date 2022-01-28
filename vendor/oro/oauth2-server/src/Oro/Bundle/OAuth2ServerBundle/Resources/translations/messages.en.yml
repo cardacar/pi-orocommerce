@@ -1,0 +1,91 @@
+oro:
+    oauth2server:
+        client:
+            entity_label: OAuth Application
+            entity_frontend_label: Storefront OAuth Application
+            entity_plural_label: OAuth Applications
+            entity_grid_all_view_label: All %entity_plural_label%
+            id:
+                label: ID
+                description: The entity identifier.
+            name:
+                label: Application Name
+                description: The name of the application.
+            active:
+                label: Active
+                description: Whether the application is active or not.
+                statuses:
+                    active: Active
+                    inactive: Inactive
+            grants:
+                label: Grant Type
+                description: The grant type supported by the application. For details see <a href="https://oauth.net/2/grant-types/" target="_blank" class="no-hash">OAuth 2.0 Grant Types</a>.
+            scopes:
+                label: Scopes
+                description: The scopes to which the application can have access.
+            identifier:
+                label: Client ID
+                description: A string that unique identifies the application.
+            secret:
+                label: Client Secret
+                description: A hash of the secret that is used for the application authentication.
+            salt:
+                label: Client Secret Salt
+                description: A string that is used as a salt to encode the client secret.
+            owner_entity_class:
+                label: Owner Entity Class
+                description: The class of the entity the application belongs to.
+            owner_entity_id:
+                label: Owner Entity ID
+                description: The ID of the entity the application belongs to.
+            organization:
+                label: Organization
+                description: The organization the client issued to.
+            redirect_uris:
+                label: Redirect URLs
+                description: The list of URLs to which it is allowed to redirect the user back to.
+                add: Add URL
+            frontend:
+                label: Storefront
+                description: Indicates that client should work with the storefront.
+            last_used_at:
+                label: Last Used At
+                description: The date when the application token was last recieved.
+            confidential:
+                label: Confidential
+                description: Indicates whether the client is a confidential or a public.
+            plain_text_pkce_allowed:
+                label: Plain Text PKCE Allowed
+                description: Indicates whether the PKCE code challenge can be send as a plain text.
+            action:
+                add: Add Application
+                activate: Activate
+                deactivate: Deactivate
+            dialog:
+                create_title: Create OAuth Application
+                edit_title: Edit OAuth Application
+            created_message: OAuth application has been created.
+            updated_message: OAuth application has been updated.
+            created_warning_message: Please copy <strong>Client Secret</strong> and save it somewhere safe. For security reasons, we cannot show it to you again.
+            datagrid:
+                entity_hint: OAuth Applications
+        scopes:
+            all: all
+        grant_types:
+            authorization_code: Authorization Code
+            implicit: Implicit
+            password: Password
+            client_credentials: Client Credentials
+            refresh_token: Refresh Token
+        no_encryption_keys: OAuth authorization is not available as encryption keys configuration was not complete. Please contact your administrator.
+        menu:
+            backoffice_oauth_application.label: OAuth Applications
+            frontend_oauth_application.label: Storefront OAuth Applications
+        auth_code:
+            grant: Grant
+            cancel: Cancel
+            login_message: Sign in to continue to "%app_name%".
+            authorize_message: '"%app_name%" wants to access your account.'
+            authorize_description: |
+                <p>Granting <b>"%app_name%"</b> permission will provide access to all API resources available to your user based on your role and permissions. This means that this application will be able to potentially read, edit, and delete information on your behalf.</p>
+                <p>Please be selective of which third party applications are granted access as well as the level of permission granted to them.</p>

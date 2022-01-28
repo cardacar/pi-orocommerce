@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/oroshipping/css/scss/main.scss'

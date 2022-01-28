@@ -1,0 +1,122 @@
+api:
+    entities:
+        Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_unit_precision.md'
+
+        Oro\Bundle\ProductBundle\Entity\ProductUnit:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_unit.md'
+            fields:
+                label:
+                    data_type: string
+                    property_path: _
+                shortLabel:
+                    data_type: string
+                    property_path: _
+                pluralLabel:
+                    data_type: string
+                    property_path: _
+                shortPluralLabel:
+                    data_type: string
+                    property_path: _
+
+        Oro\Bundle\ProductBundle\Entity\ProductImage:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_image.md'
+
+        Oro\Bundle\ProductBundle\Entity\ProductImageType:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_image_type.md'
+
+        Oro\Bundle\ProductBundle\Entity\ProductName:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_name.md'
+            actions:
+                delete_list: false
+                delete: false
+
+        Oro\Bundle\ProductBundle\Entity\ProductShortDescription:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_short_description.md'
+            actions:
+                delete_list: false
+                delete: false
+
+        Oro\Bundle\ProductBundle\Entity\ProductDescription:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_description.md'
+            actions:
+                delete_list: false
+                delete: false
+
+        Oro\Bundle\ProductBundle\Entity\Product:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product.md'
+            form_options:
+                constraints:
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\NotEmptyConfigurableAttributes: ~
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\ProductVariantField: ~
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\ProductVariantLinks: ~
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\UniqueProductVariantLinks: ~
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\UniqueVariantLinksSimpleProduct: ~
+                    - Oro\Bundle\ProductBundle\Validator\Constraints\EmptyVariantFieldInSimpleProductForVariantLinks: ~
+            fields:
+                skuUppercase:
+                    exclude: true
+                parentVariantLinks:
+                    exclude: true
+                denormalizedDefaultName:
+                    exclude: true
+                denormalizedDefaultNameUppercase:
+                    exclude: true
+            filters:
+                fields:
+                    sku:
+                        allow_array: true
+            actions:
+                create:
+                    fields:
+                        names:
+                            form_options:
+                                constraints:
+                                    - Count:
+                                        min: 1
+                update_list: true
+
+        Extend\Entity\EV_Prod_Inventory_Status:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product.md'
+
+        Oro\Bundle\ProductBundle\Entity\RelatedItem\RelatedProduct:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/related_product.md'
+            actions:
+                get:
+                    description: 'Get Related Product Relationship'
+                delete:
+                    description: 'Delete Related Product Relationship'
+                get_list:
+                    description: 'Get Related Product Relationships'
+                delete_list:
+                    description: 'Delete Related Product Relationships'
+                create:
+                    description: 'Create Related Product Relationships'
+                    fields:
+                        product:
+                            form_options:
+                                constraints:
+                                    - NotBlank: ~
+                        relatedItem:
+                            form_options:
+                                constraints:
+                                    - NotBlank: ~
+                update: false
+
+        Oro\Bundle\ProductBundle\Entity\Brand:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/brand.md'
+            fields:
+                defaultTitle:
+                    exclude: true
+
+        Oro\Bundle\ProductBundle\Entity\ProductVariantLink:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/product_variant_links.md'
+
+        Oro\Bundle\AttachmentBundle\Entity\File:
+            documentation_resource: '@OroProductBundle/Resources/doc/api/file.md'
+            fields:
+                filePath:
+                    data_type: object
+                    depends_on: [filename,mimeType,originalFilename,extension,parentEntityClass]
+                    form_options:
+                        mapped: false

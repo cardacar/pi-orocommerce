@@ -1,0 +1,3 @@
+css:
+    inputs:
+      - 'bundles/oroemail/css/scss/main.scss'

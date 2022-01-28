@@ -1,0 +1,5 @@
+oro_help:
+    defaults:
+        server: 'http://help.orocrm.com/'
+        link:   'http://www.oroinc.com/doc'
+        prefix: Third_Party

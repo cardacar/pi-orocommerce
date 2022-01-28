@@ -1,0 +1,77 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%title%": entity.defaultTitle.string }}) %}
+
+{% set gridName = 'cms-page-drafts-grid' %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_cms_page_index'),
+        'indexLabel': 'oro.cms.page.entity_plural_label'|trans,
+        'entityTitle': entity.defaultTitle.string|default('N/A'|trans)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {{ parent() }}
+    {% if entity.draftUuid %}
+        <span class="page-title-draft">
+            {{ UI.badge('oro.draft.label'|trans, 'tentatively') }}
+        </span>
+    {% endif %}
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set pageInfo %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_cms_page_info', {id: entity.id}),
+            'alias': 'page-info-widget'
+        }) }}
+    {% endset %}
+
+    {% set pageContent %}
+        <div class="alert alert-info alert--compact" role="alert">
+            <span class="fa-info alert-icon" aria-hidden="true"></span>
+            {{ 'oro.cms.page.information_message'|trans }}
+        </div>
+
+        <div class="row-fluid form-horizontal">
+            <div class="cms-content">
+                {{ entity.content|render_content|oro_html_sanitize|raw }}
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.cms.sections.general'|trans,
+            'class': 'active',
+            'subblocks': [{'data' : [pageInfo]}]
+        },
+        {
+            'title': 'oro.cms.sections.content'|trans,
+            'class': 'active',
+            'subblocks': [{'data' : [pageContent]}]
+        }
+    ] %}
+
+    {% if entity.draftUuid is null %}
+        {% set draftsGrid = dataGrid.renderGrid(gridName, {draft_source_id: entity.id}, { cssClass: 'inner-grid' }) %}
+        {% set dataBlocks = dataBlocks|merge([
+            {
+                'title': 'oro.cms.sections.drafts'|trans,
+                'subblocks': [{'data' : [draftsGrid]}]
+            }
+        ]) %}
+    {% endif %}
+
+    {% set id = 'page-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

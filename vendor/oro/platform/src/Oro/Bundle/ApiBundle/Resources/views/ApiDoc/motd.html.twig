@@ -1,0 +1,536 @@
+{% set rootPath = path(rootRoute) %}
+<style type="text/css">
+    #summary { display: none; }
+    #api_type { float: left; font-size: 1.2em; padding: 12px 24px; }
+    #api_type a.active { font-weight: bold; color: #3d5b00; }
+    .authentication-warning svg { vertical-align: middle; padding-right: 5px; }
+    div.heading ul.options li { text-transform: capitalize; }
+    div.motd { padding-top: 10px; }
+    div.motd div.documentation { padding: 3px 0; overflow: hidden; }
+    div.motd div.documentation a { text-decoration: none; }
+    div.motd div.documentation a.main { font-size: 1.2em; }
+    div.motd div.documentation p { padding: 10px 0 0 0; }
+    div.motd div.documentation ul { padding-left: 10px; list-style-type: disc; list-style-position: inside; }
+    #sandbox_configuration { padding-top: 16px; padding-bottom: 5px; }
+    #sandbox_configuration .account-info { position: absolute; top: 7px; right: 16px; }
+    #sandbox_configuration .account-info em { padding-left: 1em; color: #2c4300; }
+    #sandbox_configuration .account-info a { padding-left: 2em; color: #2c4300; text-decoration: underline; }
+</style>
+<script type="text/javascript">
+    handleResourceLinks = function ($el, apiPrefix) {
+        var value = $el.text(),
+            prefix = '', suffix = '', links = [], elements, i, j, resourceId;
+        i = value.indexOf(' (');
+        if (-1 !== i) {
+            j = value.indexOf(')', i);
+            if (-1 !== j) {
+                prefix = value.substr(0, i + 2);
+                suffix = value.substr(j);
+            }
+        } else if (0 === value.indexOf('array of ')) {
+            prefix = 'array of ';
+        }
+        if (value && value.substr(prefix.length, 2) !== '<a') {
+            $el.text('');
+            elements = value.substr(prefix.length, value.length - prefix.length - suffix.length).split(',');
+            for (i = 0; i < elements.length; i++) {
+                resourceId = getResourceId('get-' + apiPrefix + '-api-' + elements[i].trim());
+                if (resourceId) {
+                    links.push('<a href="#' + resourceId
+                        + '" onclick="return gotoResource(\'' + resourceId + '\');">'
+                        + elements[i] + '</a>');
+                } else {
+                    links.push(elements[i]);
+                }
+            }
+            $el.append(prefix + links.join(', ') + suffix);
+        }
+    };
+    getResourceId = function (listResourceId) {
+        var itemResourceId = listResourceId + '-{id}';
+        if ($('#' + escapeSelector(itemResourceId)).length) {
+            return itemResourceId;
+        }
+        if ($('#' + escapeSelector(listResourceId)).length) {
+            return listResourceId;
+        }
+        return null;
+    };
+    gotoResource = function (resourceId) {
+        var resourceId = escapeSelector(resourceId),
+            $section = $('#' + resourceId).closest('.section'),
+            $toggler = $('#' + resourceId + ' > .toggler');
+        if (!$section.hasClass('active')) {
+            $section.find('h1').trigger('click');
+        }
+        if ($toggler.next().is(':visible')) {
+            window.location.hash = $toggler.data('href');
+        } else {
+            $toggler.trigger('click');
+        }
+
+        return false;
+    };
+    escapeSelector = function (val) {
+        return val.replace(/(:|\.|\[|\]|\{|\}|,)/g, "\\$1");
+    };
+    getCookieValue = function(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return '';
+    };
+    $(function() {
+        var organizations = {{ organizations|json_encode|raw }},
+            organization = {{ organization|json_encode|raw }},
+            userName = {{ userName|json_encode|raw }},
+            apiKey = {{ apiKey|json_encode|raw }},
+            apiKeyGenerationHint = {{ apiKeyGenerationHint|default('')|json_encode|raw }},
+            switchOrganizationUrl = {{ switchOrganizationRoute ? path(switchOrganizationRoute)|json_encode|raw : 'null' }},
+            loginUrl = {{ loginRoute ? path(loginRoute)|json_encode|raw : 'null' }},
+            logoutUrl = {{ logoutRoute ? path(logoutRoute)|json_encode|raw : 'null' }},
+            sessionAllowed = {{ hasSecurityToken|json_encode|raw }},
+            wsseAllowed = userName && apiKey,
+            serverTime = {{ 'now'|date('c', 'UTC')|json_encode|raw }},
+            clientTime = new Date(),
+            serverTimeOffset = Date.parse(serverTime) - clientTime,
+            $motd = $('.motd').first(),
+            $apiDocLink = $('#header a').first(),
+            apiActions = {{ actions|default([])|json_encode|raw }},
+            apiType = window.location.pathname.substr('{{ rootPath }}'.length + 1) || '{{ defaultView }}',
+            apiPrefix = '',
+            operatorMap = {'eq': '=', 'neq': '!=', 'gt': '>', 'lt': '<', 'gte': '>=', 'lte': '<='},
+            escapeHtmlAttribute = function (val) {
+                return val.replace(/"/g,'&quot;');
+            },
+            addHeader = function ($headers, headerKey, headerValue) {
+                var needsHeader = true,
+                    emptyHeader = null;
+                $('.tuple', $headers).each(function (index, header) {
+                    if ($('input.key:text[value="' + headerKey + '"]', header).length) {
+                        needsHeader = false;
+                    } else if (!emptyHeader
+                        && $('input.key:text[value=]', header).length
+                        && $('input.value:text[value=]', header).length
+                    ) {
+                        emptyHeader = header;
+                    }
+                });
+                if (needsHeader) {
+                    if (emptyHeader) {
+                        fillHeader(emptyHeader, headerKey, headerValue);
+                    } else {
+                        $('button.add_header', $headers).trigger('click');
+                        fillHeader($headers.find('.tuple:not(.autogenerated-header):last'), headerKey, headerValue);
+                    }
+                }
+            },
+            removeHeader = function ($headers, headerKey) {
+                $('input.key:text[value="' + headerKey + '"]', $headers).closest('.tuple').remove();
+            },
+            getHeaderValue = function ($headers, headerKey) {
+                return $('input.key:text[value="' + headerKey + '"]', $headers)
+                    .closest('.tuple')
+                    .find('input.value')
+                    .val();
+            },
+            fillHeader = function (header, headerKey, headerValue) {
+                $('input.key', header).val(headerKey);
+                $('input.value', header).val(headerValue);
+            },
+            preSubmitSandboxForm = function () {
+                var authType = $('#authentication_type option:selected').val(),
+                    $headers = $('.headers', this);
+
+                /**
+                 * Remove auto-generated headers
+                 */
+                $('.autogenerated-header', this).remove();
+
+                /**
+                 * Add WSSE authentication related headers
+                 */
+                if (authType === 'wsse') {
+                    $headers.append(
+                        '<div class="tuple autogenerated-header">' +
+                        '<input type="hidden" class="key" placeholder="Key" value="Authorization">' +
+                        '<input type="hidden" class="value authorization-header" placeholder="Value">' +
+                        '</div>' +
+                        '<div class="tuple autogenerated-header">' +
+                        '<input type="hidden" class="key" placeholder="Key" value="X-WSSE">' +
+                        '<input type="hidden" class="value x-wsse-header" placeholder="Value">' +
+                        '</div>'
+                    );
+                    $('input.authorization-header', this).val('WSSE profile="UsernameToken"');
+                    $('input.x-wsse-header', this).val(wsseHeader(userName, apiKey, serverTimeOffset));
+                }
+
+                /**
+                 * Add Session authentication related headers
+                 */
+                if (authType === 'session') {
+                    $headers.append(
+                        '<div class="tuple autogenerated-header">' +
+                        '<input type="hidden" class="key" placeholder="Key" value="X-Requested-With">' +
+                        '<input type="hidden" class="value" placeholder="Value" value="XMLHttpRequest">' +
+                        '</div>' +
+                        '<div class="tuple autogenerated-header">' +
+                        '<input type="hidden" class="key" placeholder="Key" value="X-CSRF-Header">' +
+                        '<input type="hidden" class="value authorization-header" placeholder="Value">' +
+                        '</div>'
+                    );
+                    $('input.authorization-header', this).val(getCookieValue({{ csrfCookieName|json_encode|raw }}));
+                }
+
+                /**
+                 * Add a header contains the id of current operation
+                 * It will be used in ajaxPrefilter and ajaxComplete global handlers
+                 */
+                $headers.append(
+                    '<div class="tuple autogenerated-header">' +
+                    '<input type="hidden" class="key" value="X-API-Sandbox-Operation-ID">' +
+                    '<input type="hidden" class="value operation-header">' +
+                    '</div>'
+                );
+                $('input.operation-header', this).val($(this).closest('.operation').attr('id'));
+            };
+
+        var apiPrefixMatch = window.location.pathname.match(/\/(\w+)\/api\//i);
+        if (apiPrefixMatch) {
+            apiPrefix = '-' + apiPrefixMatch[1];
+        }
+
+        /**
+         * Add the API view selector
+         */
+        {% if views is defined and views and views|length > 1 -%}
+        $apiDocLink.after('<div id="api_type">type:' +
+            {%- for name, view in views %}
+            {%- if view.sandbox %}
+                {%- if loop.first %}'&nbsp;' + {% else %}'&nbsp;|&nbsp;' + {% endif -%}
+                '<a href="' + '{{ rootPath ~ (view.default ? '' : '/' ~ name) }}"' +
+                (apiType === '{{ name }}' ? ' class="active"' : '') + '>{{ view.label }}</a>' +
+            {%- endif %}
+            {%- endfor -%}
+            '</div>');
+        {% endif %}
+
+        /**
+         * Add the documentation link and the documentation block
+         */
+        {% if views is defined and views -%}
+        var documentationUrl = null, documentation = '';
+        {% for name, view in views -%}
+        {% if view.sandbox and view.documentation_path -%}
+            if (apiType === '{{ name }}') {
+                documentationUrl = '{{ asset(view.documentation_path) }}';
+                {% if view.documentation is defined and view.documentation -%}
+                    documentation = {{ view.documentation|extra_markdown|json_encode|raw }};
+                {%- endif -%}
+            }
+        {% endif -%}
+        {%- endfor -%}
+        if (documentationUrl) {
+            documentation = '<a href="' + documentationUrl + '" class="main"'
+                + ' target="_blank">The documentation</a>' + documentation;
+        }
+        if (documentation) {
+            $motd.append('<div class="documentation">' + documentation + '</div>');
+        }
+        {% endif %}
+
+        /**
+         * Add the authentication type selector
+         */
+        $('#sandbox_configuration').prepend(
+            (wsseAllowed || !apiKeyGenerationHint ? '' : '<span class="authentication-warning"' +
+            ' title="' + escapeHtmlAttribute(apiKeyGenerationHint) + '"' +
+            '>{{ include('@OroApi/ApiDoc/warning.svg') }}</span>') +
+            'authentication: ' +
+            '<select id="authentication_type">' +
+                '<option value=""' + (!wsseAllowed && !sessionAllowed ? ' selected=""' : '') + '>None</option>' +
+                '<option value="wsse"' + (wsseAllowed ? ' selected=""' : ' disabled=""') + '>WSSE</option>' +
+                '<option value="session"' + (!sessionAllowed ? ' disabled=""' : (!wsseAllowed ? ' selected=""' : '')) + '>Session</option>' +
+            '</select>'
+        );
+        if (!wsseAllowed && !sessionAllowed) {
+            $('#header').css('background-color', '#f7fe2e');
+        }
+
+        var accountInfo = '', switchOrganizationAllowed = false;
+
+        /**
+         * Add organization selector
+         */
+        if (switchOrganizationUrl && Object.keys(organizations).length > 1) {
+            accountInfo += 'organization: <select id="organization">';
+            for (var org in organizations) {
+                accountInfo += '<option value="' + escapeHtmlAttribute(org)
+                    + '"' + (org == organization ? ' selected=""' : '') + '>'
+                    + $('<div/>').text(organizations[org]).html() + '</option>';
+            }
+            accountInfo += '</select><span id="organization_loading" style="display: none;">Loading...</span>';
+            switchOrganizationAllowed = true;
+        } else if (organization && (organizations[organization] || false)) {
+            accountInfo += 'organization: ' + organizations[organization];
+        }
+
+        /**
+         * Add login and logout links
+         */
+        if (userName) {
+            accountInfo += '<em>signed in as: ' + userName + '</em>';
+            if (logoutUrl) {
+                accountInfo += '<a href="' + logoutUrl + '?_api_view=' + apiType + '">sign out</a>'
+            }
+        } else if (loginUrl) {
+            accountInfo += '<a href="' + loginUrl + '?_api_view=' + apiType + '">sign in</a>'
+        }
+
+        if (accountInfo) {
+            $('#sandbox_configuration').append('<span class="account-info">' + accountInfo + '</span>');
+            if (switchOrganizationAllowed) {
+                $('#organization').on('change', function() {
+                    var $organizationSelector = $(this),
+                        $organizationLoader = $('#organization_loading');
+                    $organizationSelector.hide();
+                    $organizationLoader.show();
+                    $.ajax({
+                        url: switchOrganizationUrl + '/' + this.value + '.json',
+                        type: 'GET',
+                        headers: { 'X-CSRF-Header': getCookieValue({{ csrfCookieName|json_encode|raw }}) },
+                        success: function() {
+                            window.location.reload();
+                        },
+                        error: function() {
+                            $organizationSelector.val(organization);
+                            $organizationLoader.hide();
+                            $organizationSelector.show();
+                            alert('Failed to switch the organization.');
+                        }
+                    });
+                });
+            }
+        }
+
+        /**
+         * Add "Try!" button handler
+         */
+        // for AJAX sandbox
+        $(document).on('api_resource_content:load', function(e) {
+            $(e.target).find('.pane.sandbox form').bindFirst('submit', preSubmitSandboxForm)
+        });
+        // for not AJAX sandbox
+        $('.pane.sandbox form').bindFirst('submit', preSubmitSandboxForm);
+
+        /**
+         * Add sandbox input data handler
+         */
+        $(document).on('click', 'li[data-pane="sandbox"]', function() {
+            /**
+             * Fill input requirements: version and _format
+             */
+            var parameters = $(this).closest('.content').find('fieldset.parameters'),
+                format = $('input.key[value="_format"]', parameters).closest('.tuple').find('input.value'),
+                version = $('input.key[value="version"]', parameters).closest('.tuple').find('input.value');
+            if (format.val() === '') {
+                format.val('json');
+            }
+            if (version.val() === '') {
+                version.val('latest');
+            }
+
+            /**
+             * Add view headers
+             */
+            {% if views is defined and views -%}
+                var $headers = $(this).closest('.content').find('fieldset.headers'),
+                    routePath = $(this).parents('li.operation').find('div.heading span.path').text(),
+                    apiAction = apiActions[$(this).closest('.operation').attr('id')] || null,
+                    headerActions = [],
+                    headers = {};
+                {% for name, view in views -%}
+                {% if view.headers is defined and view.headers -%}
+                if (apiType === '{{ name }}' && routePath.indexOf('/api/rest/') === -1) {
+                    {% for headerName, headerValues in view.headers -%}
+                    {% for headerValue in headerValues -%}
+                    headerActions = {{ headerValue.actions|json_encode|raw }};
+                    if (!apiAction || headerActions.length === 0 || headerActions.indexOf(apiAction) >= 0) {
+                        headers['{{ headerName }}'] = headers['{{ headerName }}']
+                            ? headers['{{ headerName }}'] + ';{{ headerValue.value }}'
+                            : '{{ headerValue.value }}';
+                    }
+                    {% endfor -%}
+                    {% endfor -%}
+                    for (var key in headers) {
+                        addHeader($headers, key, headers[key]);
+                    }
+                }
+                {% endif %}
+                {%- endfor %}
+            {%- endif -%}
+        });
+
+        /**
+         * Add API resource handler
+         */
+        $(document).on('api_resource_content:load', function(e) {
+            var $container = $(e.target).closest('.operation'),
+                $filters = $container.find('.pane.content>table>tbody table'),
+                $form = $container.find('.pane.sandbox form');
+
+            /**
+             * Add relation links
+             */
+            $filters.find('td:contains(Relation)').each(function (index, el) {
+                handleResourceLinks($(el).next(), apiPrefix);
+            });
+            $container.find('.pane.content table.input>tbody>tr').each(function (parentIndex, parentEl) {
+                $(parentEl).find('td:eq(1)').each(function (index, el) {
+                    handleResourceLinks($(el), apiPrefix);
+                });
+            });
+            $container.find('.pane.content table.output>tbody>tr').each(function (parentIndex, parentEl) {
+                $(parentEl).find('td:eq(1)').each(function (index, el) {
+                    handleResourceLinks($(el), apiPrefix);
+                });
+            });
+
+            /**
+             * Add the operators selector for filters
+             */
+            $filters.find('td:contains(Operators)').each(function (index, el) {
+                var $el = $(el),
+                    filterId = $el.closest('table').parent().prev().text(),
+                    operators = $el.next().text(),
+                    operatorToShow,
+                    options = '',
+                    $operatorEl = null;
+                if (filterId) {
+                    $operatorEl = $form.find("input.key[value='" + escapeSelector(filterId) + "']").next();
+                    if ($operatorEl.length && $operatorEl.prop("tagName") == 'SPAN' && $operatorEl.text() == '=') {
+                        operators = operators.split(',');
+                        for (var i = 0; i < operators.length; i++) {
+                            operatorToShow = operators[i];
+                            if (operators[i] in operatorMap) {
+                                operatorToShow = operatorMap[operators[i]];
+                            }
+                            options += '<option value="' + operators[i] + '">' + operatorToShow + '</option>'
+                        }
+                        $operatorEl.replaceWith('<select class="operator">' + options + '</select>');
+                    }
+                }
+            });
+        });
+
+        /**
+         * A handler to add operators to the sandbox AJAX requests
+         */
+        $.ajaxPrefilter(function(options) {
+            if (options.headers === undefined || options.headers['X-API-Sandbox-Operation-ID'] === undefined) {
+                return;
+            }
+
+            /**
+             * Replace "=" operator with the operator selected by an user
+             */
+            var operationId = escapeSelector(options.headers['X-API-Sandbox-Operation-ID']);
+            $('.pane.sandbox form .parameters .tuple', $('#' + operationId)).each(function() {
+                var key = $('.key', $(this)).val(),
+                    operator = $('.operator', $(this)).val(),
+                    value = $('.value', $(this)).val(),
+                    data, obj, keyPair;
+                if (value !== '' && operator !== undefined && operator !== '=' && operator !== 'eq') {
+                    if (options.url.indexOf('?') !== -1) {
+                        options.url = options.url.replace(
+                            new RegExp("([\?&])?(" + key.replace(/[\[\]]/g, "\\$&") + ")="), "$1$2[" + operator + ']='
+                        );
+                    }
+                    if (!jQuery.isEmptyObject(options.data) && options.data !== '{}') {
+                        if (options.data.lastIndexOf('{"', 0) === 0) {
+                            // json
+                            data = JSON.parse(options.data);
+                            keyPair = key.match(/^(.+)\[([^\]]+)\]$/);
+                            obj = {};
+                            if(keyPair) {
+                                if (data.hasOwnProperty(keyPair[1]) && data[keyPair[1]].hasOwnProperty(keyPair[2])) {
+                                    obj[operator] = data[keyPair[1]][keyPair[2]];
+                                    data[keyPair[1]][keyPair[2]] = obj;
+                                }
+                            } else if (data.hasOwnProperty(key)) {
+                                obj[operator] = data[key];
+                                data[key] = obj;
+                            }
+                            options.data = JSON.stringify(data);
+                        } else {
+                            // uri string
+                            options.data = options.data.replace(
+                                new RegExp("([\?&])?(" + encodeURIComponent(key) + ")="), "$1$2[" + operator + ']='
+                            );
+                        }
+                    }
+                }
+            });
+
+            /**
+             * Remove "Content-type" header if both "Content-type" and "Content-Type" headers exist
+             */
+            if (options.headers['Content-Type'] !== undefined && options.headers['Content-type'] !== undefined) {
+                delete options.headers['Content-type'];
+            }
+        });
+
+        /**
+         * A handler to correct a result of the sandbox AJAX requests
+         */
+        $(document).ajaxComplete(function(event, jqXHR, options) {
+            if (options.headers === undefined || options.headers['X-API-Sandbox-Operation-ID'] === undefined) {
+                return;
+            }
+
+            var $result = $(
+                    '.pane.sandbox .result',
+                    $('#' + escapeSelector(options.headers['X-API-Sandbox-Operation-ID']))
+                );
+
+            delete options.headers['X-API-Sandbox-Operation-ID'];
+
+            /**
+             * Update "Request URL" section
+             */
+            $('.url', $result).text(
+                options.type + ' ' + decodeURIComponent(options.url)
+            );
+
+            /**
+             * Hide the request body and add a button to display it
+             */
+            $('.request-body', $result).hide();
+            var $requestBodyHeader = $('.request-body-header', $result);
+            if ($('.toggle-request-body', $requestBodyHeader).length) {
+                $('.toggle-request-body', $requestBodyHeader).text('Show');
+            } else {
+                $requestBodyHeader.append('&nbsp;<small>[<a href="" class="toggle-request-body">Show</a>]</small>');
+            }
+
+            /**
+             * Update "Curl Command Line" section
+             */
+            displayCurl(options.type, options.url, options.headers, options.data, $('.curl-command', $result));
+        });
+
+        /**
+         * Add the request body visibility handler
+         */
+        $(document).on('click', '.pane.sandbox .toggle-request-body', function(e) {
+            $(this).text(
+                $('.request-body', $(this).parents('.result')).toggle().is(':visible') ? 'Hide' : 'Show'
+            );
+            e.preventDefault();
+        });
+    });
+</script>
+
+<div class="motd"></div>

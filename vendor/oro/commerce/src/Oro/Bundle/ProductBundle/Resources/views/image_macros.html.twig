@@ -1,0 +1,65 @@
+{% macro url(file, filter) -%}
+    {% import _self as imageMacros %}
+
+    {%- if file is not null %}
+        {{- filtered_image_url(file, filter) -}}
+    {% else %}
+        {{- imageMacros.urlFromString('', filter) -}}
+    {% endif %}
+{%- endmacro -%}
+
+{% macro urlFromString(file, filter) -%}
+    {%- if file is empty %}
+        {{ product_image_placeholder(filter) }}
+    {%- else %}
+        {{- file|imagine_filter(filter) -}}
+    {% endif %}
+{%- endmacro -%}
+
+{% macro image(file, filter, attrs) -%}
+    {% import _self as imageMacros %}
+    {% set arrts = attrs|default({}) %}
+
+    <img src="{{ imageMacros.url(file, filter) }}"
+         title="{{ oro_file_title(file) }}"
+        {% for name, value in arrts %}
+            {{ name }}="{{ value }}"
+        {% endfor %}
+    />
+{%- endmacro -%}
+
+{% macro renderProductImages(productImages, imageTypes) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <div class="image-collection view">
+        <table class="grid table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ 'oro.product.productimage.file.label'|trans }}</th>
+                    {% for imageType in imageTypes %}
+                        <th>{{ imageType.label|trans }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for productImage in productImages %}
+                    <tr>
+                        <td>
+                            <span {% if productImage.image.uuid is not null %}data-ie-preview="{{ file_url(productImage.image) }}"{% endif %}>
+                                {{ oro_file_view(productImage.image, {'galleryId' : 'images'} ) }}
+                            </span>
+                        </td>
+
+                        {% for imageType in imageTypes %}
+                            <td>
+                                {% if productImage.hasType(imageType.name) %}
+                                    <i class="fa-check-square-o"></i>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}

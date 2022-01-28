@@ -1,0 +1,17 @@
+<div class="widget-content">
+    {# JS template for address view #}
+    {% include "OroCustomerBundle:Address/Js:address.js.twig" %}
+
+    {# widget container and actions #}
+    <div class="widget-actions">
+        {% if options.acl.addressCreate is not defined or is_granted(options.acl.addressCreate) %}
+            <button class="btn btn-primary" type="button" data-action-name="add_address"> + {{ 'oro.customer.address.add'|trans }}</button>
+        {% endif %}
+    </div>
+
+    {% set options = options|default({})|merge({isAddressHtmlFormatted: true}) %}
+
+    <div class="list-box map-box" id="address-book" data-page-component-module="orocustomer/js/app/components/customer-address-book-component"
+         data-page-component-options="{{ options|json_encode }}">
+    </div>
+</div>

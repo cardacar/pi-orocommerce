@@ -1,0 +1,12 @@
+services:
+    oro_customer_sales.provider.customer.customer_icon:
+        class: Oro\Bridge\CustomerSales\Provider\Customer\CustomerIconProvider
+        tags:
+            - { name: oro_sales.customer_icon, priority: 10 }
+
+    oro_customer_sales.virtual_relation_provider.customer:
+        class: Oro\Bundle\SalesBundle\Provider\CustomerAssignmentVirtualRelationProvider
+        arguments:
+            - 'Oro\Bundle\CustomerBundle\Entity\Customer'
+        tags:
+           - { name: oro_entity.virtual_relation_provider, priority: 150 }

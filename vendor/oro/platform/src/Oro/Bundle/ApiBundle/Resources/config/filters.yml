@@ -1,0 +1,233 @@
+services:
+    oro_api.rest.filter_value_accessor_factory:
+        class: Oro\Bundle\ApiBundle\Request\RestFilterValueAccessorFactory
+        arguments:
+            # regex pattern to match the following operators: =, !=, <>, >, <, >=, <=, *, !*, ~, !~, ^, !^, $, !$
+            - '(!|<|>|%%21|%%3C|%%3E)?(=|%%3D)|<>|%%3C%%3E|<|>|\*|%%3C|%%3E|%%2A|(!|%%21)?(\*|~|\^|\$|%%2A|%%7E|%%5E|%%24)'
+            - [] # operators. They are set by Oro\Bundle\ApiBundle\DependencyInjection\OroApiExtension
+
+    oro_api.filter_operator_registry:
+        class: Oro\Bundle\ApiBundle\Filter\FilterOperatorRegistry
+        arguments:
+            - [] # operators. They are set by Oro\Bundle\ApiBundle\DependencyInjection\OroApiExtension
+
+    oro_api.filter_names_registry:
+        class: Oro\Bundle\ApiBundle\Filter\FilterNamesRegistry
+        arguments:
+            - [] # providers
+            - ~ # service locator
+            - '@oro_api.request_expression_matcher'
+
+    oro_api.filter_names.rest_plain:
+        class: Oro\Bundle\ApiBundle\Filter\FilterNames
+        arguments:
+            - 'sort'
+            - 'page'
+            - 'limit'
+            - 'meta'
+        tags:
+            - { name: oro.api.filter_names, requestType: rest&!json_api, priority: -10 }
+
+    oro_api.filter_names.json_api:
+        class: Oro\Bundle\ApiBundle\Filter\FilterNames
+        arguments:
+            - 'sort'
+            - 'page[number]'
+            - 'page[size]'
+            - 'meta'
+            - 'filter'
+            - 'fields'
+            - 'include'
+        tags:
+            - { name: oro.api.filter_names, requestType: json_api }
+
+    oro_api.filter_factory:
+        class: Oro\Bundle\ApiBundle\Filter\ChainFilterFactory
+        arguments:
+            - !tagged_iterator oro.api.filter_factory
+
+    # this service is configured by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\SimpleFilterFactoryCompilerPass
+    oro_api.filter_factory.default:
+        class: Oro\Bundle\ApiBundle\Filter\SimpleFilterFactory
+        arguments:
+            - [] # filters
+            - [] # filter factories
+            - ~ # filter factory container
+            - '@property_accessor'
+            - '@oro_api.filter_operator_registry'
+        tags:
+            - { name: oro.api.filter_factory, priority: -10 }
+
+    oro_api.filter_factory.composite_identifier:
+        class: Oro\Bundle\ApiBundle\Filter\CompositeIdentifierFilterFactory
+        arguments:
+            - '@oro_api.entity_id_transformer_registry'
+
+    oro_api.filter_factory.extended_association:
+        class: Oro\Bundle\ApiBundle\Filter\ExtendedAssociationFilterFactory
+        arguments:
+            - '@oro_api.value_normalizer'
+            - '@oro_entity_extend.association_manager'
+            - '@oro_api.entity_override_provider_registry'
+
+    oro_api.filter_factory.search_query:
+        class: Oro\Bundle\ApiBundle\Filter\SearchQueryFilterFactory
+        arguments:
+            - '@oro_search.provider.search_mapping'
+            - '@oro_api.search_field_resolver_factory'
+
+    oro_api.filter_factory.search_aggregation:
+        class: Oro\Bundle\ApiBundle\Filter\SearchAggregationFilterFactory
+        arguments:
+            - '@oro_api.search_field_resolver_factory'
+
+    oro_api.search_field_resolver_factory:
+        class: Oro\Bundle\ApiBundle\Filter\SearchFieldResolverFactory
+        arguments:
+            - '@oro_search.provider.search_mapping'
+
+    oro_api.query.expression_visitor_factory:
+        class: Oro\Bundle\ApiBundle\Collection\QueryExpressionVisitorFactory
+        arguments:
+            - [] # composite expressions. They are set by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\QueryExpressionCompilerPass
+            - [] # comparison expressions. They are set by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\QueryExpressionCompilerPass
+            - '@oro_entity.orm.entity_class_resolver'
+
+    oro_api.query.composite_expression.and:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\AndCompositeExpression
+        tags:
+          - { name: oro.api.query.composite_expression, type: 'AND' }
+
+    oro_api.query.composite_expression.or:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\OrCompositeExpression
+        tags:
+          - { name: oro.api.query.composite_expression, type: 'OR' }
+
+    oro_api.query.composite_expression.not:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NotCompositeExpression
+        tags:
+          - { name: oro.api.query.composite_expression, type: 'NOT' }
+
+    oro_api.query.comparison_expression.eq:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\EqComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: '=' }
+
+    oro_api.query.comparison_expression.neq:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NeqComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: '<>' }
+
+    oro_api.query.comparison_expression.gt:
+       class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\GtComparisonExpression
+       tags:
+         - { name: oro.api.query.comparison_expression, operator: '>' }
+
+    oro_api.query.comparison_expression.gte:
+       class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\GteComparisonExpression
+       tags:
+         - { name: oro.api.query.comparison_expression, operator: '>=' }
+
+    oro_api.query.comparison_expression.lt:
+       class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\LtComparisonExpression
+       tags:
+         - { name: oro.api.query.comparison_expression, operator: '<' }
+
+    oro_api.query.comparison_expression.lte:
+       class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\LteComparisonExpression
+       tags:
+         - { name: oro.api.query.comparison_expression, operator: '<=' }
+
+    oro_api.query.comparison_expression.in:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\InComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'IN' }
+
+    oro_api.query.comparison_expression.nin:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NinComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NIN' }
+
+    oro_api.query.comparison_expression.member_of:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\MemberOfComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'MEMBER_OF' }
+
+    oro_api.query.comparison_expression.all_member_of:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\AllMemberOfComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'ALL_MEMBER_OF' }
+
+    oro_api.query.comparison_expression.all_not_member_of:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\AllMemberOfComparisonExpression
+        arguments:
+            - true
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'ALL_NOT_MEMBER_OF' }
+
+    oro_api.query.comparison_expression.exists:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\ExistsComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'EXISTS' }
+
+    oro_api.query.comparison_expression.empty:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\EmptyComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'EMPTY' }
+
+    oro_api.query.comparison_expression.neq_or_null:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NeqOrNullComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NEQ_OR_NULL' }
+
+    oro_api.query.comparison_expression.neq_or_empty:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NeqOrEmptyComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NEQ_OR_EMPTY' }
+
+    oro_api.query.comparison_expression.contains:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\ContainsComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'CONTAINS' }
+
+    oro_api.query.comparison_expression.not_contains:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NotContainsComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NOT_CONTAINS' }
+
+    oro_api.query.comparison_expression.starts_with:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\StartsWithComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'STARTS_WITH' }
+
+    oro_api.query.comparison_expression.not_starts_with:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NotStartsWithComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NOT_STARTS_WITH' }
+
+    oro_api.query.comparison_expression.ends_with:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\EndsWithComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'ENDS_WITH' }
+
+    oro_api.query.comparison_expression.not_ends_with:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NotEndsWithComparisonExpression
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NOT_ENDS_WITH' }
+
+    oro_api.query.comparison_expression.nested_tree:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NestedTreeComparisonExpression
+        arguments:
+            - '@stof_doctrine_extensions.listener.tree'
+            - '@doctrine'
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NESTED_TREE' }
+
+    oro_api.query.comparison_expression.nested_tree_with_root:
+        class: Oro\Bundle\ApiBundle\Collection\QueryVisitorExpression\NestedTreeComparisonExpression
+        arguments:
+            - '@stof_doctrine_extensions.listener.tree'
+            - '@doctrine'
+            - true
+        tags:
+          - { name: oro.api.query.comparison_expression, operator: 'NESTED_TREE_WITH_ROOT' }

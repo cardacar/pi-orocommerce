@@ -1,0 +1,5 @@
+styles:
+    inputs:
+        - "~slick-carousel/slick/slick.scss"
+        - "bundles/oroviewswitcher/view-switcher/scss/styles.scss"
+    output: 'css/view-switcher.css'

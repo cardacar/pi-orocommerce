@@ -1,0 +1,79 @@
+<?php
+
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Configuration;
+
+use Oro\Bundle\WorkflowBundle\Configuration\ProcessDefinitionConfiguration;
+use Oro\Bundle\WorkflowBundle\Configuration\ProcessDefinitionListConfiguration;
+
+class ProcessDefinitionListConfigurationTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @var ProcessDefinitionListConfiguration
+     */
+    protected $configuration;
+
+    protected function setUp(): void
+    {
+        $this->configuration = new ProcessDefinitionListConfiguration(new ProcessDefinitionConfiguration());
+    }
+
+    protected function tearDown(): void
+    {
+        unset($this->configuration);
+    }
+
+    /**
+     * @dataProvider processDataProvider
+     */
+    public function testProcess(array $input, array $expected)
+    {
+        $this->assertEquals($expected, $this->configuration->processConfiguration($input));
+    }
+
+    /**
+     * @return array
+     */
+    public function processDataProvider()
+    {
+        return array(
+            array(
+                'input' => array(
+                    'minimum_definition' => array(
+                        'label' => 'My Label',
+                        'entity' => 'My\Entity',
+                    ),
+                    'maximum_definition' => array(
+                        'label' => 'My Label',
+                        'enabled' => false,
+                        'entity' => 'My\Entity',
+                        'order' => 10,
+                        'exclude_definitions'   => array('minimum_definition'),
+                        'actions_configuration' => array('key' => 'value'),
+                        'preconditions' => array('test' => array()),
+                        'pre_conditions' => ['test2' => []]
+                    ),
+                ),
+                'expected' => array(
+                    'minimum_definition' => array(
+                        'label' => 'My Label',
+                        'entity' => 'My\Entity',
+                        'enabled' => true,
+                        'order' => 0,
+                        'exclude_definitions'   => array(),
+                        'actions_configuration' => array(),
+                        'preconditions' => array()
+                    ),
+                    'maximum_definition' => array(
+                        'label' => 'My Label',
+                        'enabled' => false,
+                        'entity' => 'My\Entity',
+                        'order' => 10,
+                        'exclude_definitions'   => array('minimum_definition'),
+                        'actions_configuration' => array('key' => 'value'),
+                        'preconditions' => ['test' => [], 'test2' => []],
+                    )
+                ),
+            )
+        );
+    }
+}

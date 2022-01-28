@@ -1,0 +1,66 @@
+services:
+    oro_contact_us.embedded_form:
+        class: Oro\Bundle\ContactUsBundle\Form\Type\ContactRequestType
+        public: true
+        tags:
+            - { name: oro_embedded_form, type: Oro\Bundle\ContactUsBundle\Form\Type\ContactRequestType, label: oro.contactus.contactrequest.entity_label }
+            - { name: form.type, alias: oro_contactus_contact_request }
+
+    oro_contact_us.contact_request.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - "oro_contactus_contact_request"
+            - Oro\Bundle\ContactUsBundle\Form\Type\ContactRequestType
+            - null
+
+    Oro\Bundle\ContactUsBundle\Form\Type\ContactRequestEditType:
+        arguments:
+            - '@oro_locale.helper.default_locale_localization'
+        tags: ['form.type']
+
+    oro_contact_us.contact_request.form.handler:
+        class: Oro\Bundle\ContactUsBundle\Form\Handler\ContactRequestHandler
+        public: true
+        arguments:
+            - "@oro_contact_us.contact_request.form"
+            - "@request_stack"
+            - "@doctrine"
+
+    oro_contact_us.provider.phone.abstract_contact_request:
+        class: Oro\Bundle\ContactUsBundle\Provider\AbstractContactRequestPhoneProvider
+        tags:
+            - { name: oro_address.phone_provider, class: Oro\Bundle\ContactUsBundle\Entity\AbstractContactRequest }
+
+    oro_contact_us.contact_request.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        public: true
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\ContactUsBundle\Entity\ContactRequest'
+            - "@doctrine.orm.entity_manager"
+
+    oro_contact_us.form.type.contact_reason:
+        class: 'Oro\Bundle\ContactUsBundle\Form\Type\ContactReasonType'
+        tags:
+            - { name: form.type }
+
+    oro_contact_us.form.type.contact_reason_select:
+        class: Oro\Bundle\ContactUsBundle\Form\Type\ContactReasonSelectType
+        tags:
+            - { name: form.type, alias: oro_contactus_contact_reason_select }
+
+    oro_contact_us.form.autocomplete.contact_reason.search_handler:
+        class: Oro\Bundle\ContactUsBundle\Autocomplete\ContactReasonSearchHandler
+        lazy: true
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@property_accessor'
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: contact_reasons, acl_resource: oro_contactus_reason_view }
+
+    oro_contact_us.emailtemplate.variable_provider.entity:
+        class: Oro\Bundle\ContactUsBundle\Provider\ContactReasonVariablesProvider
+        public: false
+        tags:
+            - { name: oro_email.emailtemplate.variable_provider, scope: entity }

@@ -1,0 +1,20 @@
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    upsLabel:
+        string: 'UPS'
+
+Oro\Bundle\UPSBundle\Entity\UPSTransport:
+    upsTransport:
+        __calls:
+            - addLabel: ['@upsLabel']
+            - addApplicableShippingService: ['@UPS2ndDayAirShippingService']
+        upsApiUser: 'test'
+        upsUnitOfWeight: 'KGS'
+
+Oro\Bundle\IntegrationBundle\Entity\Channel:
+    upsIntegration:
+        type: 'ups'
+        name: 'UPS'
+        enabled: true
+        organization: '@organization'
+        transport: '@upsTransport'
+        defaultUserOwner: '@admin'

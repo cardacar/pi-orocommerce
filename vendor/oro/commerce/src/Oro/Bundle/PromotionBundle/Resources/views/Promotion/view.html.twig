@@ -1,0 +1,152 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroCronBundle::macros.html.twig' as cronSchedulIntervals %}
+{% import 'OroScopeBundle::macros.html.twig' as scopeMacros %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+{% oro_title_set({params : {"%name%": entity.rule.name }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_promotion_index'),
+        'indexLabel': 'oro.promotion.entity_plural_label'|trans,
+        'entityTitle': entity.rule.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {{ parent() }}
+    <span class="page-title__status">
+        {% if entity.rule.enabled %}
+            {{ UI.badge('oro.promotion.rule.enabled.active'|trans, 'enabled') }}
+        {% else %}
+            {{ UI.badge('oro.promotion.rule.enabled.inactive'|trans, 'disabled') }}
+        {% endif %}
+    </span>
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% if entity.schedules.isEmpty() %}
+        {% set schedulesBlock = 'N/A'|trans %}
+    {% else %}
+        {% set labels = {
+            wasActivatedLabel: 'oro.promotion.promotionschedule.was_activated',
+            activeNowLabel: 'oro.promotion.promotionschedule.active_now',
+            notActiveNowLabel: 'oro.promotion.promotionschedule.not_active_now',
+            willBeActivatedLabel: 'oro.promotion.promotionschedule.will_be_acitivated',
+            wasDeactivatedLabel: 'oro.promotion.promotionschedule.was_deactivated',
+            willBeDeactivatedLabel: 'oro.promotion.promotionschedule.will_be_deacitivated'
+        } %}
+        {% set schedulesBlock = cronSchedulIntervals.scheduleIntervalsInfo(entity.schedules, labels) %}
+    {% endif %}
+
+    {% set discountBlock %}
+        {% placeholder render_discount_information with {entity: entity} %}
+    {% endset %}
+
+    {%- set promotionInformation -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('oro.rule.name.label'|trans, entity.rule.name) }}
+                {{ UI.renderProperty('oro.rule.sort_order.label'|trans, entity.rule.sortOrder) }}
+                {{ UI.renderProperty('oro.rule.stop_processing.label'|trans, entity.rule.stopProcessing ? 'oro.promotion.rule.stop_processing.yes'|trans : 'oro.promotion.rule.stop_processing.no'|trans) }}
+                {{ UI.renderHtmlProperty('oro.promotion.schedules.label'|trans, schedulesBlock) }}
+                {{ UI.renderProperty('oro.promotion.use_coupons.label'|trans, entity.useCoupons ? 'oro.promotion.use_coupons.yes'|trans : 'oro.promotion.use_coupons.no'|trans) }}
+            </div>
+            <div class="responsive-block">
+                {{ entityConfig.renderDynamicFields(entity) }}
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.promotion.sections.general.label'|trans,
+            'subblocks': [
+                {
+                    'title': 'oro.promotion.sections.general.subsection.general_info.label'|trans,
+                    'useSpan': false,
+                    'data': [promotionInformation]
+                },
+                {
+                    'title': 'oro.promotion.sections.general.subsection.discount_options.label'|trans,
+                    'useSpan': false,
+                    'data': [discountBlock]
+                }
+            ]
+        }
+    ] %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.promotion.sections.conditions.label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [
+                        UI.renderHtmlProperty('oro.promotion.restrictions.label'|trans, scopeMacros.renderRestrictionsView(scopeEntities, entity.scopes)),
+                        UI.renderProperty('oro.promotion.advanced_conditions.label'|trans, entity.rule.expression)
+                    ]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.promotion.sections.matching_items.label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [
+                        dataGrid.renderGrid(
+                            'promotion-products-collection-grid',
+                            {
+                                '_grid_view': {'_disabled': true},
+                                params: {
+                                    'segmentDefinition': segmentDefinition,
+                                    'includedProducts': includedProducts,
+                                    'excludedProducts': excludedProducts
+                                }
+                            }
+                        )
+                    ]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.promotion.sections.assigned_coupons.label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [
+                        dataGrid.renderGrid(
+                            'promotion-coupons-assigned-to-promotion-grid',
+                            {
+                                '_grid_view': {'_disabled': true},
+                                'promotion_id': entity.id
+                            }
+                        )
+                    ]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set id = 'promotions-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}

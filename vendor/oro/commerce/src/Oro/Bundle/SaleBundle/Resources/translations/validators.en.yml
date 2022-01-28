@@ -1,0 +1,19 @@
+oro:
+    sale:
+        quoteproduct:
+            product:
+                blank: 'Product cannot be empty.'
+            free_form_product:
+                blank: 'Please provide Product title.'
+            product_replacement:
+                blank: 'Product cannot be empty.'
+            quote_product_items:
+                blank: 'Please add one or more offers.'
+
+        quoteproductoffer:
+            configurable:
+                offer:
+                    blank: 'Please enter valid quantity according to the offer options'
+                quantity:
+                    equal: 'Quantity should be equal to offered quantity'
+                    less: 'Quantity should be greater than or equal to offered quantity'

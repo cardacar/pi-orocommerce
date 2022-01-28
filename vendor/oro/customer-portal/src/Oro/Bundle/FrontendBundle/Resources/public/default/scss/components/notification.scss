@@ -1,0 +1,71 @@
+/* @theme: default; */
+
+.notification {
+    padding: $notification-inner-offset;
+
+    font-size: $notification-font-size;
+
+    border-radius: $notification-border-radius;
+
+    &--success,
+    &--info,
+    &--notice {
+        @extend .notification;
+        background: get-color('ui', 'success');
+        color: get-color('ui', 'success-dark');
+    }
+
+    &--warning,
+    &--warn,
+    &--alert {
+        @extend .notification;
+        background: get-color('ui', 'warning');
+        color: get-color('ui', 'warning-dark');
+    }
+
+    &--error {
+        @extend .notification;
+        background: get-color('ui', 'error');
+        color: get-color('ui', 'error-dark');
+    }
+
+    &--lite {
+        @extend .notification;
+        background: transparent;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &--xmd {
+        @extend .notification;
+        padding: $notification-xmd-inner-offset;
+
+        [class^="fa-"] {
+            font-size: $notification-xmd-icon-size;
+        }
+    }
+
+    &__list {
+        margin: $notification-list-margin;
+        padding: $notification-list-padding;
+    }
+
+    &__item {
+        &:not(:first-child) {
+            margin-top: $notification-list-offset;
+        }
+
+        &--flex {
+            display: flex;
+            align-items: baseline;
+        }
+    }
+
+    [class^="fa-"] {
+        margin-right: $notification-icon-offset;
+    }
+
+    &__text {
+        vertical-align: $notification-vertical-align;
+    }
+}

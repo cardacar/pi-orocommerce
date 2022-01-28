@@ -1,0 +1,25 @@
+navigation:
+    menu_config:
+        templates:
+            application_menu:
+                template: 'OroUIBundle:Menu:application_menu.html.twig'
+                current_class: 'active'
+                ancestor_class: 'active'
+
+            dots_menu:
+                template: 'OroUIBundle:Menu:dots_menu.html.twig'
+
+            shortcuts:
+                template: 'OroUIBundle:Menu:shortcuts.html.twig'
+
+        tree:
+            application_menu:
+                type: application_menu
+
+            dots_menu:
+                type: dots_menu
+
+            shortcuts:
+                type: shortcuts
+    titles:
+        oro_default:                  Dashboard

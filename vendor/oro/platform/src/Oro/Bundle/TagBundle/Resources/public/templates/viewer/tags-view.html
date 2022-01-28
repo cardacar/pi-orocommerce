@@ -1,0 +1,16 @@
+<span class="tags-container">
+    <% if (tags.length > 0) { _.each(tags , function(tag) { %>
+    <a href="<%= tag.url %>"
+       title="<%- tag.name %><% if(tag.ownerFirstName && tag.ownerLastName) { %><%- _.__('oro.tag.added_by', {first_name: tag.ownerFirstName, last_name: tag.ownerLastName}) %><% } %>"
+       class="tags-container__tag-entry<% if(tag.owner == true) { %> tags-container__tag-entry_is-my<% } %><% if (tag.className) { %> <%- tag.className %><% } %>"
+       <% if (tag.style) { %>style="<%- tag.style %>"<% } %>
+    >
+        <% if(tag.owner == true) { %>
+            <span class="fa-user tags-container__icon"></span>
+        <% } %>
+        <span><%- tag.name %></span>
+    </a>
+    <% }) } else if (showDefault){ %>
+        <span class="tags-container__na"><%- _.__('N/A') %></span>
+    <% } %>
+</span>

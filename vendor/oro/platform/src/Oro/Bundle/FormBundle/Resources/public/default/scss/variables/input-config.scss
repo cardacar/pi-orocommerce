@@ -1,0 +1,25 @@
+/* @theme: default; */
+
+$input-padding-y: 11px;
+$input-padding: 9px $input-padding-y 8px;
+$input-padding--m: 8px 9px 7px;
+$input-padding--s: 5px 9px 4px;
+$input-padding--x-s: 4px 9px 3px;
+$input-date-height: 40px;
+$input-date-size-s-height: 32px;
+
+// Hover
+$input-border-color-hover-state: get-color('additional', 'dark');
+$input-box-shadow-hover-state: inset 0 1px 1px transparentize(get-color('additional', 'ultra'), .75),
+                                     0 0 8px transparentize(get-color('ui', 'focus'), .6);
+
+// Focus
+$input-border-color-focus-state: $base-ui-element-border-color-focus;
+$input-box-shadow-focus-state: $base-ui-element-focus-style;
+
+// Error
+$input-border-color-error-state: get-color('ui', 'error-dark');
+$input-box-shadow-error-state: 0 1px 7px 0 transparentize(get-color('ui', 'error-dark'), .6);
+
+// Disabled
+$input-background-color-disabled-state: get-color('additional', 'base') !default;

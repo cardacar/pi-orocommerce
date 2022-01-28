@@ -1,0 +1,84 @@
+operations:
+    DELETE:
+        exclude_datagrids:
+            - opportunity-quotes-grid
+    UPDATE:
+        exclude_datagrids:
+            - opportunity-quotes-grid
+    oro_sale_expire_quote:
+        datagrids:
+            - opportunity-quotes-grid
+
+    opportunity_quotes_delete:
+        extends: DELETE
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - datagrids
+            - preconditions
+            - exclude_datagrids
+        datagrids:
+            - opportunity-quotes-grid
+        preconditions:
+            '@and':
+                - '@not_blank': $.data
+                - '@or':
+                    - '@blank': $.requestRoute
+                    - '@and':
+                        - '@not_blank': $.routes[name]
+                - '@or':
+                    - '@not_blank': $.routes[name]
+                    - '@not_blank': $.gridName
+    opportunity_quotes_update:
+        extends: UPDATE
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - datagrids
+            - preconditions
+            - exclude_datagrids
+        datagrids:
+            - opportunity-quotes-grid
+        preconditions:
+            '@and':
+                - '@not_blank': $.data
+                - '@not_blank': $.routes[update]
+                - '@or':
+                    - '@blank': $.requestRoute
+                    - '@and':
+                        - '@not_blank': $.routes[name]
+
+action_groups:
+    oro_sale_quote_duplicate_fields:
+        replace:
+            - actions
+        actions:
+            - '@duplicate':
+                target: $.quote
+                attribute: $.quoteCopy
+                settings:
+                    - [[setNull], [propertyName, [id]]]
+                    - [[setNull], [propertyName, [qid]]]
+                    - [[setNull], [propertyName, [demands]]]
+                    - [[setNull], [propertyName, [internal_status]]]
+                    - [[setNull], [propertyName, [customer_status]]]
+                    - [[replaceValue, false], [property, ['Oro\Bundle\SaleBundle\Entity\Quote', expired]]]
+                    - [[replaceValue, false], [property, ['Oro\Bundle\SaleBundle\Entity\Quote', pricesChanged]]]
+                    - [[keep], [propertyName, [customerUser]]]
+                    - [[keep], [propertyName, [customer]]]
+                    - [[keep], [propertyName, [organization]]]
+                    - [[keep], [propertyName, [owner]]]
+                    - [[keep], [propertyName, [website]]]
+                    - [[keep], [propertyName, [request]]]
+                    - [[keep], [propertyName, [assignedUsers]]]
+                    - [[keep], [propertyName, [assignedCustomerUsers]]]
+                    - [[keep], [propertyName, [opportunity]]]
+                    - [[keep], [property, ['Oro\Bundle\SaleBundle\Entity\QuoteAddress', country]]]
+                    - [[keep], [property, ['Oro\Bundle\SaleBundle\Entity\QuoteAddress', region]]]
+                    - [[keep], [property, ['Oro\Bundle\SaleBundle\Entity\QuoteAddress', customerAddress]]]
+                    - [[keep], [property, ['Oro\Bundle\SaleBundle\Entity\QuoteAddress', customerUserAddress]]]
+                    - [[keep], [propertyType, ['Oro\Bundle\ProductBundle\Entity\Product']]]
+                    - [[keep], [propertyType, ['Oro\Bundle\ProductBundle\Entity\ProductUnit']]]
+                    - [[keep], [propertyType, ['Oro\Bundle\PaymentTermBundle\Entity\PaymentTerm']]]
+                    - [[keep], [propertyType, ['Oro\Bundle\RFPBundle\Entity\RequestProductItem']]]
+                    - [[collection], [propertyType, ['Doctrine\Common\Collections\Collection']]]

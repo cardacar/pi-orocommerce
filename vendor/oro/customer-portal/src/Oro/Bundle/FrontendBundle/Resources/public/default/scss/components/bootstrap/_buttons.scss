@@ -1,0 +1,32 @@
+/* @theme: default; */
+
+.btn {
+    &.checked,
+    &.active,
+    &.pressed {
+        box-shadow: $active-box-shadow;
+
+        @if ($active-box-shadow and $btn-focus-visible-style) {
+            &.focus-visible:focus {
+                box-shadow: $active-box-shadow, $btn-focus-visible-style;
+            }
+        }
+    }
+
+    &.caret {
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: 4px solid;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+            vertical-align: middle;
+        }
+
+        &.offset-start:after {
+            margin-left: $font-icon-offset-end;
+        }
+    }
+}

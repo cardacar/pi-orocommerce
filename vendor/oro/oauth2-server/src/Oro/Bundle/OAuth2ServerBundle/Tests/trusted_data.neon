@@ -1,0 +1,9 @@
+# Configuration for https://github.com/oroinc/phpstan-rules/
+trusted_data:
+    variables:
+        Oro\Bundle\OAuth2ServerBundle\Entity\Cleaner\ClientCleaner:
+            cleanUp:
+                ownerEntityClass: true
+        Oro\Bundle\OAuth2ServerBundle\Datagrid\EventListener\OwnerClientDatagridListener:
+            getOwners:
+                ownerClass: true

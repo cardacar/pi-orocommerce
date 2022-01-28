@@ -1,0 +1,136 @@
+services:
+    oro_api.form.state:
+        class: Oro\Bundle\ApiBundle\Form\FormExtensionState
+
+    oro_api.form.switchable_extension:
+        class: Oro\Bundle\ApiBundle\Form\Extension\SwitchableDependencyInjectionExtension
+        arguments:
+            - '@service_container'
+
+    oro_api.form.extension_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        arguments:
+            - [] # services are inserted here by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\FormCompilerPass
+        tags:
+            - { name: container.service_locator }
+
+    oro_api.form.extension:
+        class: Oro\Bundle\ApiBundle\Form\FormExtension
+        arguments:
+            - '@oro_api.form.extension_locator'
+            - [] # All services with tag "oro.api.form.type" are inserted here by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\FormCompilerPass
+            - [] # All services with tag "oro.api.form.type_extension" are inserted here by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\FormCompilerPass
+            - [] # All services with tag "oro.api.form.type_guesser" are inserted here by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\FormCompilerPass
+
+    oro_api.form.extension.validation:
+        class: Oro\Bundle\ApiBundle\Form\Extension\ValidationExtension
+        arguments:
+            - '@validator'
+        tags:
+            - { name: oro.api.form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    oro_api.form.extension.empty_data:
+        class: Oro\Bundle\ApiBundle\Form\Extension\EmptyDataExtension
+        arguments:
+            - '@oro_api.entity_instantiator'
+        tags:
+            - { name: oro.api.form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    oro_api.form.extension.customize_form_data:
+        class: Oro\Bundle\ApiBundle\Form\Extension\CustomizeFormDataExtension
+        arguments:
+            - '@oro_api.customize_form_data.processor'
+            - '@oro_api.customize_form_data_handler'
+        tags:
+            - { name: oro.api.form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    oro_api.customize_form_data_handler:
+        class: Oro\Bundle\ApiBundle\Processor\CustomizeFormData\CustomizeFormDataHandler
+        arguments:
+            - '@oro_api.customize_form_data.processor'
+
+    oro_api.form_property_accessor:
+        class: Oro\Bundle\ApiBundle\Form\FormPropertyAccessor
+        arguments:
+            - '@form.property_accessor'
+
+    oro_api.form_helper:
+        class: Oro\Bundle\ApiBundle\Form\FormHelper
+        arguments:
+            - '@form.factory'
+            - '@oro_api.form.guesser.data_type'
+            - '@oro_api.form_property_accessor'
+            - '@service_container'
+
+    oro_api.form_validation_handler:
+        class: Oro\Bundle\ApiBundle\Form\FormValidationHandler
+        arguments:
+            - '@validator'
+            - '@oro_api.customize_form_data_handler'
+            - '@oro_api.form_property_accessor'
+
+    oro_api.form.guesser.data_type:
+        class: Oro\Bundle\ApiBundle\Form\Guesser\DataTypeGuesser
+        arguments:
+            - [] # data type mappings. It is set by Oro\Bundle\ApiBundle\DependencyInjection\Compiler\FormCompilerPass
+
+    oro_api.form.guesser.metadata:
+        class: Oro\Bundle\ApiBundle\Form\Guesser\MetadataTypeGuesser
+        arguments:
+            - '@oro_api.form.guesser.data_type'
+            - '@oro_api.doctrine_helper'
+        tags:
+            - { name: oro.api.form.type_guesser, priority: 10 }
+
+    oro_api.form.type.entity:
+        class: Oro\Bundle\ApiBundle\Form\Type\EntityType
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.entity_loader'
+        tags:
+            - { name: oro.api.form.type, alias: Oro\Bundle\ApiBundle\Form\Type\EntityType }
+
+    oro_api.form.type.nested_association:
+        class: Oro\Bundle\ApiBundle\Form\Type\NestedAssociationType
+        arguments:
+            - '@oro_api.form_property_accessor'
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.entity_loader'
+        tags:
+            - { name: oro.api.form.type, alias: Oro\Bundle\ApiBundle\Form\Type\NestedAssociationType }
+
+    oro_api.form.type.object:
+        class: Oro\Bundle\ApiBundle\Form\Type\ObjectType
+        arguments:
+            - '@oro_api.form_helper'
+        tags:
+            - { name: oro.api.form.type, alias: Oro\Bundle\ApiBundle\Form\Type\ObjectType }
+
+    oro_api.form.type.scalar_object:
+        class: Oro\Bundle\ApiBundle\Form\Type\ScalarObjectType
+        arguments:
+            - '@oro_api.form_helper'
+        tags:
+            - { name: oro.api.form.type, alias: Oro\Bundle\ApiBundle\Form\Type\ScalarObjectType }
+
+    oro_api.form.type.compound_object:
+        class: Oro\Bundle\ApiBundle\Form\Type\CompoundObjectType
+        arguments:
+            - '@oro_api.form_helper'
+        tags:
+            - { name: oro.api.form.type, alias: Oro\Bundle\ApiBundle\Form\Type\CompoundObjectType }
+
+    oro_api.validator.access_granted:
+        class: Oro\Bundle\ApiBundle\Validator\Constraints\AccessGrantedValidator
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: validator.constraint_validator }
+
+    oro_api.form.unidirectional_association_handler:
+        class: Oro\Bundle\ApiBundle\Form\Handler\UnidirectionalAssociationHandler
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.form_property_accessor'
+            - '@oro_api.entity_id_helper'
+            - '@oro_api.entity_override_provider_registry'

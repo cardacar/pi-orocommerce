@@ -1,0 +1,165 @@
+datagrids:
+    audit-grid:
+        acl_resource: oro_dataaudit_view
+        options:
+            entityHint: oro.dataaudit.abstractaudit.entity_plural_label
+        source:
+            type: orm
+            query:
+                select:
+                    id: a.id
+                    section: a.action
+                    version: a.version
+                    objectClass: a.objectClass
+                    objectName: a.objectName
+                    objectId: a.objectId
+                    loggedAt: a.loggedAt
+                    author:  a.ownerDescription as author
+                    organization: IDENTITY(a.organization) as organization
+                    impersonation: IDENTITY(a.impersonation) as impersonation
+                from:
+                    - { table: Oro\Bundle\DataAuditBundle\Entity\AbstractAudit, alias: a }
+            hints:
+                - HINT_FORCE_PARTIAL_LOAD
+        columns:
+            id: {renderable: false, manageable: false}
+            action:
+                label: oro.dataaudit.datagrid.action
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/action.html.twig
+                frontend_type: html
+            version:
+                label: oro.dataaudit.datagrid.version
+            objectClass:
+                label: oro.dataaudit.datagrid.entity_type
+                type: callback
+                callable: "@oro_dataaudit.datagrid.entity_type_provider->getEntityType"
+            objectId:
+                label: oro.dataaudit.datagrid.entity_id
+            objectName:
+                label: oro.dataaudit.datagrid.entity_name
+            data:
+                label: oro.dataaudit.datagrid.data
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/data.html.twig
+                frontend_type: html
+            author:
+                label: oro.dataaudit.datagrid.author
+                type: callback
+                callable: "@oro_dataaudit.datagrid.author_provider->getAuthor"
+            organization:
+                label: oro.dataaudit.datagrid.organization
+            loggedAt:
+                label: oro.dataaudit.datagrid.logged_at
+                frontend_type: datetime
+        properties: ~
+        sorters:
+            columns:
+                id:
+                    data_name: a.id
+                action:
+                    data_name: a.action
+                version:
+                    data_name: a.version
+                objectClass:
+                    data_name: a.objectClass
+                objectName:
+                    data_name: a.objectName
+                objectId:
+                    data_name: a.objectId
+                author:
+                    data_name: a.ownerDescription
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                id: DESC
+        filters:
+            columns:
+                action:
+                    type: choice
+                    data_name: a.action
+                    options:
+                        field_options:
+                            choices:
+                                oro.dataaudit.action.create: create
+                                oro.dataaudit.action.update: update
+                                oro.dataaudit.action.remove: remove
+                version:
+                    type: number-range
+                    data_name: a.version
+                    enabled: false
+                objectClass:
+                    type: choice
+                    data_name: a.objectClass
+                    options:
+                          field_options:
+                              choices: "@oro_dataaudit.datagrid.entity_type_provider->getEntityTypes"
+                objectId:
+                    type: string
+                    data_name: a.objectId
+                objectName:
+                    type: string
+                    data_name: a.objectName
+                author:
+                    type: string
+                    data_name: author
+                impersonation:
+                    label: oro.dataaudit.datagrid.impersonation
+                    type: choice-tree
+                    data_name: a.impersonation
+                    className: 'Oro\Bundle\UserBundle\Entity\Impersonation'
+                    autocomplete_alias: impersonations
+                    renderedPropertyName: ipAddressToken
+                loggedAt:
+                    type: datetime
+                    data_name: a.loggedAt
+
+    audit-history-grid:
+        acl_resource: oro_dataaudit_view
+        source:
+            type: orm
+            query:
+                select:
+                    id: a.id
+                    author: a.ownerDescription as author
+                    objectClass: a.objectClass
+                    loggedAt: a.loggedAt
+                from:
+                    - { table: Oro\Bundle\DataAuditBundle\Entity\AbstractAudit, alias: a }
+                where:
+                    and:
+                        - a.objectClass = :objectClass AND a.objectId = :objectId
+            hints:
+                - HINT_FORCE_PARTIAL_LOAD
+        columns:
+            id: {renderable: false, manageable: false}
+            author:
+                label: oro.dataaudit.datagrid.author
+            loggedAt:
+                label: oro.dataaudit.datagrid.logged_at
+                type: field
+                frontend_type: datetime
+            old:
+                label: oro.dataaudit.datagrid.old_values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                frontend_type: html
+                data_name: data
+            new:
+                label: oro.dataaudit.datagrid.new_values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                frontend_type: html
+                data_name: data
+        properties: ~
+        sorters:
+            columns:
+                id:
+                    data_name: a.id
+                author:
+                    data_name: a.ownerDescription
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                id: DESC
+        filters: ~

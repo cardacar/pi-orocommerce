@@ -1,0 +1,27 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: 'OroCheckoutBundle:layouts:default/oro_checkout_frontend_checkout/templates/shipping_method.html.twig'
+
+        - '@add':
+            id: shipping_methods
+            parentId: checkout_information_body
+            blockType: shipping_methods
+            prepend: true
+            options:
+                attr:
+                    class: 'grid__column grid__column--offset-y grid__column--6 grid__column--gutter-l-none'
+                class_prefix: 'checkout'
+                methods: '=data["checkout_shipping_methods"].getApplicableMethodsViews(data["checkout"]).toArray()'
+                currentShippingMethod: '=data["checkout"].getShippingMethod()'
+                currentShippingMethodType: '=data["checkout"].getShippingMethodType()'
+        - '@add':
+            id: shipping_methods_template
+            parentId: shipping_methods
+            blockType: container
+        - '@add':
+            id: shipping_methods_template_methods
+            parentId: shipping_methods_template
+            blockType: container
+
+    conditions: 'context["workflowStepName"]=="enter_shipping_method"'

@@ -1,0 +1,48 @@
+/* @theme: default; */
+
+.checkout-navigation {
+    @include list-normalize();
+
+    margin: 0 0 0 13px;
+    border-left: $checkout-navigation-border-left;
+
+    word-wrap: break-word;
+
+    &__step {
+        position: relative;
+
+        padding: 0 0 28px 20px;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        &--past {
+            padding-bottom: 20px;
+        }
+    }
+
+    &__content {
+        font-style: italic;
+    }
+
+    &__icon {
+        position: absolute;
+        top: 0;
+        left: -$checkout-navigation-icon-size / 2;
+
+        font-weight: 700;
+
+        @include badge($checkout-navigation-icon-size, $checkout-navigation-icon-font-size, get-color('additional', 'middle'));
+
+        &--current {
+            background-color: get-color('primary', 'base');
+        }
+
+        &--complete {
+            color: $checkout-navigation-complete-color;
+            background-color: $checkout-navigation-complete-background-color;
+        }
+
+    }
+}

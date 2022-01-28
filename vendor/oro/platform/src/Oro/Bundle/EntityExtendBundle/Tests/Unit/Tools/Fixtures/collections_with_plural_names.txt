@@ -1,0 +1,25 @@
+namespace Test;
+
+class Entity implements \Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface
+{
+    public function __construct()
+    {
+        $this->owners = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function addOwner($value)
+    {
+        if (!$this->owners->contains($value)) {
+            $this->owners->add($value);
+            $value->addTarget($this);
+        }
+    }
+
+    public function removeOwner($value)
+    {
+        if ($this->owners && $this->owners->contains($value)) {
+            $this->owners->removeElement($value);
+            $value->removeTarget($this);
+        }
+    }
+}

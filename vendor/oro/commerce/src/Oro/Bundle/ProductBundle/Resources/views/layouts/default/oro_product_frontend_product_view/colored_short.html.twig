@@ -1,0 +1,15 @@
+{% block _product_view_specification_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' product-view__specification--colored'
+    }) %}
+
+    {{ parent_block_widget(block) }}
+{% endblock %}
+
+{% block _product_view_description_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' product-view__description--short'
+    }) %}
+
+    {{ parent_block_widget(block) }}
+{% endblock %}

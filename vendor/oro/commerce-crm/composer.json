@@ -1,0 +1,40 @@
+{
+    "name": "oro/commerce-crm",
+    "description": "OroCRM integration for OroCommerce",
+    "homepage": "https://github.com/orocommerce/orocommerce-orocrm",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "https://www.orocommerce.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Oro\\Bridge\\ContactUs\\": "src/Oro/Bridge/ContactUs",
+            "Oro\\Bridge\\CustomerAccount\\": "src/Oro/Bridge/CustomerAccount",
+            "Oro\\Bridge\\CustomerSales\\": "src/Oro/Bridge/CustomerSales",
+            "Oro\\Bridge\\QuoteSales\\": "src/Oro/Bridge/QuoteSales",
+            "Oro\\Bridge\\SaleActivityContact\\": "src/Oro/Bridge/SaleActivityContact",
+            "Oro\\Bundle\\DemoDataCommerceCRMBundle\\": "src/Oro/Bundle/DemoDataCommerceCRMBundle"
+        },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "oro/crm": "4.2.*",
+        "oro/commerce": "4.2.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

@@ -1,0 +1,36 @@
+/* @theme: default; */
+
+%customer-form {
+    .form-group {
+        legend {
+            text-transform: uppercase;
+            padding: 2rem 0;
+            font-size: 1.6rem;
+        }
+
+        .grid {
+            padding: 28px 24px;
+            background: get-color('additional', 'base');
+
+            .grid__row:last-child {
+                .grid__column:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .form-row {
+        margin-bottom: 0;
+    }
+
+    .form-buttons {
+        padding-top: 28px;
+    }
+}
+
+%customer-form-grid {
+    padding: 28px 24px;
+
+    background: get-color('additional', 'base');
+}

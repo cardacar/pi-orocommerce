@@ -1,0 +1,376 @@
+parameters:
+    oro_oauth2_server.supported_client_owners: {user: Oro\Bundle\UserBundle\Entity\User}
+    oro_oauth2_server.supported_grant_types: []
+    oro_oauth2_server.cors.preflight_max_age: 0
+    oro_oauth2_server.cors.allow_origins: []
+
+services:
+    oro_oauth2_server.client_manager:
+        class: Oro\Bundle\OAuth2ServerBundle\Entity\Manager\ClientManager
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@security.encoder_factory'
+            - '@oro_security.token_accessor'
+            - '@security.authorization_checker'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_entity.entity_identifier_accessor'
+
+    Oro\Bundle\OAuth2ServerBundle\Entity\Manager\ClientManager:
+        alias: oro_oauth2_server.client_manager
+
+    Oro\Bundle\OAuth2ServerBundle\Command\CleanupCommand:
+        public: false
+        arguments:
+            - '@oro_oauth2_server.client_cleaner'
+            - '@oro_oauth2_server.access_token_cleaner'
+            - '@oro_oauth2_server.refresh_token_cleaner'
+            - '@oro_oauth2_server.auth_code_cleaner'
+        tags: [console.command]
+
+    oro_oauth2_server.client_cleaner:
+        class: Oro\Bundle\OAuth2ServerBundle\Entity\Cleaner\ClientCleaner
+        public: false
+        arguments:
+            - '%oro_oauth2_server.supported_client_owners%'
+            - '@doctrine'
+
+    oro_oauth2_server.access_token_cleaner:
+        class: Oro\Bundle\OAuth2ServerBundle\Entity\Cleaner\AccessTokenCleaner
+        public: false
+        arguments:
+            - '@doctrine'
+
+    oro_oauth2_server.refresh_token_cleaner:
+        class: Oro\Bundle\OAuth2ServerBundle\Entity\Cleaner\RefreshTokenCleaner
+        public: false
+        arguments:
+            - '@doctrine'
+
+    oro_oauth2_server.auth_code_cleaner:
+        class: Oro\Bundle\OAuth2ServerBundle\Entity\Cleaner\AuthCodeCleaner
+        public: false
+        arguments:
+            - '@doctrine'
+
+    oro_oauth2_server.listener.add_clients_to_view_page:
+        class: Oro\Bundle\OAuth2ServerBundle\EventListener\AddClientsToViewPageListener
+        arguments:
+            - '%oro_oauth2_server.supported_client_owners%'
+            - '@translator'
+            - '@oro_entity.entity_identifier_accessor'
+            - '@oro_oauth2_server.client_manager'
+            - '@oro_oauth2_server.encryption_keys_existence_checker'
+            - '@oro_oauth2_server.api_feature_checker'
+        tags:
+            - { name: kernel.event_listener, event: entity_view.render.before, method: addOAuth2Clients }
+
+    oro_oauth2_server.client_action_visibility_provider:
+        class: Oro\Bundle\OAuth2ServerBundle\Datagrid\ClientActionsVisibilityProvider
+        public: true
+        arguments:
+            - '@oro_oauth2_server.client_manager'
+
+    oro_oauth2_server.event_listener.datagrid.clients.add_organization:
+        class: Oro\Bundle\OAuth2ServerBundle\Datagrid\EventListener\OrganizationClientDatagridListener
+        arguments:
+            - '@oro_oauth2_server.client_owner_organizations_provider'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.oauth-client-with-owner-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.oauth-client-with-owner-grid, method: onBuildAfter }
+
+    oro_oauth2_server.event_listener.datagrid.clients.add_grants:
+        class: Oro\Bundle\OAuth2ServerBundle\Datagrid\EventListener\GrantClientDatagridListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.oauth-client-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.oauth-client-grid, method: onBuildAfter }
+
+    oro_oauth2_server.event_listener.datagrid.clients.add_owners:
+        class: Oro\Bundle\OAuth2ServerBundle\Datagrid\EventListener\OwnerClientDatagridListener
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.oauth-client-backend-grid, method: addOwnerData }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.oauth-client-backend-grid, method: addOwnerColumn }
+
+    oro_oauth2_server.event_listener.initialize_client_entity:
+        class: Oro\Bundle\OAuth2ServerBundle\EventListener\InitializeClientEntityListener
+        arguments:
+            - '@oro_oauth2_server.client_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_form_submit.oro_oauth2_client, method: updateClient }
+
+    oro_oauth2_server.event_listener.navigation:
+        class: Oro\Bundle\OAuth2ServerBundle\EventListener\NavigationListener
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.token_accessor'
+            - '@oro_oauth2_server.api_feature_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    oro_oauth2_server.client_owner_organizations_provider:
+        class: Oro\Bundle\OAuth2ServerBundle\Provider\ClientOwnerOrganizationsProvider
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_security.token_accessor'
+
+    oro_oauth2_server.form.type.client:
+        class: Oro\Bundle\OAuth2ServerBundle\Form\Type\ClientType
+        public: false
+        arguments:
+            - '@oro_oauth2_server.client_owner_organizations_provider'
+        tags: [form.type]
+        
+    oro_oauth2_server.form.type.system_client:
+        public: false
+        class: Oro\Bundle\OAuth2ServerBundle\Form\Type\SystemClientType
+        arguments:
+            - '@oro_oauth2_server.client_owner_organizations_provider'
+            - '@doctrine'
+        tags: [form.type]
+
+    Oro\Bundle\OAuth2ServerBundle\Validator\Constraints\UniqueClientNameValidator:
+        public: false
+        arguments:
+            - '@doctrine'
+        tags: [validator.constraint_validator]
+
+    Oro\Bundle\OAuth2ServerBundle\Validator\Constraints\ClientRedirectUrisValidator:
+        public: false
+        tags: [validator.constraint_validator]
+
+    Oro\Bundle\OAuth2ServerBundle\Validator\Constraints\ClientOwnerValidator:
+        public: false
+        tags: [validator.constraint_validator]
+
+    oro_oauth2_server.encryption_keys_existence_checker:
+        class: Oro\Bundle\OAuth2ServerBundle\Security\EncryptionKeysExistenceChecker
+        public: false
+        arguments:
+            - '@oro_oauth2_server.league.private_key'
+            - '@oro_oauth2_server.league.public_key'
+
+    Oro\Bundle\OAuth2ServerBundle\Security\EncryptionKeysExistenceChecker:
+        alias: oro_oauth2_server.encryption_keys_existence_checker
+
+    oro_oauth2_server.league.repository.client_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\ClientRepository
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@security.encoder_factory'
+            - '@oro_oauth2_server.api_feature_checker'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+
+    oro_oauth2_server.league.repository.access_token_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\AccessTokenRepository
+        public: false
+        arguments:
+            - '@doctrine'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+
+    oro_oauth2_server.league.repository.refresh_token_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\RefreshTokenRepository
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_user.security.user_loader'
+            - '@oro_oauth2_server.security.user_checker'
+
+    oro_oauth2_server.league.repository.auth_code_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\AuthCodeRepository
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_user.security.user_loader'
+            - '@oro_oauth2_server.security.user_checker'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+
+    oro_oauth2_server.league.repository.user_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\UserRepository
+        public: false
+        arguments:
+            - '@oro_user.security.user_loader'
+            - '@security.encoder_factory'
+            - '@oro_oauth2_server.security.user_checker'
+
+    oro_oauth2_server.league.repository.scope_repository:
+        class: Oro\Bundle\OAuth2ServerBundle\League\Repository\ScopeRepository
+        public: false
+
+    oro_oauth2_server.league.authorization_server:
+        class: League\OAuth2\Server\AuthorizationServer
+        public: true
+        arguments:
+            - '@oro_oauth2_server.league.repository.client_repository'
+            - '@oro_oauth2_server.league.repository.access_token_repository'
+            - '@oro_oauth2_server.league.repository.scope_repository'
+            - ~ # private key; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\OroOAuth2ServerExtension
+            - ~ # encryption key; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\OroOAuth2ServerExtension
+
+    oro_oauth2_server.league.authorization_validator:
+        class: Oro\Bundle\OAuth2ServerBundle\League\AuthorizationValidator
+        public: false
+        arguments:
+            - '@oro_oauth2_server.league.public_key'
+            - '@oro_oauth2_server.league.repository.access_token_repository'
+
+    oro_oauth2_server.league.private_key:
+        class: Oro\Bundle\OAuth2ServerBundle\League\CryptKeyFile
+        public: false
+        arguments:
+            - ~ # private key; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\OroOAuth2ServerExtension
+
+    oro_oauth2_server.league.public_key:
+        class: Oro\Bundle\OAuth2ServerBundle\League\CryptKeyFile
+        public: false
+        arguments:
+            - ~ # public key; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\OroOAuth2ServerExtension
+
+    oro_oauth2_server.security.user_checker:
+        class: Oro\Bundle\OAuth2ServerBundle\Security\OAuthUserChecker
+        public: false
+        arguments:
+            - '@security.user_checker'
+            - '@translator'
+
+    oro_oauth2_server.security.firewall_listener:
+        class: Oro\Bundle\OAuth2ServerBundle\Security\Firewall\OAuth2Listener
+        public: false
+        arguments:
+            - '@security.token_storage'
+            - '@security.authentication.manager'
+            - '@sensio_framework_extra.psr7.http_message_factory'
+            - ~ # firewall ID; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\Security\Factory\OAuth2Factory
+
+    oro_oauth2_server.security.authentication_provider:
+        class: Oro\Bundle\OAuth2ServerBundle\Security\Authentication\Provider\OAuth2Provider
+        public: false
+        arguments:
+            - ~ # user provider; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\Security\Factory\OAuth2Factory
+            - ~ # firewall ID; it is set by Oro\Bundle\OAuth2ServerBundle\DependencyInjection\Security\Factory\OAuth2Factory
+            - '@oro_oauth2_server.league.authorization_validator'
+            - '@doctrine'
+            - '@security.user_checker'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+
+    oro_oauth2_server.emailtemplate.client_entity_variables_provider:
+        class: Oro\Bundle\OAuth2ServerBundle\Provider\ClientEntityVariablesProvider
+        public: false
+        arguments:
+            - '%oro_oauth2_server.supported_client_owners%'
+            - '@translator'
+            - '@oro_entity_config.provider.entity'
+        tags:
+            - { name: oro_email.emailtemplate.variable_provider, scope: entity }
+
+    oro_oauth2_server.emailtemplate.client_entity_variables_processor:
+        class: Oro\Bundle\OAuth2ServerBundle\Provider\ClientEntityVariableProcessor
+        public: false
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_email.emailtemplate.variable_processor, alias: oauth2_client_entity }
+
+    oro_oauth2_server.format.scopes:
+        class: Oro\Bundle\OAuth2ServerBundle\Formatter\ScopesFormatter
+        public: false
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_formatter, formatter: oauth_scopes }
+
+    oro_oauth2_server.additional_email_association_provider.client_owner:
+        class: Oro\Bundle\OAuth2ServerBundle\Provider\ClientAdditionalEmailAssociationProvider
+        public: false
+        arguments:
+            - '%oro_oauth2_server.supported_client_owners%'
+            - '@translator'
+            - '@oro_entity_config.provider.entity'
+            - '@doctrine'
+        tags:
+            - { name: oro_notification.additional_email_association_provider }
+
+    oro_oauth2_server.virtual_relation_provider.client_entity:
+        class: Oro\Bundle\OAuth2ServerBundle\Provider\ClientEntityVirtualRelationProvider
+        arguments:
+            - '%oro_oauth2_server.supported_client_owners%'
+            - '@oro_entity.doctrine_helper'
+            - '@translator'
+            - '@oro_entity_config.provider.entity'
+        tags:
+            - { name: oro_entity.virtual_relation_provider, priority: 150 }
+
+    oro_oauth2_server.api_feature_checker:
+        class: Oro\Bundle\OAuth2ServerBundle\Security\ApiFeatureChecker
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+
+    oro_oauth2_server.handler.get_access_token.exception_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\GetAccessToken\Exception\ExceptionHandler
+        public: true
+        arguments:
+            - !tagged oro_oauth2_server.get_access_token_exception_handler
+
+    oro_oauth2_server.handler.get_access_token.log_exception_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\GetAccessToken\Exception\LogExceptionHandler
+        public: false
+        arguments:
+            - '@logger'
+        tags:
+            - { name: oro_oauth2_server.get_access_token_exception_handler }
+
+    oro_oauth2_server.handler.get_access_token.password_grant_exception_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\GetAccessToken\Exception\PasswordGrantExceptionHandler
+        public: false
+        arguments:
+            - '@event_dispatcher'
+            - '@doctrine'
+            - '@?oro_frontend.request.frontend_helper'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+        tags:
+            - { name: oro_oauth2_server.get_access_token_exception_handler }
+
+    oro_oauth2_server.handler.get_access_token.success_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\GetAccessToken\Success\SuccessHandler
+        public: true
+        arguments:
+            - !tagged oro_oauth2_server.get_access_token_success_handler
+
+    oro_oauth2_server.handler.get_access_token.password_grant_success_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\GetAccessToken\Success\PasswordGrantSuccessHandler
+        public: false
+        arguments:
+            - '@event_dispatcher'
+            - '@request_stack'
+            - '@doctrine'
+            - '@security.token_storage'
+            - '@oro_user.security.user_loader'
+            - '@?oro_customer.security.user_loader'
+            - '@?oro_frontend.request.frontend_helper'
+        calls:
+            - [setClientManager, ['@oro_oauth2_server.client_manager']]
+        tags:
+            - { name: oro_oauth2_server.get_access_token_success_handler }
+
+    oro_oauth2_server.handler.authorize_client.handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\AuthorizeClient\AuthorizeClientHandler
+        public: true
+        arguments:
+            - !tagged oro_oauth2_server.authorize_client_handler
+
+    oro_oauth2_server.handler.authorize_client.log_handler:
+        class: Oro\Bundle\OAuth2ServerBundle\Handler\AuthorizeClient\LogAuthorizeClientHandler
+        public: false
+        arguments:
+            - '@monolog.logger.oro_account_security'
+            - '@oro_user.provider.user_logging_info_provider'
+        tags:
+            - { name: oro_oauth2_server.authorize_client_handler }

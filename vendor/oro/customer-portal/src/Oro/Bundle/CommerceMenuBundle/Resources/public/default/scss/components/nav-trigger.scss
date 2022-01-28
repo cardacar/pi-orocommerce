@@ -1,0 +1,116 @@
+/* @theme: default; */
+
+.nav-trigger {
+    color: $body-color;
+
+    &:hover {
+        background-color: lighten(get-color('additional', 'base'), 1.5%);
+    }
+
+    &__icon,
+    &__count,
+    &__text {
+        display: inline-block;
+
+        vertical-align: middle;
+    }
+
+    &__icon {
+        position: relative;
+
+        text-align: center;
+
+        @include badge($nav-trigger-icon-size, $nav-trigger-icon-font-size, $nav-trigger-icon-background-color, $nav-trigger-icon-radius, $nav-trigger-icon-color);
+
+        &--transparent {
+            background-color: transparent;
+            color: $nav-trigger-icon-transparent-color;
+        }
+
+        &--chromatic {
+            background-color: get-color('primary', 'base');
+        }
+
+        &--large {
+            font-size: 28px;
+            line-height: 1;
+
+            .fa-globe {
+                font-size: 30px;
+                line-height: 1;
+            }
+        }
+
+        &--x-large {
+            font-size: 38px;
+        }
+    }
+
+    & .cart-widget__content {
+        display: inline-block;
+
+        white-space: nowrap;
+    }
+
+    & .main-menu__item--nested {
+        background: transparent;
+    }
+}
+
+@include breakpoint('desktop') {
+    .nav-trigger {
+        &__count {
+            margin-left: 5px;
+
+            font-weight: bold;
+        }
+    }
+}
+
+@include breakpoint('tablet') {
+    .nav-trigger {
+        &__text {
+            display: none;
+        }
+
+        & .cart-widget__content {
+            margin: 0;
+        }
+
+        & .fa-angle-down {
+            display: none;
+        }
+
+        & .cart-widget__content {
+            position: relative;
+        }
+
+        & .cart-widget__text {
+            display: inline;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            visibility: hidden;
+            font-size: 0;
+        }
+
+        & .cart-widget__text strong {
+            position: absolute;
+            top: -3px;
+            right: 25px;
+
+            padding: 3px 5px 3px 1px;
+
+            font-size: 10px;
+            line-height: 1;
+
+            text-align: left;
+
+            color: get-color('additional', 'ultra');
+            border-radius: 16px;
+            background-color: transparentize(get-color('additional', 'dark'), .27);
+
+            visibility: visible;
+        }
+    }
+}

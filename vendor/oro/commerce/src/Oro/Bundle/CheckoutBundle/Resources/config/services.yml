@@ -1,0 +1,814 @@
+services:
+    # Data Providers
+    oro_checkout.data_provider.converter.checkout_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\DataProvider\Converter\CheckoutLineItemsConverter'
+
+    oro_checkout.data_provider.converter.checkout_to_order:
+        class: Oro\Bundle\CheckoutBundle\DataProvider\Converter\CheckoutToOrderConverter
+        arguments:
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+            - '@oro_checkout.mapper.order_mapper'
+            - '@oro_checkout.payment_methods_provider'
+        calls:
+            - [setMemoryCacheProvider, ['@oro_checkout.data_provider.converter.checkout_to_order.memory_cache']]
+
+    oro_checkout.data_provider.converter.checkout_to_order.memory_cache:
+        parent: oro.cache.provider.memory_cache
+
+    oro_checkout.product_availability.cache:
+        class: Doctrine\Common\Cache\ArrayCache
+        calls:
+            - [ setNamespace, [ 'oro_product_availability' ] ]
+
+    oro_checkout.event_listener.product_availability_cache:
+        class: Oro\Bundle\CheckoutBundle\EventListener\ProductAvailabilityCacheListener
+        arguments:
+            - '@oro_checkout.product_availability.cache'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    oro_checkout.data_provider.manager.checkout_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\DataProvider\Manager\CheckoutLineItemsManager'
+        arguments:
+            - !tagged_iterator checkout.data_provider.line_item
+            - '@oro_checkout.data_provider.converter.checkout_line_items'
+            - '@oro_pricing.user_currency_manager'
+            - '@oro_config.manager'
+        calls:
+            - [setMemoryCacheProvider, ['@oro_checkout.data_provider.manager.checkout_line_items.cache']]
+
+    oro_checkout.data_provider.manager.checkout_line_items.cache:
+        parent: oro.cache.provider.memory_cache
+
+    oro_checkout.layout.data_provider.line_items_totals:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\LineItemsWithTotalsProvider'
+        arguments:
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+            - '@oro_pricing.subtotal_processor.provider.subtotal_line_item'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_line_items_totals }
+
+    oro_checkout.layout.data_provider.totals:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\TotalsProvider'
+        arguments:
+            - '@oro_checkout.provider.checkout_totals'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_totals }
+
+    oro_checkout.layout.data_provider.transition_form:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\TransitionFormProvider'
+        arguments:
+            - '@form.factory'
+            - '@router'
+        calls:
+            - [setTransitionProvider, ['@oro_checkout.layout.data_provider.workflow_related_transition_provider']]
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_single_page_transition_form }
+            - { name: layout.data_provider, alias: oro_checkout_transition_form }
+
+    oro_checkout.layout.data_provider.single_page_transition_form:
+        alias: oro_checkout.layout.data_provider.transition_form
+
+    oro_checkout.layout.data_provider.checkout_steps:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\CheckoutStepsProvider'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_steps }
+
+    oro_checkout.layout.data_provider.workflow_related_transition_provider:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\WorkflowRelatedTransitionProvider'
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_checkout.layout.data_provider.transition'
+        calls:
+            - ['addWorkflowRelatedProvider', ['b2b_flow_checkout_single_page', '@oro_checkout.layout.data_provider.single_page_transition']]
+
+    oro_checkout.layout.data_provider.transition:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\TransitionProvider'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_transition }
+
+    oro_checkout.layout.data_provider.single_page_transition:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\SinglePageTransitionProvider'
+        arguments:
+            - '@oro_checkout.layout.data_provider.transition'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_single_page_transition }
+
+    oro_checkout.model.action.get_order_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\Model\Action\GetOrderLineItems'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+        tags:
+            - { name: oro_action.action, alias: get_order_line_items }
+
+    oro_checkout.provider.payment_context:
+        class: 'Oro\Bundle\CheckoutBundle\Provider\CheckoutPaymentContextProvider'
+        public: true
+        arguments:
+            - '@oro_checkout.factory.payment_context_factory'
+        calls:
+            - [setMemoryCacheProvider, ['@oro_checkout.provider.payment_context.cache']]
+        tags:
+            - { name: layout.data_provider, alias: checkout_payment_context }
+
+    oro_checkout.provider.payment_context.cache:
+        parent: oro.cache.provider.memory_cache
+
+    oro_checkout.provider.shipping_context:
+        class: 'Oro\Bundle\CheckoutBundle\Provider\CheckoutShippingContextProvider'
+        arguments:
+            - '@oro_checkout.factory.shipping_context_factory'
+            - '@oro_checkout.provider.shipping_context.cache'
+        calls:
+            - [setMemoryCacheProvider, ['@oro_checkout.provider.shipping_context.cache']]
+        tags:
+            - { name: layout.data_provider, alias: checkout_shipping_context }
+
+    oro_checkout.provider.shipping_context.cache:
+        parent: oro.cache.provider.memory_cache
+
+    oro_checkout.expression.acl_granted:
+        class: Oro\Bundle\CheckoutBundle\Expression\CheckRequest
+        arguments:
+            - '@request_stack'
+        tags:
+            - { name: oro_action.condition, alias: check_request }
+
+    oro_checkout.twig.line_items:
+        class: 'Oro\Bundle\CheckoutBundle\Twig\LineItemsExtension'
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_checkout.event_listener.resolve_payment_term:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\ResolvePaymentTermListener'
+        arguments:
+            - '@request_stack'
+            - '@doctrine'
+            - '@oro_payment_term.provider.payment_term'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment_term.resolve.payment_term, method: onResolvePaymentTerm }
+
+    oro_checkout.event_listener.shopping_list:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\ShoppingListListener'
+        arguments:
+            - '@doctrine'
+            - 'Oro\Bundle\CheckoutBundle\Entity\Checkout'
+            - 'Oro\Bundle\CheckoutBundle\Entity\CheckoutSource'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ShoppingListBundle\Entity\ShoppingList', event: preRemove }
+
+    oro_checkout.repository.checkout:
+        class: 'Oro\Bundle\CheckoutBundle\Entity\Repository\CheckoutRepository'
+        public: true
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Oro\Bundle\CheckoutBundle\Entity\Checkout'
+
+    oro_checkout.datagrid.checkout_grid_listener:
+        class: Oro\Bundle\CheckoutBundle\Datagrid\CheckoutGridListener
+        arguments:
+            - '@oro_pricing.user_currency_manager'
+            - '@oro_checkout.repository.checkout'
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_entity.entity_name_resolver'
+            - '@oro_entity.doctrine_helper'
+            - '@Doctrine\Inflector\Inflector'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.frontend-checkouts-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.frontend-checkouts-grid, method: onResultAfter }
+
+    oro_checkout.datagrid.checkout_grid_column_filter:
+        class: 'Oro\Bundle\CheckoutBundle\Datagrid\CheckoutGridCustomerUserNameListener'
+        arguments:
+            - '@oro_customer.security.customer_user_provider'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.frontend-checkouts-grid, method: onBuildBefore }
+
+    oro_checkout.datagrid.checkout_grid_customer_visitor_acl_listener:
+        class: 'Oro\Bundle\CheckoutBundle\Datagrid\CheckoutGridCustomerVisitorAclListener'
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.frontend-checkouts-grid, method: onBuildBefore }
+
+    oro_checkout.layout.provider.open_orders_separate_page_config:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\OpenOrdersSeparatePageConfigProvider'
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_separate_open_orders }
+
+    oro_checkout.migration.post_up.listener:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\PostUpMigrationListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -80 }
+
+    oro_checkout.workflow_state.storage.checkout_state_diff_storage:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Storage\CheckoutDiffStorage'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - 'Oro\Bundle\CheckoutBundle\Entity\CheckoutWorkflowState'
+
+    oro_checkout.workflow_state.manager.checkout_state_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Manager\CheckoutStateDiffManager'
+        arguments:
+            - '@oro_checkout.workflow_state.mapper.registry.checkout_state_diff'
+
+    oro_checkout.workflow_state.mapper.registry.checkout_state_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\CheckoutStateDiffMapperRegistry'
+        arguments:
+            - [] # mappers
+
+    oro_checkout.workflow_state.mapper.workflow_step:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\WorkflowStepMapper'
+        arguments:
+            - '@oro_checkout.workflow.manager.b2b_flow_checkout'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.ship_to_billing_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\ShipToBillingDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.billing_address_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\BillingAddressDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.shipping_address_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\ShippingAddressDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.payment_method_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\PaymentMethodDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.total_amount_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\TotalAmountDiffMapper'
+        arguments:
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.ship_until_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\ShipUntilDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.po_number_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\PoNumberDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.customer_notes_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\CustomerNotesDiffMapper'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.shipping_method_diff:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\ShippingMethodDiffMapper'
+        arguments:
+            - '@oro_checkout.shipping_method.provider_main'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.mapper.shipping_method_enabled:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Mapper\ShippingMethodEnabledMapper'
+        arguments:
+            - '@oro_checkout.shipping_method.provider_main'
+        tags:
+            - { name: checkout.workflow_state.mapper }
+
+    oro_checkout.workflow_state.action.get_checkout_state:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Action\GetCheckoutStateAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.workflow_state.storage.checkout_state_diff_storage'
+        tags:
+            - { name: oro_action.action, alias: get_checkout_state }
+
+    oro_checkout.workflow_state.action.save_checkout_state:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Action\SaveCheckoutStateAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.workflow_state.storage.checkout_state_diff_storage'
+        tags:
+            - { name: oro_action.action, alias: save_checkout_state }
+
+    oro_checkout.workflow_state.action.delete_checkout_state:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Action\DeleteCheckoutStateAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.workflow_state.storage.checkout_state_diff_storage'
+        tags:
+            - { name: oro_action.action, alias: delete_checkout_state }
+
+    oro_checkout.workflow_state.action.generate_checkout_state_snapshot:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Action\GenerateCheckoutStateSnapshotAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.workflow_state.manager.checkout_state_diff'
+        tags:
+            - { name: oro_action.action, alias: generate_checkout_state_snapshot }
+
+    oro_checkout.workflow_state.condition.check_checkout_states:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Condition\CheckCheckoutStates'
+        arguments:
+            - '@oro_checkout.workflow_state.manager.checkout_state_diff'
+        tags:
+            - { name: oro_action.condition, alias: check_checkout_states }
+
+    oro_checkout.workflow_state.condition.is_checkout_state_valid:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Condition\IsCheckoutStateValid'
+        arguments:
+            - '@oro_checkout.workflow_state.manager.checkout_state_diff'
+            - '@oro_checkout.workflow_state.storage.checkout_state_diff_storage'
+        tags:
+            - { name: oro_action.condition, alias: is_checkout_state_valid }
+
+    oro_checkout.workflow_state.handler.checkout_error:
+        class: 'Oro\Bundle\CheckoutBundle\WorkflowState\Handler\CheckoutErrorHandler'
+        arguments:
+            - '@session.flash_bag'
+
+    oro_checkout.workflow.manager.b2b_flow_checkout:
+        parent: oro_workflow.abstract.workflow_aware_manager
+        calls:
+            - ['setWorkflowName', ['b2b_flow_checkout']]
+
+    oro_checkout.entity_listener.remove_checkout_workflow_states:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\RemoveCheckoutWorkflowStatesListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - 'Oro\Bundle\CheckoutBundle\Entity\CheckoutWorkflowState'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\CheckoutBundle\Entity\Checkout', event: preRemove }
+
+    oro_checkout.provider.checkout_totals:
+        class: 'Oro\Bundle\CheckoutBundle\Provider\CheckoutTotalsProvider'
+        public: true
+        arguments:
+            - '@oro_checkout.data_provider.converter.checkout_to_order'
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_checkout.shipping_method.provider_main'
+
+    oro_checkout.action.default_shipping_method_setter:
+        class: 'Oro\Bundle\CheckoutBundle\Action\DefaultShippingMethodSetter'
+        public: true
+        arguments:
+            - '@oro_checkout.shipping_method.provider_main'
+
+    oro_checkout.action.default_shipping_method_setter_decorator:
+        class: 'Oro\Bundle\CheckoutBundle\Action\DefaultShippingMethodSetterDecorator'
+        decorates: oro_checkout.action.default_shipping_method_setter
+        arguments:
+            - '@oro_checkout.action.default_shipping_method_setter_decorator.inner'
+
+    oro_checkout.factory.shipping_context_factory:
+        class: 'Oro\Bundle\CheckoutBundle\Factory\CheckoutShippingContextFactory'
+        arguments:
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+            - '@oro_checkout.provider.checkout_subtotal'
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_order.shipping_line_item.converter_basic'
+            - '@?oro_shipping.context.builder_factory_basic'
+
+    oro_checkout.factory.payment_context_factory:
+        class: 'Oro\Bundle\CheckoutBundle\Factory\CheckoutPaymentContextFactory'
+        arguments:
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+            - '@oro_checkout.provider.checkout_subtotal'
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_order.payment_line_item.converter_basic'
+            - '@oro_shipping.shipping_origin.provider'
+            - '@?oro_payment.context.builder_factory_basic'
+
+    oro_checkout.mapper.order_mapper:
+        class: 'Oro\Bundle\CheckoutBundle\Mapper\OrderMapper'
+        arguments:
+            - '@oro_entity.helper.field_helper'
+            - '@property_accessor'
+            - '@oro_payment_term.provider.payment_term_association'
+
+    oro_checkout.model.action.create_order:
+        class: 'Oro\Bundle\CheckoutBundle\Model\Action\CreateOrder'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_checkout.mapper.order_mapper'
+            - '@oro_checkout.payment_methods_provider'
+        tags:
+            - { name: oro_action.action, alias: create_order }
+
+    oro_checkout.listener.checkout_workflow:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CheckoutWorkflowListener'
+        arguments:
+            - '@doctrine'
+            - 'Oro\Bundle\CheckoutBundle\Entity\Checkout'
+        tags:
+            - { name: oro_workflow.changes.listener, event: oro.workflow.deactivated, method: onDeactivationWorkflowDefinition }
+
+    oro_checkout.listener.checkout:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CheckoutListener'
+        arguments:
+            - '@oro_user.provider.default_user'
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\CheckoutBundle\Entity\Checkout', event: prePersist }
+
+    oro_checkout.listener.checkout_subtotal:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CheckoutSubtotalListener'
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: kernel.event_listener, event: oro_pricing.combined_price_list.update, method: onPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.customer.combined_price_list.update, method: onCustomerPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.customer_group.combined_price_list.update, method: onCustomerGroupPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.website.combined_price_list.update, method: onWebsitePriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.config.combined_price_list.update, method: onConfigPriceListUpdate }
+
+    oro_checkout.listener.pricing_storage.checkout_subtotal:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\FlatPricingCheckoutSubtotalListener'
+        arguments:
+            - '@doctrine'
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: kernel.event_listener, event: oro_pricing.pricing_storage.mass_storage_update, method: onPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.pricing_storage.customer_relation_update, method: onCustomerPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.pricing_storage.customer_group_relation_update, method: onCustomerGroupPriceListUpdate }
+            - { name: kernel.event_listener, event: oro_pricing.pricing_storage.website_relation_update, method: onWebsitePriceListUpdate }
+
+    oro_checkout.acl.voter.checkout:
+        class: 'Oro\Bundle\CheckoutBundle\Acl\Voter\CheckoutVoter'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: security.voter }
+
+    oro_checkout.shipping_method.price_provider_chain_element:
+        class: 'Oro\Bundle\CheckoutBundle\Shipping\Method\Chain\Member\Price\PriceCheckoutShippingMethodsProviderChainElement'
+        arguments:
+            - '@oro_shipping.shipping_price.provider'
+            - '@oro_checkout.provider.shipping_context'
+
+    oro_checkout.condition.checkout_has_applicable_shipping_methods:
+        class: 'Oro\Bundle\CheckoutBundle\Condition\CheckoutHasApplicableShippingMethods'
+        arguments:
+            - '@oro_checkout.shipping_method.provider_main'
+        tags:
+            - { name: oro_action.condition, alias: 'checkout_has_applicable_shipping_methods' }
+
+    oro_checkout.datagrid.action_permission_provider:
+        class: 'Oro\Bundle\CheckoutBundle\Datagrid\ActionPermissionProvider'
+        public: true
+
+    oro_checkout.event_listener.shipping_methods:
+        class: Oro\Bundle\CheckoutBundle\EventListener\ShippingMethodsListener
+        arguments:
+            - '@oro_order.order.provider.order_address'
+            - '@oro_order.order.provider.order_address_security'
+            - '@oro_order.manager.order_address'
+            - '@oro_shipping.provider.methods_configs_rules.by_context_required_parameters'
+            - '@oro_checkout.provider.shipping_context'
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.start_checkout, method: onStartCheckout }
+
+    oro_checkout.event_listener.payment_methods:
+        class: Oro\Bundle\CheckoutBundle\EventListener\PaymentMethodsListener
+        arguments:
+            - '@oro_order.order.provider.order_address'
+            - '@oro_order.order.provider.order_address_security'
+            - '@oro_order.manager.order_address'
+            - '@oro_payment.provider.methods_configs_rules.by_context_required_parameters'
+            - '@oro_checkout.provider.payment_context'
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.start_checkout, method: onStartCheckout }
+
+    oro_checkout.event_listener.has_price_in_shopping_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\HasPriceInShoppingLineItemsListener'
+        arguments:
+            - '@oro_pricing.provider.product_price'
+            - '@oro_pricing.user_currency_manager'
+            - '@oro_pricing.model.product_price_scope_criteria_request_handler'
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.start_checkout, method: onStartCheckoutConditionCheck }
+
+    oro_checkout.payment.method.event_listener.method_renaming:
+        class: 'Oro\Bundle\CheckoutBundle\Payment\Method\EventListener\MethodRenamingListener'
+        arguments:
+            - '@oro_checkout.repository.checkout'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.method_renaming, method: onMethodRename}
+
+    oro_checkout.payment_methods_provider:
+        class: Oro\Bundle\CheckoutBundle\Payment\Method\EntityPaymentMethodsProvider
+        arguments:
+            - '@oro_payment.provider.payment_transaction'
+
+    oro_checkout.provider.payment_method_provider:
+        class: Oro\Bundle\CheckoutBundle\Provider\PaymentMethodProvider
+        arguments:
+            - '@oro_checkout.provider.payment_context'
+            - '@oro_checkout.repository.checkout'
+            - '@oro_payment.method.provider.applicable_methods_provider'
+
+    oro_checkout.provider.result_messages:
+        class: Oro\Bundle\CheckoutBundle\Provider\PaymentResultMessageProvider
+        decorates: oro_payment.provider.result_messages
+        arguments: ['@oro_checkout.provider.payment_method_provider']
+
+    oro_checkout.event_listener.system_config:
+        parent: oro_user.event_listener.default_user_system_config
+        calls:
+            - [setAlias, ['oro_checkout']]
+            - [setConfigKey, ['default_guest_checkout_owner']]
+        tags:
+            - { name: kernel.event_listener, event: oro_config.settings_form_preset, method: onFormPreSetData }
+            - { name: kernel.event_listener, event: oro_config.settings_before_save.oro_checkout.default_guest_checkout_owner, method: onSettingsSaveBefore }
+
+    oro_checkout.voter.guest_checkout:
+        parent: oro_customer.voter.anonymous_customer_user
+        calls:
+            - [ setFeatureName, ['guest_checkout'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_checkout.voter.customer_user_checkout:
+        parent: oro_customer.voter.customer_user
+        calls:
+            - [ setFeatureName, ['guest_checkout'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_checkout.voter.guest_quick_order_form:
+        parent: oro_product.voter.guest_quick_order_form
+        calls:
+            - [ setFeatureName, ['guest_checkout'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_checkout.condition.is_workflow_start_from_shopping_list_allowed:
+        class: Oro\Bundle\CheckoutBundle\Condition\IsWorkflowStartFromShoppingListAllowed
+        public: true
+        arguments:
+           - '@oro_featuretoggle.checker.feature_checker'
+           - '@security.token_storage'
+        lazy: true
+
+    #Checkout Line Items Services
+    oro_checkout.line_item.converter_registry:
+        class: 'Oro\Bundle\CheckoutBundle\Model\CheckoutLineItemConverterRegistry'
+        arguments:
+            - [] # converters
+            - '@logger'
+
+    oro_checkout.line_items.factory:
+        class: 'Oro\Bundle\CheckoutBundle\Factory\CheckoutLineItemsFactory'
+        public: true
+        arguments:
+            - '@oro_checkout.line_item.converter_registry'
+
+    oro_checkout.line_item.converter.shopping_list:
+        class: 'Oro\Bundle\CheckoutBundle\Converter\ShoppingListLineItemConverter'
+        tags:
+            - { name: oro.checkout.line_item.converter, alias: shopping_list }
+
+    oro_checkout.line_item.converter.order:
+        class: 'Oro\Bundle\CheckoutBundle\Converter\OrderLineItemConverter'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_inventory.provider.inventory_quantity'
+            - '@security.authorization_checker'
+            - '@oro_entity.fallback.resolver.entity_fallback_resolver'
+            - 'oro_order.frontend_product_visibility'
+        tags:
+            - { name: oro.checkout.line_item.converter, alias: order }
+
+    oro_checkout.data_provider.checkout_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\DataProvider\LineItem\CheckoutLineItemsDataProvider'
+        arguments:
+            - '@oro_pricing.provider.frontend_product_prices'
+            - '@security.authorization_checker'
+            - '@oro_checkout.product_availability.cache'
+            - '@oro_visibility.provider.resolved_product_visibility_provider'
+        tags:
+            - { name: checkout.data_provider.line_item }
+
+    oro_checkout.provider.checkout_subtotal:
+        class: 'Oro\Bundle\CheckoutBundle\Provider\CheckoutSubtotalProvider'
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_pricing.provider.product_price'
+            - '@oro_pricing.model.price_list_tree_handler'
+            - '@oro_pricing.subtotal_processor.provider.arguments'
+            - '@oro_pricing.model.product_price_scope_criteria_factory'
+        tags:
+            - { name: oro_pricing.subtotal_provider, alias: oro.checkout.subtotals.checkout_subtotal }
+            - { name: oro_featuretogle.feature, feature: oro_price_lists_combined }
+
+    oro_checkout.model.checkout_subtotal_updater:
+        class: 'Oro\Bundle\CheckoutBundle\Model\CheckoutSubtotalUpdater'
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_checkout.provider.checkout_subtotal'
+            - '@oro_pricing.user_currency_manager'
+
+    oro_checkout.async.message_filter.recalculate_checkout_subtotals:
+        class: 'Oro\Bundle\CheckoutBundle\Async\RecalculateCheckoutSubtotalsMessageFilter'
+        tags:
+            - { name: oro_message_queue.message_filter }
+
+    oro_checkout.async.recalculate_checkout_subtotals_processor:
+        class: 'Oro\Bundle\CheckoutBundle\Async\RecalculateCheckoutSubtotalsProcessor'
+        arguments:
+            - '@oro_checkout.model.checkout_subtotal_updater'
+            - '@monolog.logger'
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    oro_checkout.provider.checkout_line_items:
+        class: 'Oro\Bundle\CheckoutBundle\Provider\CheckoutLineItemsProvider'
+        public: true
+
+    oro_checkout.event_listener.login_on_checkout:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\LoginOnCheckoutListener'
+        arguments:
+            - '@logger'
+            - '@oro_config.manager'
+            - '@oro_checkout.manager'
+            - '@event_dispatcher'
+        lazy: true
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin, priority: 255 }
+
+    oro_checkout.event_listener.customer_user_register:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CustomerUserListener'
+        arguments:
+            - '@request_stack'
+            - '@oro_checkout.manager'
+            - '@oro_config.manager'
+            - '@oro_customer.security.login_manager'
+            - '%oro_customer.firewall_name%'
+        lazy: true
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.after_entity_flush.oro_customer_frontend_customer_user_register, method: afterFlush }
+            - { name: kernel.event_listener, event: oro_customer.customer_user_email_send_event, method: onCustomerUserEmailSend }
+
+    oro_checkout.event_listener.customer_user_reset_password_listener:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CustomerUserResetPasswordListener'
+        lazy: true
+        arguments:
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_customer.customer_user_email_send_event, method: onCustomerUserEmailSend }
+
+    oro_checkout.manager:
+        class: 'Oro\Bundle\CheckoutBundle\Manager\CheckoutManager'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    oro_checkout.provider.forgot_password_check_email:
+        class: 'Oro\Bundle\CheckoutBundle\Layout\DataProvider\CheckoutForgotPasswordCheckEmailProvider'
+        lazy: true
+        arguments:
+            - '@request_stack'
+            - '@session'
+        tags:
+            - { name: layout.data_provider, alias: oro_checkout_forgot_password_check_email }
+
+    oro_checkout.helper.checkout_workflow_helper:
+        class: Oro\Bundle\CheckoutBundle\Helper\CheckoutWorkflowHelper
+        public: true
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_action.action_group_registry'
+            - '@oro_checkout.layout.data_provider.transition'
+            - '@oro_checkout.layout.data_provider.transition_form'
+            - '@oro_checkout.workflow_state.handler.checkout_error'
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+            - '@oro_customer.handler.customer_registration_handler'
+            - '@oro_customer.handler.forgot_password'
+            - '@event_dispatcher'
+            - '@translator'
+
+    Oro\Bundle\CheckoutBundle\Helper\CheckoutWorkflowHelper:
+        alias: oro_checkout.helper.checkout_workflow_helper
+
+    oro_checkout.condition.validate_checkout_addresses:
+        class: 'Oro\Bundle\CheckoutBundle\Condition\ValidateCheckoutAddresses'
+        arguments:
+            - '@validator'
+        tags:
+            - { name: oro_workflow.condition, alias: 'validate_checkout_addresses' }
+            - { name: oro_action.condition, alias: 'validate_checkout_addresses' }
+
+    oro_checkout.updater.customer_user_reassign.checkout_updater:
+        parent: oro_customer.updater.customer_user_reassign.abstract
+        calls:
+            - [ setEntityClass, [ 'Oro\Bundle\CheckoutBundle\Entity\Checkout' ] ]
+        tags:
+            - { name: oro_customer.updater.customer_user_reassign }
+
+    oro_checkout.action.send_order_confirmation_email:
+        class: 'Oro\Bundle\CheckoutBundle\Action\SendOrderConfirmationEmail'
+        parent: oro_email.workflow.action.send_email_template
+        tags:
+            - { name: oro_action.action, alias: send_order_confirmation_email }
+
+    oro_checkout.action.remove_checkout_source_entity:
+        class: 'Oro\Bundle\CheckoutBundle\Action\RemoveCheckoutSourceEntity'
+        parent: oro_action.action.remove_entity
+        tags:
+            - { name: oro_action.action, alias: remove_checkout_source_entity }
+
+    oro_checkout.action.clear_checkout_source_entity:
+        class: Oro\Bundle\CheckoutBundle\Action\ClearCheckoutSourceEntity
+        arguments:
+            - '@oro_action.expression.context_accessor'
+        tags:
+            - { name: oro_action.action, alias: clear_checkout_source_entity }
+
+    oro_checkout.event_listener.open_orders_datagrid:
+        class: Oro\Bundle\CheckoutBundle\EventListener\OpenOrdersDatagridListener
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.frontend-checkouts-grid, method: onPreBuild }
+
+    oro_checkout.datagrid.extension.frontend_shopping_list_grid.abstract:
+        abstract: true
+        class: Oro\Bundle\CheckoutBundle\Datagrid\FrontendShoppingListGridExtension
+        arguments:
+            -
+                - 'frontend-customer-user-shopping-lists-grid'
+                - 'frontend-customer-user-shopping-list-select-grid'
+            -
+                - 'b2b_flow_checkout_start_from_shoppinglist'
+                - 'b2b_flow_checkout_single_page_start_from_shoppinglist'
+
+    oro_checkout.datagrid.extension.frontend_checkout_line_items_grid:
+        class: 'Oro\Bundle\CheckoutBundle\Datagrid\FrontendLineItemsGridExtension'
+        arguments:
+            - '@doctrine'
+            - '@oro_config.manager'
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+        tags:
+            - { name: oro_datagrid.extension, priority: 10 }
+
+    oro_checkout.datagrid.extension.frontend_shopping_list_grid.before_actions:
+        parent: oro_checkout.datagrid.extension.frontend_shopping_list_grid.abstract
+        arguments:
+            - '-250'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_checkout.datagrid.extension.frontend_shopping_list_grid.after_actions:
+        parent: oro_checkout.datagrid.extension.frontend_shopping_list_grid.abstract
+        arguments:
+            - '250'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_checkout.event_listener.datagrid_line_items_data.shopping_list_line_item_basic:
+        class: Oro\Bundle\CheckoutBundle\EventListener\DatagridLineItemsDataListener
+        tags:
+            - { name: kernel.event_listener, event: oro_product.datagrid_line_items_data.frontend-checkout-line-items-grid, method: onLineItemData, priority: -10 }
+            - { name: kernel.event_listener, event: oro_product.datagrid_line_items_data.frontend-single-page-checkout-line-items-grid, method: onLineItemData, priority: -10 }
+
+    oro_checkout.event_listener.datagrid_line_items_data.violations:
+        class: Oro\Bundle\CheckoutBundle\EventListener\DatagridLineItemsDataViolationsListener
+        arguments:
+            - '@oro_shopping_list.validator_service.line_item'
+            - '@oro_checkout.helper.checkout_workflow_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_product.datagrid_line_items_data.frontend-checkout-line-items-grid, method: onLineItemData }
+            - { name: kernel.event_listener, event: oro_product.datagrid_line_items_data.frontend-single-page-checkout-line-items-grid, method: onLineItemData }
+
+    oro_checkout.listener.checkout_transition:
+        class: 'Oro\Bundle\CheckoutBundle\EventListener\CheckoutTransitionEventSubscriber'
+        arguments:
+            - '@oro_checkout.workflow_state.manager.checkout_state_diff'
+            - '@oro_checkout.workflow_state.storage.checkout_state_diff_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_checkout.form.data_transformer.order_address_to_address_identifier:
+        class: 'Oro\Bundle\CheckoutBundle\Form\DataTransformer\OrderAddressToAddressIdentifierViewTransformer'
+        shared: false
+        arguments:
+            - '@oro_order.manager.order_address'
+            - '@property_accessor'
+            - ['street', 'city', 'country', 'region', 'postalCode']

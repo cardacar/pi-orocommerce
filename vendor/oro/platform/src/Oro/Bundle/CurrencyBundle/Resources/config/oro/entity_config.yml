@@ -1,0 +1,13 @@
+entity_config:
+    multicurrency:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#multicurrency
+        field:
+            items:
+                target:
+                    options:
+                        required_properties:
+                            -
+                                config_id:
+                                    scope: extend
+                                code: is_serialized
+                                value: false

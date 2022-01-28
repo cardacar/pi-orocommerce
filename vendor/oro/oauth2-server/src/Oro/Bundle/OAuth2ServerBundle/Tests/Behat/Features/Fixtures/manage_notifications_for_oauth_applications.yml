@@ -1,0 +1,10 @@
+Oro\Bundle\OAuth2ServerBundle\Entity\Client:
+    test_app:
+        name: Test OAuth Application
+        identifier: test_app
+        grants: [client_credentials]
+        __calls:
+            - setSecret: [test_secret, test_salt]
+            - setOwnerEntity: ['Oro\\Bundle\\UserBundle\\Entity\\User', '<(@admin->getId())>']
+        organization: '@organization'
+

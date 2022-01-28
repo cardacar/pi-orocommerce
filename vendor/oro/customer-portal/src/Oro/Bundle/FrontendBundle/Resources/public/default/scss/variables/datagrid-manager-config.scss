@@ -1,0 +1,9 @@
+/* @theme: default; */
+
+$datagrid-manager-dropdown-menu-border-radius: $base-ui-element-border-radius;
+
+$datagrid-manager-dropdown-menu-border-radius: 0;
+$datagrid-manager-dropdown-menu-color: get-color('additional', 'dark');
+
+// Full Screen mode
+$datagrid-manager-fullscreen-reset-btn-border-radius: $base-ui-element-border-radius;

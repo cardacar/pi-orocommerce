@@ -1,0 +1,65 @@
+Oro\Bundle\CatalogBundle\Entity\Category:
+    categoryLightingProducts:
+        __calls:
+            - addTitle: ['@localValueLightingProducts']
+            - setParentCategory: ['@root_category']
+            - setInventoryThreshold: ['@treshhold100']
+            - setLowInventoryThreshold: ['@lowInventoryTreshhold0']
+
+    categoryRetailSupplies:
+        __calls:
+            - addTitle: ['@localValueRetailSupplies']
+            - setParentCategory: ['@root_category']
+            - setInventoryThreshold: ['@treshhold200']
+            - setLowInventoryThreshold: ['@lowInventoryTreshhold0']
+
+    categoryMedicalApparel:
+        __calls:
+            - addTitle: ['@localValueMedicalApparel']
+            - setParentCategory: ['@root_category']
+            - setInventoryThreshold: ['@treshhold300']
+            - setLowInventoryThreshold: ['@lowInventoryTreshhold0']
+
+    categoryPrinters:
+        __calls:
+            - addTitle: ['@localValuePrinters']
+            - setParentCategory: ['@categoryRetailSupplies']
+            - setInventoryThreshold: ['@treshhold400']
+            - setLowInventoryThreshold: ['@lowInventoryTreshhold0']
+
+    categoryFax:
+        __calls:
+            - addTitle: ['@localValueFax']
+            - setParentCategory: ['@categoryRetailSupplies']
+            - setInventoryThreshold: ['@treshhold500']
+            - setLowInventoryThreshold: ['@lowInventoryTreshhold0']
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    localValueRetailSupplies:
+        string: 'Retail Supplies'
+
+    localValuePrinters:
+        string: 'Printers'
+
+    localValueLightingProducts:
+        string: 'Lighting Products'
+
+    localValueMedicalApparel:
+        string: 'Medical Apparel'
+
+    localValueFax:
+        string: 'Fax'
+
+Oro\Bundle\EntityBundle\Entity\EntityFieldFallbackValue:
+    treshhold100:
+        scalarValue: 100
+    treshhold200:
+        scalarValue: 200
+    treshhold300:
+        scalarValue: 300
+    treshhold400:
+        scalarValue: 400
+    treshhold500:
+        scalarValue: 500
+    lowInventoryTreshhold0:
+            scalarValue: 0

@@ -1,0 +1,52 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+
+{% block content %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <div class="tab-container"
+        {{ UI.renderPageComponentAttributes({
+            module: 'oroui/js/app/components/tabs-component'
+        }) }}
+    >
+        <ul class="nav nav-tabs" role="tablist">
+            {% set tabTabId = 'tab-'|uniqid %}
+            {% set tabContentId = 'tab-content-'|uniqid %}
+            {% for tab in tabs %}
+                <li class="nav-item tab">
+                    <a id="{{ (loop.index == 0) ? tabTabId : tabTabId ~ loop.index }}"
+                       href="#{{ tabContentId }}"
+                       role="tab"
+                       class="no-hash tab-button nav-link {% if activeTab == tab.name %} active{% endif %}"
+                       data-name="{{ tab.name }}"
+                       data-url="{{ tab.url }}"
+                       data-toggle="tab"
+                       aria-controls="{{ tabContentId }}"
+                       aria-selected="{% if activeTab == tab.name %}true{% else %}false{% endif %}"
+                    >
+                        {{ tab.label }}
+                        {% if tab.afterHtml is defined %}
+                            {{ tab.afterHtml|raw }}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content" role="tabpanel" aria-labelledby="{{ tabTabId }}">
+            <div class="content">
+                {% block tab_content %}
+                    {{ activeTabContent|raw }}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        view: 'orodashboard/js/app/views/widget-tabs-view',
+        options: {
+            _sourceElement: '#' ~ widgetContentId
+        }
+    }) }}></div>
+
+    {{ parent() }}
+{% endblock %}

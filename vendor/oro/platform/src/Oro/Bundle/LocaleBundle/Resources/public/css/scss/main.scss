@@ -1,0 +1,11 @@
+/* @theme: admin.oro; */
+
+@import "oroui/css/scss/variables";
+@import "oroui/css/scss/oro/variables/forms";
+
+@import "./variables";
+
+@import "./fallback";
+
+// Mobile
+@import "./mobile/main";

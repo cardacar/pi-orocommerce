@@ -1,0 +1,3 @@
+css:
+    inputs:
+      - 'bundles/orocase/css/scss/main.scss'

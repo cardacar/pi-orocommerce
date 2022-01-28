@@ -1,0 +1,85 @@
+Oro\Bundle\WebCatalogBundle\Entity\ContentNode:
+    nodeDefaultWebCatalog:
+        __calls:
+            - addTitle: ['@localValueDefaultWebCatalog']
+        webCatalog: '@webCatalog'
+
+    nodeProducts:
+        __calls:
+            - addTitle: ['@localValueProducts']
+            - addSlugPrototype: ['@localValueProductsSlug']
+            - addLocalizedUrl: ['@localValueProductsSlug']
+        ParentNode: '@nodeDefaultWebCatalog'
+        webCatalog: '@webCatalog'
+
+    nodeNewArrivals:
+        __calls:
+            - addTitle: ['@localValueNewArrivals']
+            - addSlugPrototype: ['@localValueNewArrivalsSlug']
+            - addLocalizedUrl: ['@localValueNewArrivalsSlug']
+        ParentNode: '@nodeDefaultWebCatalog'
+        webCatalog: '@webCatalog'
+
+    nodeClearance:
+        __calls:
+            - addTitle: ['@localValueClearance']
+            - addSlugPrototype: ['@localValueClearanceSlug']
+            - addLocalizedUrl: ['@localValueClearanceSlug']
+            - addContentVariant: ['@clearanceVariant']
+        ParentNode: '@nodeDefaultWebCatalog'
+        webCatalog: '@webCatalog'
+
+    nodeByBrand:
+        __calls:
+            - addTitle: ['@localValueByBrand']
+            - addSlugPrototype: ['@localValueByBrandSlug']
+            - addLocalizedUrl: ['@localValueByBrandSlug']
+            - addContentVariant: ['@brandVariant']
+        ParentNode: '@nodeClearance'
+        webCatalog: '@webCatalog'
+
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    localValueDefaultWebCatalog:
+        string: 'Default Web Catalog'
+
+    localValueProducts:
+        string: 'Products'
+
+    localValueProductsSlug:
+        string: 'products'
+
+    localValueNewArrivals:
+        string: 'New Arrivals'
+
+    localValueNewArrivalsSlug:
+        string: 'new-arrivals'
+
+    localValueClearance:
+        string: 'Clearance'
+
+    localValueClearanceSlug:
+        string: 'clearance'
+
+    localValueByBrand:
+        string: 'By Brand'
+
+    localValueByBrandSlug:
+        string: 'by-brand'
+
+Oro\Bundle\WebCatalogBundle\Entity\WebCatalog:
+    webCatalog:
+        name: 'Default Web Catalog'
+        description: 'Default Web Catalog description'
+        organization: '@organization'
+        owner: '@business_unit'
+
+Oro\Bundle\WebCatalogBundle\Entity\ContentVariant:
+    systemPageVariant:
+        type: 'system_page'
+        systemPageRoute: 'oro_customer_frontend_customer_user_index'
+    clearanceVariant:
+        type: 'system_page'
+        systemPageRoute: 'oro_customer_frontend_customer_user_index'
+    brandVariant:
+        type: 'system_page'
+        systemPageRoute: 'oro_customer_frontend_customer_user_index'

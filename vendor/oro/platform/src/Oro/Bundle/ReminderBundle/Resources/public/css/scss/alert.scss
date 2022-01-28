@@ -1,0 +1,15 @@
+/* @theme: admin.oro; */
+
+.alert-reminder {
+    background: $alert-info-background;
+    color: $alert-info-color;
+    border-color: $alert-info-border-color;
+
+    .close {
+        color: $alert-info-close-color;
+    }
+
+    &.alert-icon:before {
+        content: $fa-var-bell-o;
+    }
+}

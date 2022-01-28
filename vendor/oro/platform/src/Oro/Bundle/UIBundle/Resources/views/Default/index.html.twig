@@ -1,0 +1,201 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% if not oro_is_hash_navigation() %}
+    <!DOCTYPE html>
+    <html lang="{{ oro_language()|slice(0,2) }}"{{ oro_is_rtl_mode() ? ' dir="rtl"' : ''}}
+          class="{% if isMobileVersion() %}mobile{% else %}desktop{% endif %}-version">
+    <head>
+        {% block head %}
+            <title>{% trans %}Loading...{% endtrans %}</title>
+            <script id="page-title" type="text/html">{{ oro_title_render() }}</script>
+            <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0{% if isMobileVersion() %}, user-scalable=no, viewport-fit=cover{% endif %}"/>
+            <meta http-equiv="cache-control" content="max-age=0" />
+            <meta http-equiv="cache-control" content="no-cache" />
+            <meta http-equiv="expires" content="0" />
+            <meta http-equiv="pragma" content="no-cache" />
+            {% block head_style %}
+                {% if oro_theme_icon() %}
+                    <link rel="shortcut icon" href="{{ asset(oro_theme_icon()) }}" />
+                {% endif %}
+               {% placeholder head_style %}
+            {% endblock %}
+
+            {% block script %}
+                {% block scripts_before %}
+                    {% placeholder scripts_before %}
+                {% endblock %}
+                {% block application %}
+                    {% placeholder application %}
+                {% endblock %}
+                <script type="text/javascript">
+                {% if isMobileVersion() %}
+                    loadModules(['oroui/js/mobile/layout'], function (layout) {layout.init();});
+                {% endif %}
+                </script>
+                {% placeholder scripts_after %}
+                {% block head_script %}
+                {% endblock %}
+            {% endblock %}
+        {% endblock %}
+    </head>
+    <body class="{% if isMobileVersion() %}mobile{% else %}desktop{% endif %}-version lang-{{ oro_language()|slice(0,2) }} {% if app.debug %}dev-mode {% endif %}{% block bodyClass %}{% endblock %}">
+    {% include 'OroUIBundle:Default:noscript.html.twig' %}
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'oroui/js/app/components/app-loading-mask-component',
+        options: {showOnStartup: true}
+    }) }}></div>
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'oroui/js/app/components/app-loading-bar-component',
+        options: {viewOptions: {container: '#oroplatform-header'}}
+    }) }}></div>
+    {% if isMobileVersion() %}
+        <div {{ UI.renderPageComponentAttributes({
+            view: 'oroui/js/app/views/swipeable-view',
+            options: {_sourceElement: 'body'}
+        }) }}></div>
+    {% endif %}
+    {% placeholder after_body_start %}
+    <div id="progressbar" class="progress-bar-container">
+        <h3 class="progress-title">{{ 'oro.ui.loading'|trans }}</h3>
+        <div class="progress infinite">
+            <div class="progress-bar" role="progressbar" aria-valuetext="{{ 'oro.ui.page_loading'|trans }}"></div>
+        </div>
+    </div>
+    <div id="page" style="display:none;" class="app-page">
+        {% block content_side %}
+            <div class="app-page__content-side">
+                {% include 'OroUIBundle:Default/navbar:sided.html.twig' %}
+            </div>
+        {% endblock content_side %}
+        <div class="app-page__content">
+            {% block header %}
+                <header class="app-header{% if oro_config_value('oro_ui.navbar_position') != 'top' %} thick{% endif %}" id="oroplatform-header"
+                    {% if isMobileVersion() %}
+                        {{ UI.renderPageComponentAttributes({
+                            view: 'oroui/js/app/views/sticky-element/sticky-element-view',
+                            options: {
+                                stickyOptions: {
+                                    enabled: true
+                                }
+                            }
+                        }) }}
+                    {% endif %}>
+                    {% placeholder before_navigation %}
+                    <div class="app-header__inner">
+                        <div class="app-header__container">
+                            {% placeholder header_logo %}
+                            <ul class="user-menu"
+                                {{ UI.renderPageComponentAttributes({view: 'oroui/js/app/views/page/user-menu-view'}) }}>
+                                {{ block('user_menu') }}
+                            </ul>
+                            <div class="app-header__search-and-shortcuts">
+                                {{ block('navbar') }}
+                            </div>
+                            {% placeholder pin_tabs_list %}
+                        </div>
+                    </div>
+                    {% include 'OroUIBundle:Default/navbar:top.html.twig' %}
+                    {% placeholder after_navigation %}
+                </header>
+            {% endblock header %}
+            <main class="app-page__main">
+                {% if isDesktopVersion() %}
+                    {% block left_panel %}
+                        <div id="left-panel" class="app-page__left-panel">
+                            {% placeholder left_panel with {placement: 'left'} %}
+                        </div>
+                    {% endblock left_panel %}
+                {% endif %}
+                {% block main %}
+                    <div id="central-panel" class="app-page__central-panel">
+                        {% block before_content %}
+                        <div id="flash-messages">
+                            {% block messages %}
+                                {% set flashMessages = [] %}
+                                {% if app.session.flashbag.peekAll|length > 0 %}
+                                    {% for type, messages in app.session.flashbag.all %}
+                                        {% for message in messages %}
+                                            {% set flashMessages = flashMessages|merge([{ type: type, message: message|trans}]) %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="flash-messages-frame">
+                                    <div class="flash-messages-holder"
+                                         {{ UI.renderPageComponentAttributes({
+                                             view: 'oroui/js/app/views/page/messages-view',
+                                             options: {
+                                                 autoRender: true,
+                                                 initializeMessenger: true,
+                                                 messages: flashMessages
+                                             }
+                                         }) }}></div>
+                                </div>
+                            {% endblock messages %}
+                        </div>
+                        <div class="page-toolbar">
+                            {% placeholder breadcrumb_pin_before %}
+                            <div id="breadcrumb"
+                                class="page-toolbar_breadcrumb"
+                                 {{ UI.renderPageComponentAttributes({view: 'oroui/js/app/views/page/breadcrumb-view'}) }}>
+                                {% block breadcrumb %}
+                                    {% placeholder breadcrumb %}
+                                {% endblock breadcrumb %}
+                            </div>
+                            <div id="before-content-addition" class="page-toolbar_before-content-addition" data-layout="separate"
+                                 {{ UI.renderPageComponentAttributes({view: 'oroui/js/app/views/page/before-content-addition-view'}) }}>
+                                {% block before_content_addition %}{% endblock before_content_addition %}
+                            </div>
+                            {% block pin_button %}
+                                <div class="page-toolbar_bookmark-buttons">
+                                    {% placeholder pin_button %}
+                                </div>
+                            {% endblock pin_button %}
+                            {% placeholder breadcrumb_pin_after %}
+                        </div>
+                        {% endblock before_content %}
+                        <div id="container"{% if isDesktopVersion() %} class="scrollable-container"{% endif %} data-layout="separate"
+                             {{ UI.renderPageComponentAttributes({view: 'oroui/js/app/views/page/content-view'}) }}>
+                            {% block page_container %}
+                                {% placeholder content_before %}
+                                {% block content %}
+                                    {# Dynamic content empty by default #}
+                                {% endblock content %}
+                                {% placeholder content_after %}
+                            {% endblock page_container %}
+                        </div>
+                    </div>
+                {% endblock main %}
+                {% if isDesktopVersion() %}
+                    {% block right_panel %}
+                        <div id="right-panel" class="app-page__right-panel">
+                            {% placeholder right_panel with {placement: 'right'} %}
+                        </div>
+                    {% endblock right_panel %}
+                {% endif %}
+            </main>
+        {% block footer %}
+            <div id="dialog-extend-fixed-container" class="ui-dialog-minimize-container"></div>
+            <footer id="footer" class="footer">
+                {% placeholder footer_inner %}
+            </footer>
+        {% endblock footer %}
+        </div>
+    </div>
+    {% placeholder before_body_end %}
+    </body>
+    </html>
+{% else %}
+    {# Title should be generated as least once in order to pass data to title service #}
+    {% set title = oro_title_render() %}
+    {# Template for hash tag navigation#}
+    {% use 'OroUIBundle:Default/navbar:blocks.html.twig' %}
+    {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
+        with {
+            'data': {
+                'scripts': block('head_script'),
+                'content': block('page_container'),
+                'breadcrumb': block('breadcrumb')|trim,
+                'beforeContentAddition': block('before_content_addition')
+            }
+        }
+    %}
+{% endif %}

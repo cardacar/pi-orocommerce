@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\SalesBundle\Command\RecalculateLifetimeCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_channel.provider.settings_provider'
+            - '@oro_currency.query.currency_transformer'
+        tags:
+            - { name: console.command }

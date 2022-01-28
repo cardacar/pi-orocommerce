@@ -1,0 +1,15 @@
+layout:
+    imports:
+        -
+            id: oro_customer_form
+            namespace: login
+            root: page_content
+        -
+            id: oro_customer_registration_instructions
+            root: login_page
+            namespace: registration_instructions
+        -
+            id: oro_customer_form_login
+            root: login_form
+    actions: []
+

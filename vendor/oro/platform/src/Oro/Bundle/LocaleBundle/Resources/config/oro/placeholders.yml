@@ -1,0 +1,10 @@
+placeholders:
+    placeholders:
+        js_modules_config:
+            items:
+                locale_js_modules_config:
+                    order: 100
+
+    items:
+        locale_js_modules_config:
+            template: OroLocaleBundle::js_modules_config.html.twig

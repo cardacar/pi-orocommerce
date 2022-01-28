@@ -1,0 +1,17 @@
+services:
+    # Twig extensions
+    oro_catalog.twig.category_extension:
+        class: 'Oro\Bundle\CatalogBundle\Twig\CategoryExtension'
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_catalog.twig.category_image_extension:
+        class: 'Oro\Bundle\CatalogBundle\Twig\CategoryImageExtension'
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }

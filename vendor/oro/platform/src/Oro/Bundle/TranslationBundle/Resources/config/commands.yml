@@ -1,0 +1,35 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\TranslationBundle\Command\OroTranslationDumpCommand:
+        public: false
+        class: Oro\Bundle\TranslationBundle\Command\OroTranslationDumpCommand
+        arguments:
+            - '@oro_translation.js_dumper'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\TranslationBundle\Command\OroTranslationLoadCommand:
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@oro_translation.database_translation.persister'
+            - '@oro_translation.provider.language'
+            - '@oro_translation.database_translation.loader'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\TranslationBundle\Command\OroTranslationRebuildCacheCommand:
+        arguments:
+            - '@oro_translation.rebuild_translation_cache_processor'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\TranslationBundle\Command\OroTranslationUpdateCommand:
+        arguments:
+            - '@Oro\Bundle\TranslationBundle\Download\TranslationDownloader'
+            - '@doctrine'
+            - '@logger'
+        tags:
+            - { name: console.command }

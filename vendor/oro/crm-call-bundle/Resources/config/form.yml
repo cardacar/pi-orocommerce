@@ -1,0 +1,56 @@
+services:
+    oro_call.call.form.type:
+        class: Oro\Bundle\CallBundle\Form\Type\CallType
+        arguments:
+            - "@oro_address.provider.phone"
+        tags:
+            - { name: form.type, alias: oro_call_form }
+
+    oro_call.call.form.type.api:
+        class: Oro\Bundle\CallBundle\Form\Type\CallApiType
+        tags:
+            - { name: form.type, alias: oro_call_form_api }
+
+    oro_call.form.type.phone:
+        class: Oro\Bundle\CallBundle\Form\Type\CallPhoneType
+        tags:
+            - { name: form.type, alias: oro_call_phone }
+
+    oro_call.call.form.api:
+        class: Symfony\Component\Form\Form
+        public: true
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - "call"
+            - Oro\Bundle\CallBundle\Form\Type\CallApiType
+            - null
+
+    oro_call.call.form.handler:
+        class: Oro\Bundle\CallBundle\Form\Handler\CallHandler
+        public: true
+        arguments:
+            - "oro_call_form"
+            - Oro\Bundle\CallBundle\Form\Type\CallType
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+            - "@oro_address.provider.phone"
+            - "@oro_activity.manager"
+            - "@oro_call.call.activity.manager"
+            - "@oro_entity.routing_helper"
+            - "@form.factory"
+
+    oro_call.call.form.handler.api:
+        class: Oro\Bundle\CallBundle\Form\Handler\CallApiHandler
+        public: true
+        arguments:
+            - "@oro_call.call.form.api"
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+
+    oro_call.call.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        public: true
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\CallBundle\Entity\Call'
+            - "@doctrine.orm.entity_manager"

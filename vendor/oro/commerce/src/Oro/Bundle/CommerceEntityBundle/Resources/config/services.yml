@@ -1,0 +1,11 @@
+services:
+    oro_commerce_entity.extra_insert_entity_storage:
+        class: Oro\Bundle\CommerceEntityBundle\Storage\ExtraActionEntityStorage
+
+    oro_commerce_entity.event_listener.doctrine_post_flush_listener:
+        class: Oro\Bundle\CommerceEntityBundle\EventListener\DoctrinePostFlushListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_commerce_entity.extra_insert_entity_storage'
+        tags:
+            - { name: doctrine.event_listener, event: postFlush }

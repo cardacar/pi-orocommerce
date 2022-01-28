@@ -1,0 +1,129 @@
+/* @theme: admin.oro; */
+
+.tax-address-row {
+    width: $field-width;
+
+    .removeRow {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .tax-address {
+        margin-bottom: $content-padding-small;
+
+        &.controls {
+            float: none;
+        }
+        .select2-container,
+        input[type="text"] {
+            width: 262px;
+        }
+
+        select {
+            width: 248px;
+        }
+    }
+
+    &:last-of-type {
+        .row-oro {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.tax-result-grid {
+    th {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .other-scroll-container & {
+        border: 1px solid $general-border-color !important;
+    }
+}
+
+.order-line-item-unitPriceIncludingTax,
+.order-line-item-unitPriceExcludingTax,
+.order-line-item-unitPriceTaxAmount,
+.order-line-item-rowTotalIncludingTax,
+.order-line-item-rowTotalExcludingTax,
+.order-line-item-rowTotalTaxAmount {
+    span {
+        white-space: normal;
+    }
+}
+
+.order-line-item-taxes {
+    width: 100%;
+}
+
+.order-line-items-content fieldset {
+    min-width: inherit;
+
+    .order-line-items-table {
+        overflow-x: auto;
+        display: block;
+    }
+}
+
+.line-item-taxes-container {
+    div ~ div {
+        padding-top: 20px;
+    }
+
+    .line-item-taxes-items {
+        .tax-result-grid {
+            min-width: 325px;
+        }
+
+        td:first-child {
+            white-space: nowrap;
+        }
+    }
+}
+
+.tax-zip-code-collection {
+    .tax-zip-input {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .tax-zip-code-divider {
+        width: 24px;
+        text-align: center;
+    }
+
+    .add-list-item {
+        margin-top: $content-padding-small;
+    }
+
+    .tax-zip-zip-range {
+        padding-right: $table-td-first-child-inner-offset;
+    }
+
+    .tax-zip-action {
+        width: $btn-icon-width + $table-tbody-td-offset;
+        padding-left: 0;
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+}
+
+@media (min-width: 2250px) {
+    .line-item-taxes-items,
+    .line-item-taxes-results {
+        display: table-cell;
+    }
+
+    .line-item-taxes-container {
+        display: table-row;
+
+        div ~ div {
+            padding-left: 20px;
+            padding-top: 0;
+        }
+    }
+}

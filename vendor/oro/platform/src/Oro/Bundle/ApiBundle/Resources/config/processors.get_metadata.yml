@@ -1,0 +1,139 @@
+services:
+    oro_api.get_metadata.processor:
+        class: Oro\Bundle\ApiBundle\Processor\MetadataProcessor
+        arguments:
+            - '@oro_api.processor_bag'
+            - get_metadata
+
+    oro_api.load_metadata.loader.entity:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\EntityMetadataLoader
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.entity_id_helper'
+            - '@oro_api.entity_metadata_factory'
+            - '@oro_api.load_metadata.factory.object'
+            - '@oro_api.load_metadata.factory.entity'
+            - '@oro_api.load_metadata.nested_object.factory.entity'
+            - '@oro_api.load_metadata.nested_association.factory.entity'
+
+    oro_api.load_metadata.loader.object:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\ObjectMetadataLoader
+        arguments:
+            - '@oro_api.load_metadata.factory.object'
+            - '@oro_api.load_metadata.nested_object.factory.object'
+            - '@oro_api.load_metadata.nested_association.factory.object'
+
+    oro_api.load_metadata.loader.association:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\AssociationMetadataLoader
+        arguments:
+            - '@oro_api.metadata_provider'
+
+    oro_api.load_metadata.nested_object.factory.entity:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\EntityNestedObjectMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.nested_object.helper'
+            - '@oro_api.load_metadata.factory.entity'
+
+    oro_api.load_metadata.nested_object.factory.object:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\ObjectNestedObjectMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.nested_object.helper'
+            - '@oro_api.load_metadata.factory.object'
+
+    oro_api.load_metadata.nested_object.helper:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\NestedObjectMetadataHelper
+        arguments:
+            - '@oro_api.load_metadata.helper'
+            - '@oro_api.load_metadata.factory.object'
+
+    oro_api.load_metadata.nested_association.factory.entity:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\EntityNestedAssociationMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.nested_association.helper'
+            - '@oro_api.load_metadata.factory.entity'
+
+    oro_api.load_metadata.nested_association.factory.object:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\ObjectNestedAssociationMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.nested_association.helper'
+            - '@oro_api.load_metadata.factory.object'
+
+    oro_api.load_metadata.nested_association.helper:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\NestedAssociationMetadataHelper
+        arguments:
+            - '@oro_api.load_metadata.helper'
+            - '@oro_api.load_metadata.factory.object'
+
+    oro_api.load_metadata.factory.entity:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\EntityMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.helper'
+            - '@oro_api.entity_metadata_factory'
+
+    oro_api.load_metadata.factory.object:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\ObjectMetadataFactory
+        arguments:
+            - '@oro_api.load_metadata.helper'
+            - '@oro_entity_extend.association_manager'
+
+    oro_api.load_metadata.helper:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Loader\MetadataHelper
+
+    #
+    # get_metadata
+    #
+
+    oro_api.get_metadata.load_parent_resource_metadata:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\LoadParentResourceMetadata
+        arguments:
+            - '@oro_api.metadata_provider'
+            - '@oro_api.doctrine_helper'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, priority: -5 }
+
+    oro_api.get_metadata.load_metadata:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\LoadMetadata
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.load_metadata.loader.object'
+            - '@oro_api.load_metadata.loader.entity'
+            - '@oro_api.load_metadata.loader.association'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, priority: -10 }
+
+    oro_api.get_metadata.normalize_metadata:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\NormalizeMetadata
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.entity_metadata_factory'
+            - '@oro_api.metadata_provider'
+            - '@oro_api.entity_override_provider_registry'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, priority: -100 }
+
+    oro_api.get_metadata.rest.add_hateoas_links_for_entity:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Rest\AddHateoasLinksForEntity
+        arguments:
+            - '@oro_api.rest.routes_registry'
+            - '@router'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, extra: hateoas, requestType: rest&json_api, priority: -200 }
+
+    oro_api.get_metadata.rest.add_hateoas_links_for_associations:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Rest\AddHateoasLinksForAssociations
+        arguments:
+            - '@oro_api.rest.routes_registry'
+            - '@router'
+            - '@oro_api.subresources_provider'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, extra: hateoas, requestType: rest&json_api, priority: -205 }
+
+    oro_api.get_metadata.rest.add_pagination_links_for_associations:
+        class: Oro\Bundle\ApiBundle\Processor\GetMetadata\Rest\AddPaginationLinksForAssociations
+        arguments:
+            - '@oro_api.rest.routes_registry'
+            - '@oro_api.filter_names_registry'
+            - '@router'
+            - '@oro_api.subresources_provider'
+        tags:
+            - { name: oro.api.processor, action: get_metadata, extra: hateoas, requestType: rest&json_api, priority: -210 }

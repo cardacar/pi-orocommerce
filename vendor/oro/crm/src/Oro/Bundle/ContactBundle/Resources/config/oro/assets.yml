@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/orocontact/css/scss/main.scss'

@@ -1,0 +1,98 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroScopeBundle::macros.html.twig' as scope %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+{% oro_title_set({params : {'%title%': entity.alias} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_cms_content_block_index'),
+        'indexLabel': 'oro.cms.contentblock.entity_plural_label'|trans,
+        'entityTitle': entity.alias|default('N/A'|trans)
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% set contentVariantsData %}
+    {% if entity.contentVariants|length %}
+        {% for variant in entity.contentVariants %}
+            {{ UI.renderProperty('oro.cms.contentblock.content_variants.default.label'|trans, variant.default ?
+            'oro.cms.contentblock.content_variants.default.yes.label'|trans
+            :
+            'oro.cms.contentblock.content_variants.default.no.label'|trans) }}
+
+            {% set infoMessage = null %}
+
+            {% if variant.content is not null %}
+                {% set infoMessage %}
+                    <div class="alert alert-info alert--compact" role="alert">
+                        <span class="fa-info alert-icon" aria-hidden="true"></span>
+                        {{ 'oro.cms.page.information_message'|trans }}
+                    </div>
+                {% endset %}
+            {% endif %}
+
+            {{ UI.renderAttribute(
+                'oro.cms.page.content.label'|trans,
+                '<div class="control-label">' ~
+                infoMessage ~
+                variant.content|render_content|default('oro.ui.empty'|trans)|oro_html_sanitize|raw ~
+                '</div>')
+            }}
+
+            {% if not variant.default %}
+                {{ scope.renderRestrictionsView(scopeEntities, variant.scopes) }}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {{ 'oro.cms.contentblock.content_variants.no_content_variants.label'|trans }}
+    {% endif %}
+{% endset %}
+
+{% block content_data %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set contentBlockInformation %}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('oro.cms.contentblock.alias.label'|trans, entity.alias) }}
+                {{ UI.renderProperty('oro.cms.contentblock.enabled.label'|trans, entity.enabled
+                    ? 'oro.cms.contentblock.enabled.yes.label'|trans
+                    : 'oro.cms.contentblock.enabled.no.label'|trans) }}
+            </div>
+            <div class="responsive-block">
+                {{ entityConfig.renderDynamicFields(entity) }}
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.cms.contentblock.sections.general.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data' : [contentBlockInformation]
+            }]
+        },
+        {
+            'title': 'oro.cms.contentblock.sections.use_for.label'|trans,
+            'subblocks': [{
+                'data' : [scope.renderRestrictionsView(scopeEntities, entity.scopes)]
+            }]
+        },
+        {
+            'title': 'oro.cms.contentblock.content_variants.entity_plural_label'|trans,
+            'subblocks': [{
+                'data' : [contentVariantsData]
+            }]
+        }
+    ] %}
+
+    {% set id = 'contentblock-page-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}

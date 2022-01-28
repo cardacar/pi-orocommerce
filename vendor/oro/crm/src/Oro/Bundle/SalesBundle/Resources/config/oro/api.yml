@@ -1,0 +1,190 @@
+api:
+    entities:
+        Oro\Bundle\SalesBundle\Entity\B2bCustomer:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/b2b_customer.md'
+            fields:
+                phones:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        phone: ~
+                primaryPhone:
+                    data_type: string
+                    depends_on: [phones.phone, phones.primary]
+                    property_path: _
+                emails:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        email: ~
+                primaryEmail:
+                    data_type: string
+                    depends_on: [emails.email, emails.primary]
+                    form_options:
+                        constraints:
+                            - Email: ~
+                    property_path: _
+            filters:
+                fields:
+                    phones:
+                        data_type: string
+                        allow_array: true
+                        property_path: phones.phone
+                    primaryPhone:
+                        data_type: string
+                        type: primaryField
+                        property_path: phones
+                        options:
+                            data_field: phone
+                    emails:
+                        data_type: string
+                        allow_array: true
+                        property_path: emails.email
+                    primaryEmail:
+                        data_type: string
+                        property_path: emails
+                        type: primaryField
+                        options:
+                            data_field: email
+            sorters:
+                fields:
+                    phones:
+                        property_path: phones.phone
+                    emails:
+                        property_path: emails.email
+
+        Oro\Bundle\SalesBundle\Entity\B2bCustomerPhone:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\SalesBundle\Entity\B2bCustomerEmail:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\SalesBundle\Entity\Lead:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/lead.md'
+            fields:
+                phones:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        phone: ~
+                primaryPhone:
+                    data_type: string
+                    depends_on: [phones.phone, phones.primary]
+                    property_path: _
+                emails:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        email: ~
+                primaryEmail:
+                    data_type: string
+                    depends_on: [emails.email, emails.primary]
+                    form_options:
+                        constraints:
+                            - Email: ~
+                    property_path: _
+                account:
+                    property_path: customerAssociation.account
+                customer:
+                    property_path: customerAssociation.target
+            filters:
+                fields:
+                    phones:
+                        data_type: string
+                        allow_array: true
+                        property_path: phones.phone
+                    primaryPhone:
+                        data_type: string
+                        type: primaryField
+                        property_path: phones
+                        options:
+                            data_field: phone
+                    emails:
+                        data_type: string
+                        allow_array: true
+                        property_path: emails.email
+                    primaryEmail:
+                        data_type: string
+                        property_path: emails
+                        type: primaryField
+                        options:
+                            data_field: email
+            sorters:
+                fields:
+                    phones:
+                        property_path: phones.phone
+                    emails:
+                        property_path: emails.email
+            subresources:
+                addresses:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false
+            actions:
+                update_list: true
+
+        Extend\Entity\EV_Lead_Status:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/lead.md'
+
+        Extend\Entity\EV_Lead_Source:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/lead.md'
+
+        Oro\Bundle\SalesBundle\Entity\LeadPhone:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\SalesBundle\Entity\LeadEmail:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\SalesBundle\Entity\Opportunity:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/opportunity.md'
+            fields:
+                closedAt:
+                    exclude: true
+                account:
+                    property_path: customerAssociation.account
+                customer:
+                    property_path: customerAssociation.target
+            actions:
+                update_list: true
+
+        Oro\Bundle\SalesBundle\Entity\OpportunityCloseReason:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/opportunity.md'
+
+        Extend\Entity\EV_Opportunity_Status:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/opportunity.md'
+
+        Oro\Bundle\SalesBundle\Entity\Customer:
+            fields:
+                target:
+                    data_type: association:manyToOne:customer
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\SalesBundle\Entity\SalesFunnel:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/sale_funnel.md'
+
+        Oro\Bundle\SalesBundle\Entity\LeadAddress:
+            documentation_resource: '@OroSalesBundle/Resources/doc/api/lead_address.md'
+            fields:
+                createdAt:
+                    property_path: created
+                updatedAt:
+                    property_path: updated
+                customRegion:
+                    exclude: false # set manually because this field is marked as excluded in entity.yml
+                    property_path: regionText
+            actions:
+                update:
+                    fields:
+                        owner:
+                            form_options:
+                                mapped: false
+            subresources:
+                owner:
+                    actions:
+                        update_relationship: false

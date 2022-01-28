@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_importexport.job_executor'
+            - '@oro_config.user'
+            - '%kernel.logs_dir%'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\TrackingBundle\Command\TrackCommand:
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_tracking.processor.tracking_processor'
+        tags:
+            - { name: console.command }

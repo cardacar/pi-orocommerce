@@ -1,0 +1,6 @@
+oro_cookie_banner:
+    accept_button:
+        label: "Yes, Accept"
+        aria_label: "Yes, Accept and close the cookie banner"
+    close:
+        aria_label: "Close the cookie banner"

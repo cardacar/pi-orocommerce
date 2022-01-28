@@ -1,0 +1,102 @@
+services:
+    oro_datagrid.extension.mass_action.factory:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionFactory
+        arguments:
+            - ~ # service locator for mass actions
+
+    oro_datagrid.extension.mass_action.metadata_factory:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMetadataFactory
+        arguments:
+            - '@oro_datagrid.extension.action.metadata_factory'
+
+    oro_datagrid.extension.mass_action.handler.delete:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@security.authorization_checker'
+            - '@oro_datagrid.extension.mass_action.actions.ajax.mass_delete_limiter'
+            - '@request_stack'
+
+    oro_datagrid.mass_action.parameters_parser:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser
+
+    Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser:
+        alias: 'oro_datagrid.mass_action.parameters_parser'
+
+    oro_datagrid.mass_action.helper:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHelper
+        arguments:
+            - '@service_container'
+
+    oro_datagrid.mass_action.dispatcher:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
+        public: true
+        arguments:
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.helper'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@oro_datagrid.extension.mass_action.iterable_result_factory_registry'
+
+    Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher:
+        alias: 'oro_datagrid.mass_action.dispatcher'
+
+    oro_datagrid.extension.mass_action.type.ajax:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: ajax }
+
+    oro_datagrid.extension.mass_action.type.delete:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: delete }
+
+    oro_datagrid.extension.mass_action.type.redirect:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\RedirectMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: redirect }
+
+    oro_datagrid.extension.mass_action.type.widget:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: widget }
+
+    oro_datagrid.extension.mass_action.type.window:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WindowMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: window }
+
+    oro_datagrid.extension.mass_action.type.massedit:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\MassEdit\MassEditAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: massedit }
+
+    oro_datagrid.extension.mass_action.type.frontend:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\FrontendMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: frontend }
+
+    oro_datagrid.extension.mass_action.actions.ajax.mass_delete_limiter:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\MassDelete\MassDeleteLimiter
+        arguments:
+            - '@oro_security.acl_helper'
+
+    oro_datagrid.extension.mass_action.iterable_result_factory:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\IterableResultFactory
+        arguments:
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: oro_datagrid.extension.mass_action.iterable_result_factory }
+
+    oro_datagrid.extension.mass_action.iterable_result_factory_registry:
+        class: Oro\Bundle\DataGridBundle\Extension\MassAction\IterableResultFactoryRegistry
+        arguments:
+            - !tagged_iterator oro_datagrid.extension.mass_action.iterable_result_factory

@@ -1,0 +1,23 @@
+oro:
+    distribution:
+        menu:
+            get_help: Get help
+            sign_out: Sign Out
+            composer_settings: 'Composer Settings'
+        security:
+            login: Login
+            username: Username
+            password: Password
+            username_or_email: 'Username or Email'
+            remember_me: 'Remember me on this computer'
+            log_in: 'Log in'
+        messages:
+            settings_saved: 'The settings were saved.'
+            unexpected_error: 'Following unexpected error(s) occurred'
+            not_writable: 'Following directories/files have to be writable by web user'
+            ajax_error: 'Ajax error'
+            ajax_500error: 'Cannot {{ action }} the package. Please check the memory limits or timeout option for web-server.'
+            perform_the_action_to: 'perform the action to'
+        installer: 'Oro Installer'
+
+'ORO Business Application Platform': 'ORO Business Application Platform'

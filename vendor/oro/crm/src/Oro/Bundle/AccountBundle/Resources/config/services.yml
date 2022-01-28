@@ -1,0 +1,112 @@
+services:
+    oro_account.form.account:
+        public: true
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments: ["oro_account_form", Oro\Bundle\AccountBundle\Form\Type\AccountType, null]
+
+    oro_account.form.type.account:
+        class: Oro\Bundle\AccountBundle\Form\Type\AccountType
+        arguments:
+            - "@router"
+            - "@oro_entity.entity_name_resolver"
+            - "@security.authorization_checker"
+        tags:
+            - { name: form.type, alias: oro_account }
+
+    oro_account.form.handler.account:
+        public: true
+        class: Oro\Bundle\AccountBundle\Form\Handler\AccountHandler
+        arguments:
+            - "@oro_account.form.account"
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+
+    # Form type
+    oro_account.form.type.account_select:
+        class: Oro\Bundle\AccountBundle\Form\Type\AccountSelectType
+        tags:
+            - { name: form.type, alias: oro_account_select }
+
+    # Account API
+    oro_account.account.manager.api:
+        public: true
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\AccountBundle\Entity\Account'
+            - "@doctrine.orm.entity_manager"
+
+    oro_account.form.type.account.api:
+        class: Oro\Bundle\AccountBundle\Form\Type\AccountApiType
+        arguments:
+            - "@router"
+            - "@oro_entity.entity_name_resolver"
+            - "@security.authorization_checker"
+        tags:
+            - { name: form.type, alias: account }
+
+    oro_account.form.account.api:
+        public: true
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments: ["account", Oro\Bundle\AccountBundle\Form\Type\AccountApiType, null]
+
+    oro_account.form.handler.account.api:
+        public: true
+        class: Oro\Bundle\AccountBundle\Form\Handler\AccountHandler
+        arguments:
+            - "@oro_account.form.account.api"
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+
+    oro_account.form.autocomplete.account.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Oro\Bundle\AccountBundle\Entity\Account'
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: accounts, acl_resource: oro_account_view }
+
+    oro_account.activity_widget_provider:
+        class: Oro\Bundle\UIBundle\Provider\TabMenuWidgetProvider
+        arguments:
+           - "@oro_entity.entity_identifier_accessor"
+           - "@oro_ui.twig.tab_extension"
+           - 'account_activity_tab_panel'
+           - 'Oro\Bundle\AccountBundle\Entity\Account'
+        tags:
+           - { name: oro_activity.activity_widget_provider, priority: -10 }
+
+    oro_account.provider.phone.account:
+        class: Oro\Bundle\AccountBundle\Provider\AccountPhoneProvider
+        tags:
+            - { name: oro_address.phone_provider, class: 'Oro\Bundle\AccountBundle\Entity\Account' }
+
+    oro_account.event_listener.datagrid.my_accounts_activity:
+        class: Oro\Bundle\UserBundle\Datagrid\WidgetOwnerListener
+        arguments:
+            - '@oro_user.dashboard.owner_helper'
+            - '@oro_dashboard.widget_configs'
+            - 'owner'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before.dashboard-my-accounts-activity-grid, method: onResultBefore }
+
+    oro_account.accounts_view_list:
+        class: Oro\Bundle\AccountBundle\Datagrid\AccountsViewList
+        public: true
+        arguments:
+            - '@translator'
+
+    oro_account.provider.prepare_result_item_provider:
+        class: Oro\Bundle\AccountBundle\Provider\AccountAutocompleteProvider
+        tags:
+            - { name: oro_sales.provider.customer.account_autocomplete }
+
+    oro_account.provider.account_entity_name:
+        class: 'Oro\Bundle\AccountBundle\Provider\AccountEntityNameProvider'
+        public: false
+        arguments:
+            - '@oro_entity.entity_name_provider.default'
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }

@@ -1,0 +1,11 @@
+{% block _line_item_form_shopping_lists_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " form__col"
+    }) %}
+    {% set children = block_widget(block) %}
+    {% if children|trim|length %}
+        <div {{ block('block_attributes') }}>
+            {{ children|raw }}
+        </div>
+    {% endif %}
+{% endblock %}

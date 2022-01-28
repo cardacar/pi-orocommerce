@@ -1,0 +1,260 @@
+system_configuration:
+    groups:
+        customer:
+            title: oro.customer.system_configuration.groups.customer.title
+        customer_users:
+            title: oro.customer.system_configuration.groups.customer_users.title
+            icon: 'fa-user'
+        customer_users_registration:
+            title: oro.customer.system_configuration.groups.customer_users_registration.title
+            icon: 'fa-user-plus'
+        menu_templates:
+            title: oro.customer.system_configuration.groups.menu_templates.title
+        customer_visitor_section:
+            title: oro.customer.system_configuration.groups.customer_visitor_section.title
+        map_settings:
+            title: oro.customer.system_configuration.groups.map_settings.title
+        responsive_grid_settings:
+            title: oro.customer.system_configuration.groups.responsive_grid_settings.title
+        rest_api:
+            title: oro.customer.system_configuration.groups.rest_api.title
+    fields:
+        oro_customer.default_customer_owner:
+            ui_only: true
+            data_type: string
+            type: Oro\Bundle\UserBundle\Form\Type\UserSelectType
+            priority: 120
+            options:
+                label: oro.customer.system_configuration.fields.default_customer_owner.label
+                tooltip: oro.customer.system_configuration.fields.default_customer_owner.tooltip
+                required: true
+                configs:
+                    allowClear: false
+                    placeholder: 'oro.user.form.choose_user'
+                    result_template_twig: 'OroUserBundle:User:Autocomplete/result.html.twig'
+                    selection_template_twig: 'OroUserBundle:User:Autocomplete/selection.html.twig'
+                constraints:
+                    - NotBlank: ~
+        oro_customer.registration_allowed:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 110
+            options:
+                label: oro.customer.system_configuration.fields.registration_allowed.label
+                tooltip: oro.customer.system_configuration.fields.registration_allowed.tooltip
+                required: false
+        oro_customer.registration_link_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 95
+            options:
+                label: oro.customer.system_configuration.fields.registration_link_enabled.label
+                tooltip: oro.customer.system_configuration.fields.registration_link_enabled.tooltip
+                required: false
+        oro_customer.confirmation_required:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 100
+            options:
+                label: oro.customer.system_configuration.fields.confirmation_required.label
+                tooltip: oro.customer.system_configuration.fields.confirmation_required.tooltip
+                required: false
+        oro_customer.auto_login_after_registration:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 90
+            options:
+                label: oro.customer.system_configuration.fields.auto_login_after_registration.label
+                tooltip: oro.customer.system_configuration.fields.auto_login_after_registration.tooltip
+        oro_customer.company_name_field_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 85
+            options:
+                label: oro.customer.system_configuration.fields.company_name_field_enabled.label
+                tooltip: oro.customer.system_configuration.fields.company_name_field_enabled.tooltip
+                required: false
+        oro_customer.registration_instructions_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 70
+            options:
+                label: oro.customer.system_configuration.fields.registration_instructions_enabled.label
+                tooltip: oro.customer.system_configuration.fields.registration_instructions_enabled.tooltip
+                required: false
+        oro_customer.registration_instructions_text:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\TextareaType
+            search_type: text
+            priority: 60
+            options:
+                label: oro.customer.system_configuration.fields.registration_instructions_text.label
+                required: false
+        oro_customer.user_menu_show_items:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            search_type: choice
+            priority: 50
+            options:
+                label: oro.customer.system_configuration.fields.user_menu_show_items.label
+                required: true
+                constraints:
+                    - NotBlank: ~
+                choices:
+                    oro.customer.system_configuration.fields.user_menu_show_items.option.all_at_once.label: all_at_once
+                    oro.customer.system_configuration.fields.user_menu_show_items.option.subitems_in_popup.label: subitems_in_popup
+        oro_customer.enable_responsive_grids:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 45
+            options:
+                label: oro.customer.system_configuration.fields.enable_responsive_grids.label
+                tooltip: oro.customer.system_configuration.fields.enable_responsive_grids.tooltip
+                required: false
+        oro_customer.enable_swipe_actions_grids:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 40
+            options:
+                label: oro.customer.system_configuration.fields.enable_swipe_actions_grids.label
+                tooltip: oro.customer.system_configuration.fields.enable_swipe_actions_grids.tooltip
+                required: false
+        oro_customer.customer_visitor_cookie_lifetime_days:
+            data_type: integer
+            type: Symfony\Component\Form\Extension\Core\Type\IntegerType
+            search_type: text
+            options:
+                required: true
+                label: oro.customer.system_configuration.fields.customer_visitor_cookie_lifetime_days.label
+                tooltip: oro.customer.system_configuration.fields.customer_visitor_cookie_lifetime_days.tooltip
+                constraints:
+                    - NotBlank: ~
+                    - Type: integer
+                    - Range:
+                        min: 1
+        oro_customer.maps_enabled:
+            data_type: boolean
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            search_type: choice
+            priority: 40
+            options:
+                label: oro.customer.system_configuration.fields.maps_enabled.label
+                tooltip: oro.customer.system_configuration.fields.maps_enabled.tooltip
+                required: false
+                choices:
+                    oro.customer.system_configuration.fields.maps_enabled.option.yes.label: 1
+                    oro.customer.system_configuration.fields.maps_enabled.option.no.label: 0
+        oro_customer.api_key_generation_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro.customer.system_configuration.fields.api_key_generation_enabled.label
+                tooltip: oro.customer.system_configuration.fields.api_key_generation_enabled.tooltip
+                required: false
+        oro_customer.case_insensitive_email_addresses_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro.customer.system_configuration.fields.case_insensitive_email_addresses_enabled.label
+                tooltip: oro.customer.system_configuration.fields.case_insensitive_email_addresses_enabled.tooltip
+                required: false
+                resettable: false
+                constraints:
+                    - Oro\Bundle\CustomerBundle\Validator\Constraints\EmailCaseInsensitiveOptionConstraint: ~
+
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    customer:
+                        priority: 1000
+                        children:
+                            customer_users:
+                                priority: 100
+                                children:
+                                    customer_users_registration:
+                                        children:
+                                            - oro_customer.default_customer_owner
+                                            - oro_customer.registration_allowed
+                                            - oro_customer.registration_link_enabled
+                                            - oro_customer.confirmation_required
+                                            - oro_customer.auto_login_after_registration
+                                            - oro_customer.company_name_field_enabled
+                                            - oro_customer.registration_instructions_enabled
+                                            - oro_customer.registration_instructions_text
+                                            - oro_customer.case_insensitive_email_addresses_enabled
+                                    customer_visitor_section:
+                                        children:
+                                            - oro_customer.customer_visitor_cookie_lifetime_days
+                                    rest_api:
+                                        children:
+                                            - oro_customer.api_key_generation_enabled
+
+                    design:
+                        children:
+                            theme:
+                                children:
+                                    menu_templates:
+                                        children:
+                                            - oro_customer.user_menu_show_items
+                                    responsive_grid_settings:
+                                        children:
+                                            - oro_customer.enable_responsive_grids
+                                            - oro_customer.enable_swipe_actions_grids
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    map_settings:
+                                        children:
+                                            - oro_customer.maps_enabled
+        website_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    map_settings:
+                                        children:
+                                            - oro_customer.maps_enabled
+        organization_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    map_settings:
+                                        children:
+                                            - oro_customer.maps_enabled
+
+        customer_configuration:
+            commerce:
+                children:
+                    product:
+                        children:
+                            customer_settings:
+                                priority: 0
+                                children:
+                                    product_data_export:
+                                        children:
+                                            - oro_product.product_data_export_enabled
+                                            - oro_product.product_prices_export_enabled
+                                            - oro_product.product_price_tiers_export_enabled
+
+        customer_group_configuration:
+            commerce:
+                children:
+                    product:
+                        children:
+                            customer_settings:
+                                priority: 0
+                                children:
+                                    product_data_export:
+                                        children:
+                                            - oro_product.product_data_export_enabled
+                                            - oro_product.product_prices_export_enabled
+                                            - oro_product.product_price_tiers_export_enabled

@@ -1,0 +1,59 @@
+services:
+    oro_datagrid.importexport.processor.export:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+             - [setDataConverter, ['@oro_datagrid.importexport.data_converter']]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: datagrid, alias: oro_datagrid }
+
+    oro_datagrid.importexport.data_converter:
+        class: Oro\Bundle\DataGridBundle\ImportExport\DatagridDataConverter
+        lazy: true
+        arguments:
+            - '@oro_datagrid.importexport.datagrid_columns_from_context_provider'
+            - '@translator'
+            - '@oro_importexport.formatter.formatter_provider'
+
+    oro_datagrid.importexport.export_reader:
+        class: Oro\Bundle\DataGridBundle\ImportExport\DatagridExportReader
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@oro_datagrid.importexport.export_connector'
+
+    oro_datagrid.importexport.export_filtered_reader:
+        class: Oro\Bundle\DataGridBundle\ImportExport\FilteredEntityReader
+        arguments:
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_security.acl_helper'
+            - '@oro_importexport.reader.entity'
+            - '@event_dispatcher'
+        calls:
+            - [setEntityIdentityReaders, [ !tagged_iterator oro_datagrid.filtered_entity_identity_reader ]]
+            - [setLogger, ['@logger']]
+
+    oro_datagrid.importexport.filtered_entity.orm_entity_identity_reader:
+        class: Oro\Bundle\DataGridBundle\ImportExport\FilteredEntityReader\OrmFilteredEntityIdentityReader
+        arguments:
+            - '@event_dispatcher'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: oro_datagrid.filtered_entity_identity_reader}
+
+    oro_datagrid.importexport.export_connector:
+        class: Oro\Bundle\DataGridBundle\ImportExport\DatagridExportConnector
+        arguments:
+            - '@oro_datagrid.datagrid.manager.link'
+
+    oro_datagrid.importexport.export_id_fetcher:
+        class: Oro\Bundle\DataGridBundle\ImportExport\DatagridExportIdFetcher
+        arguments:
+            - '@oro_datagrid.datagrid.manager.link'
+            - '@event_dispatcher'
+            - '@oro_datagrid.orm.query_executor'
+
+    oro_datagrid.importexport.datagrid_columns_from_context_provider:
+        class: Oro\Bundle\DataGridBundle\ImportExport\DatagridColumnsFromContextProvider
+        lazy: true
+        arguments:
+        - '@oro_datagrid.datagrid.manager'
+        - '@oro_datagrid.provider.state.columns'

@@ -1,0 +1,10 @@
+services:
+    oro_layout.tests.theme_extension.resource_provider.theme:
+        alias: oro_layout.theme_extension.resource_provider.theme
+        public: true
+
+    oro_layout.tests.theme_extension.configuration.provider:
+        class: Oro\Bundle\LayoutBundle\Tests\Functional\Stub\Layout\Extension\ThemeConfigurationTestProvider
+        decorates: oro_layout.theme_extension.configuration.provider
+        parent: oro_layout.theme_extension.configuration.provider
+        public: true

@@ -1,0 +1,19 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroRedirectBundle::macros.html.twig' as Redirect %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('oro.cms.page.titles.singular_label'|trans, entity.defaultTitle) }}
+            {% set slugCollection = entity.slugs %}
+            {% if slugCollection is empty %}
+                {% set slugCollection = entity|get_slug_urls_for_prototypes %}
+            {% endif %}
+            {{ Redirect.renderGeneratedSlugs(slugCollection) }}
+        </div>
+        <div>
+            {{ entityConfig.renderDynamicFields(entity) }}
+        </div>
+    </div>
+</div>

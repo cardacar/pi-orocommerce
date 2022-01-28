@@ -1,0 +1,34 @@
+operations:
+    test_action1:
+        label: Test Action1
+        replace:
+            - test
+        routes:
+            - test_route_bundle1
+
+    test_action2:
+        extends: test_action1
+
+    test_action4:
+        label: Test Action1
+        datagrid_options:
+            data:
+                sub_config1: data1
+                sub_config2: data2
+                sub_config3: data3
+        button_options:
+            data:
+                message: 'custom value with %%percent escaped string%% parameter'
+
+action_groups:
+    group1:
+        parameters:
+            $.data:
+                type: Oro\Bundle\TestBundle\Entity\Test
+                default: true
+
+        conditions:
+            '@gt': [$updatedAt, $.date]
+
+        actions:
+            - '@assign_value': [$expired, true]

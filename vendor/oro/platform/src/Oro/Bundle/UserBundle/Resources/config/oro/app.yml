@@ -1,0 +1,70 @@
+security:
+    providers:
+        chain_provider:
+            chain:
+                providers:                  [in_memory, oro_user]
+        oro_user:
+            id:                             oro_user.security.provider
+        in_memory:
+            memory:
+                users:                      []
+
+    encoders:
+        Oro\Bundle\UserBundle\Entity\User: sha512
+
+    firewalls:
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            provider:                       chain_provider
+            anonymous:                      true
+            context:                        main
+            logout_on_user_change: true
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+            anonymous:                      true
+            logout_on_user_change: true
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            organization-form-login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 oro_user_security_check
+                login_path:                 oro_user_security_login
+                default_target_path:        oro_default
+            logout:
+                path:                       oro_user_security_logout
+            organization-remember-me:
+                token_provider:             oro_security.token.provider.rememberme
+                secret:                     '%secret%'
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+                httponly:                   true
+            anonymous:                      false
+            guard:
+                authenticators:
+                    - oro_user.impersonation_authenticator
+            logout_on_user_change: true
+
+oro_user:
+    privileges:
+        entity:
+            label: 'oro.user.privileges.entity.label'
+            view_type: 'grid'
+            types:
+                - 'entity'
+            field_type: 'oro_acl_access_level_selector'
+            fix_values: false
+            default_value: 5
+            show_default: true
+        action:
+            label: 'oro.user.privileges.action.label'
+            view_type: 'list'
+            types:
+                - 'action'
+            field_type: 'oro_acl_access_level_selector'
+            fix_values: false
+            default_value: 1
+            show_default: false

@@ -1,0 +1,13 @@
+<div class="oro-promotions-collection grid-container oro-collection-table">
+    <div class="oro-collection-table-heading">
+        <h5>{{ 'oro.promotion.all_label'|trans }}</h5>
+    </div>
+    {% if entity.disablePromotions %}
+        <div class="no-data">
+            {{ 'oro.order.disable_promotions.disabled_for_oder'|trans }}
+        </div>
+    {% else %}
+        {% set collection = oro_promotion_get_applied_promotions_info(entity) %}
+        {% include 'OroPromotionBundle:AppliedPromotion:applied_promotions_table.html.twig' with {collection: collection, editable: false} %}
+    {% endif %}
+</div>

@@ -1,0 +1,9 @@
+oro:
+    search:
+        module_name: "Search"
+        result:
+            all: "All"
+            entity_filter: "Entity filter"
+            empty: No results
+        quick_search:
+            noresults: No results found

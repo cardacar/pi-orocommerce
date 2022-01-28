@@ -1,0 +1,477 @@
+api:
+    entity_aliases:
+        Extend\Entity\TestApiE1:
+            alias: testapientity1
+            plural_alias: testapientity1
+        Extend\Entity\TestApiE2:
+            alias: testapientity2
+            plural_alias: testapientity2
+        Extend\Entity\EV_Api_Enum1:
+            alias: testapienum1
+            plural_alias: testapienum1
+        Extend\Entity\EV_Api_Enum2:
+            alias: testapienum2
+            plural_alias: testapienum2
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestCurrentDepartment:
+            alias: testapicurrentdepartment
+            plural_alias: testapicurrentdepartments
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestResourceWithoutIdentifier:
+            alias: testapiresourcewithoutidentifier
+            plural_alias: testapiresourcewithoutidentifier
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnaccessibleModel:
+            alias: testapiunaccessiblemodel
+            plural_alias: testapiunaccessiblemodel
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassOwnerModel:
+            alias: testapioverrideclassowner
+            plural_alias: testapioverrideclassowners
+            override_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassOwner
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassTargetModel:
+            alias: testapioverrideclasstarget
+            plural_alias: testapioverrideclasstargets
+            override_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassTarget
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassTargetA:
+            alias: testapioverrideclassanothertarget
+            plural_alias: testapioverrideclassanothertargets
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassActivityModel:
+            alias: testapioverrideclassactivity
+            plural_alias: testapioverrideclassactivities
+            override_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassActivity
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestMagazine:
+            alias: testapimagazine
+            plural_alias: testapimagazines
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestArticle:
+            alias: testapiarticle
+            plural_alias: testapiarticles
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestMagazineModel1:
+            alias: testapimagazinemodel1
+            plural_alias: testapimagazinemodel1
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel1:
+            alias: testapiarticlemodel1
+            plural_alias: testapiarticlemodel1
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestMagazineModel2:
+            alias: testapimagazinemodel2
+            plural_alias: testapimagazinemodel2
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel2:
+            alias: testapiarticlemodel2
+            plural_alias: testapiarticlemodel2
+
+    entities:
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDepartment:
+            exclude: false # see Oro\Bundle\ApiBundle\Tests\Functional\Environment\EntityExclusionProvider
+            fields:
+                title:
+                    exclude: false
+                    property_path: name
+            filters:
+                fields:
+                    name: ~
+            actions:
+                update_list: true
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEmployee:
+            exclude: false # see Oro\Bundle\ApiBundle\Tests\Functional\Environment\EntityExclusionProvider
+            filters:
+                fields:
+                    name: ~
+            sorters:
+                fields:
+                    name: ~
+                    position: ~
+            actions:
+                update_list: true
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDefaultAndNull: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEntityForNestedObjects:
+            fields:
+                name:
+                    data_type: nestedObject
+                    form_options:
+                        data_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestNestedName
+                        by_reference: false
+                    fields:
+                        firstName: ~
+                        lastName: ~
+                firstName:
+                    exclude: true
+                lastName:
+                    exclude: true
+                middle:
+                    data_type: nestedObject
+                    form_options:
+                        data_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestNestedValue
+                        by_reference: false
+                        mapped: false
+                    fields:
+                        value:
+                            property_path: middleName
+                middleName:
+                    exclude: true
+                prefix:
+                    data_type: nestedObject
+                    form_options:
+                        inherit_data: true
+                    fields:
+                        value:
+                            property_path: namePrefix
+                namePrefix:
+                    exclude: true
+                suffix:
+                    data_type: nestedObject
+                    form_options:
+                        inherit_data: true
+                        mapped: false
+                    fields:
+                        value:
+                            property_path: nameSuffix
+                nameSuffix:
+                    exclude: true
+                links:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        firstName:
+                            property_path: name
+                        lastName:
+                            property_path: key
+                relatedEntity:
+                    data_type: nestedAssociation
+                    fields:
+                        __class__:
+                            property_path: relatedClass
+                        id:
+                            property_path: relatedId
+        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+            filters:
+                fields:
+                    name: ~
+                    email: ~
+            sorters:
+                fields:
+                    email: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOrder:
+            fields:
+                poNumber:
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+                targetEntity:
+                    property_path: target
+                items:
+                    property_path: lineItems
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOrderLineItem:
+            fields:
+                quantity:
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+        Oro\Bundle\TestFrameworkBundle\Entity\TestProduct:
+            subresources:
+                accessible-target:
+                    target_class: Oro\Bundle\TestFrameworkBundle\Entity\TestProductType
+                    target_type: collection
+                accessible-target-custom:
+                    target_class: Oro\Bundle\TestFrameworkBundle\Entity\TestProductType
+                    target_type: collection
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                accessible-target-custom-partial:
+                    target_class: Oro\Bundle\TestFrameworkBundle\Entity\TestProductType
+                    target_type: collection
+                    actions:
+                        get_subresource: false
+                        add_subresource: true
+                entity-identifier-target:
+                    target_class: Oro\Bundle\ApiBundle\Model\EntityIdentifier
+                    target_type: collection
+                entity-identifier-target-custom:
+                    target_class: Oro\Bundle\ApiBundle\Model\EntityIdentifier
+                    target_type: collection
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                entity-identifier-target-custom-partial:
+                    target_class: Oro\Bundle\ApiBundle\Model\EntityIdentifier
+                    target_type: collection
+                    actions:
+                        get_subresource: false
+                        add_subresource: true
+                unaccessible-target:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnaccessibleModel
+                    target_type: collection
+                unaccessible-target-custom:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnaccessibleModel
+                    target_type: collection
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                unaccessible-target-custom-partial:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnaccessibleModel
+                    target_type: collection
+                    actions:
+                        get_subresource: false
+                        add_subresource: true
+                unregistered-target:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnregisteredModel
+                    target_type: collection
+                unregistered-target-custom:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnregisteredModel
+                    target_type: collection
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                unregistered-target-custom-partial:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnregisteredModel
+                    target_type: collection
+                    actions:
+                        get_subresource: false
+                        add_subresource: true
+        Oro\Bundle\TestFrameworkBundle\Entity\TestProductType: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestWithoutIdGenerator: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCompositeIdentifier:
+            fields:
+                renamedKey1:
+                    property_path: key1
+            filters:
+                fields:
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCustomIdentifier:
+            identifier_field_names: ['key']
+            fields:
+                databaseId:
+                    property_path: id
+            filters:
+                fields:
+                    key:
+                        allow_array: true
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCustomCompositeIdentifier:
+            identifier_field_names: ['key1', 'key2']
+            fields:
+                databaseId:
+                    property_path: id
+            filters:
+                fields:
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestAllDataTypes:
+            fields:
+                fieldPercent100:
+                    data_type: percent_100
+                fieldPercentRound:
+                    data_type: test_percent_round
+                fieldPercent100Round:
+                    data_type: test_percent_100_round
+            filters:
+                fields:
+                    fieldString: ~
+                    fieldText: ~
+                    fieldInt: ~
+                    fieldSmallInt: ~
+                    fieldBigInt: ~
+                    fieldBoolean: ~
+                    fieldDecimal: ~
+                    fieldDecimalDefault: ~
+                    fieldFloat: ~
+                    fieldDateTime: ~
+                    fieldDate: ~
+                    fieldTime: ~
+                    fieldGuid: ~
+                    fieldPercent: ~
+                    fieldPercent100: ~
+                    fieldMoney: ~
+                    fieldDuration: ~
+                    fieldMoneyValue: ~
+                    fieldCurrency: ~
+            sorters:
+                fields:
+                    fieldString: ~
+                    fieldInt: ~
+                    fieldSmallInt: ~
+                    fieldBigInt: ~
+                    fieldBoolean: ~
+                    fieldDecimal: ~
+                    fieldDecimalDefault: ~
+                    fieldFloat: ~
+                    fieldDateTime: ~
+                    fieldDate: ~
+                    fieldTime: ~
+                    fieldGuid: ~
+                    fieldPercent: ~
+                    fieldPercent100: ~
+                    fieldMoney: ~
+                    fieldDuration: ~
+                    fieldMoneyValue: ~
+                    fieldCurrency: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestCurrentDepartment: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestResourceWithoutIdentifier:
+            fields:
+                name:
+                    data_type: string
+                    description: The name of a resource
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+                description:
+                    data_type: string
+                    description: The description of a resource
+            actions:
+                get:
+                    description: Get Resource Without Identifier
+                    documentation: Get resource without identifier
+                create:
+                    description: Create Resource Without Identifier
+                    documentation: Create resource without identifier
+                delete:
+                    description: Delete Resource Without Identifier
+                    documentation: Delete resource without identifier
+                update:
+                    description: Update Resource Without Identifier
+                    documentation: Update resource without identifier
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestUnaccessibleModel:
+            identifier_field_names: [id]
+            fields:
+                id:
+                    data_type: int
+                name:
+                    data_type: string
+            # this entity does not have own API resource
+            actions: false
+        Extend\Entity\TestApiE1:
+            subresources:
+                biM2O: # this subresource is used to test "to-one" sub-resource change actions
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                biM2M: # this subresource is used to test "to-many" sub-resource change actions
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+                custom: # this subresource is used to test custom sub-resource change actions
+                    target_class: Extend\Entity\TestApiE2
+                    actions:
+                        update_subresource: true
+                        add_subresource: true
+                        delete_subresource: true
+        Extend\Entity\TestApiE2:
+            fields:
+                targetSideOfUnidirectionalManyToOne:
+                    data_type: unidirectionalAssociation:uniM2O
+                    target_class: Extend\Entity\TestApiE1
+                targetSideOfUnidirectionalManyToMany:
+                    data_type: unidirectionalAssociation:uniM2M
+                    target_class: Extend\Entity\TestApiE1
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOwner: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestTarget: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestActivity:
+            fields:
+                activityTargets:
+                    data_type: association:manyToMany:activity
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassOwnerModel: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassTargetModel: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassTargetA: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestOverrideClassActivityModel: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestOverrideClassActivity:
+            fields:
+                activityTargets:
+                    data_type: association:manyToMany:activity
+        Oro\Bundle\TestFrameworkBundle\Entity\TestEntityWithUserOwnership: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestMagazine:
+            fields:
+                articles:
+                    data_type: objects
+                    collapse: false
+                bestArticle:
+                    data_type: object
+                    collapse: false
+            actions:
+                get_list: false
+                delete: false
+                delete_list: false
+                get_relationship: false
+                get_subresource: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestArticle:
+            identifier_field_names: [id]
+            # this entity does not have own API resource
+            actions: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestMagazineModel1:
+            identifier_field_names: [id]
+            fields:
+                id:
+                    data_type: int
+                name:
+                    data_type: string
+                articles:
+                    data_type: int
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel1
+                    target_type: collection
+                bestArticle:
+                    data_type: int
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel1
+            actions:
+                get_list: false
+                delete: false
+                delete_list: false
+                get_relationship: false
+                get_subresource: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel1:
+            identifier_field_names: [id]
+            fields:
+                id:
+                    data_type: int
+                headline:
+                    data_type: string
+                body:
+                    data_type: string
+            actions:
+                get_list: false
+                delete: false
+                delete_list: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestMagazineModel2:
+            identifier_field_names: [id]
+            fields:
+                id:
+                    data_type: int
+                name:
+                    data_type: string
+                articles:
+                    data_type: objects
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel2
+                    target_type: collection
+                    collapse: false
+                bestArticle:
+                    data_type: object
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel2
+                    collapse: false
+            actions:
+                get_list: false
+                delete: false
+                delete_list: false
+                get_relationship: false
+                get_subresource: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestArticleModel2:
+            identifier_field_names: [id]
+            fields:
+                id:
+                    data_type: int
+                headline:
+                    data_type: string
+                body:
+                    data_type: string
+            # this entity does not have own API resource
+            actions: false
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCollection:
+            fields:
+                name:
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCollectionItem:
+            fields:
+                name:
+                    form_options:
+                        constraints:
+                            - NotBlank: ~

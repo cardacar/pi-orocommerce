@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\SearchBundle\Command\IndexCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_search.async.indexer'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\SearchBundle\Command\ReindexCommand:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_search.async.indexer'
+            - '@oro_search.search.engine.indexer'
+        tags:
+            - { name: console.command }

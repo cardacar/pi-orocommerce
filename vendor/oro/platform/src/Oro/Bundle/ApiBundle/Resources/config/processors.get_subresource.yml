@@ -1,0 +1,53 @@
+services:
+    oro_api.get_subresource.processor:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\GetSubresourceProcessor
+        arguments:
+            - '@oro_api.processor_bag'
+            - get_subresource
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.get_subresource.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\GetSubresource\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: get_subresource, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # build_query
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # data_security_check
+    #
+
+    #
+    # normalize_data
+    #
+
+    #
+    # finalize
+    #
+
+    #
+    # normalize_result
+    #

@@ -1,0 +1,39 @@
+{% set options = {
+    'dataUrl': path(
+        'oro_email_email_create', {
+            to: email is defined ? email|escape('html') : oro_get_full_name_email(entity),
+            entityClass: oro_class_name(entity, true),
+            entityId: entity.id
+    }),
+    'aCss': 'dropdown-item no-hash',
+    'iCss': 'fa-envelope',
+    'class': cssClass is defined ? cssClass : '',
+    'role': role is defined ? role : '',
+    'dataId': entity.id,
+    'label' : 'oro.email.send_email'|trans,
+    'widget' : {
+        'type' : 'dialog',
+        'multiple' : true,
+        'refresh-widget-alias': 'activity-list-widget',
+        'options' : {
+            'alias': 'email-dialog',
+            'method': 'POST',
+            'dialogOptions' : {
+                'title' : 'oro.email.send_email'|trans,
+                'allowMaximize': true,
+                'allowMinimize': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'width': 1000
+            }
+        }
+    }
+} %}
+
+{% block action_controll %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% if feature_enabled('email') %}
+        {{ UI.clientLink(options) }}
+    {% endif %}
+{% endblock %}

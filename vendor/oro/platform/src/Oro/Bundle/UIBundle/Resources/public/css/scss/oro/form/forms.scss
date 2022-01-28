@@ -1,0 +1,258 @@
+/* @theme: admin.oro; */
+
+.form-horizontal .control-label {
+    &.header-tooltips {
+        display: inline;
+        float: none;
+        margin-left: -20px;
+
+        .oro-popover-content {
+            line-height: 20px;
+        }
+    }
+}
+
+.control-group .controls p.control-label {
+    width: auto;
+}
+
+.form-horizontal {
+    .control-group {
+        display: flex;
+
+        > .control-label {
+            width: $form-horizontal-control-label-width;
+            font-weight: normal;
+            text-align: right;
+            flex-shrink: 0;
+
+            .ui-dialog-content &,
+            .modal-content & {
+                width: $form-horizontal-widget-control-label-width;
+                max-width: $form-horizontal-control-label-width;
+            }
+        }
+
+        &:not(.attribute-row) {
+            .control-label {
+                padding-top: $form-horizontal-control-label-offset;
+                line-height: $form-horizontal-control-label-line-height;
+            }
+        }
+
+        .control-label {
+            .tooltip-icon {
+                margin-right: $content-padding-small;
+            }
+
+            label {
+                position: relative;
+            }
+        }
+
+        .controls {
+            margin-left: $form-horizontal-control-margin-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: $field-width;
+
+            & .controls {
+                min-width: 0;
+            }
+
+            &:first-child {
+                margin-left: $form-horizontal-control-label-width + $form-horizontal-control-margin-start;
+
+                .ui-dialog-content & {
+                    margin-left: $form-horizontal-control-margin-start;
+                }
+            }
+
+            &.autocomplete-box {
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+
+            &.messages {
+                margin: 0;
+
+                .alert {
+                    margin: $content-padding-small 0 0;
+                    max-width: $field-width;
+                }
+            }
+
+            .control-label {
+                &.html-property {
+                    overflow: auto;
+                }
+            }
+
+            .control-subgroup {
+                display: inline-block;
+                vertical-align: top;
+                margin-right: $content-padding-small;
+
+                .controls {
+                    margin-left: 0;
+                    float: left;
+                }
+
+                .tooltip-icon {
+                    margin-right: $content-padding-small;
+                }
+            }
+
+            &-description {
+                margin-top: $content-padding-small;
+            }
+
+            &.html-content {
+                padding-top: $form-horizontal-control-html-content-offset;
+                max-width: $field-width;
+            }
+
+            .ui-dialog-resized & {
+                min-width: $field-width + $dialog-content-inner-offset;
+            }
+        }
+
+        &.control-group-datetime {
+            input[type="text"] {
+                &.datepicker-input {
+                    width: 189px;
+                }
+
+                &.timepicker-input {
+                    width: 100px;
+                }
+            }
+        }
+        &.control-group-checkbox {
+            .controls {
+                padding-top: 5px;
+            }
+        }
+
+        &.control-group-choice {
+            .choice-widget-expanded {
+                padding-top: $control-group-choice-choice-widget-offset-top;
+            }
+        }
+
+        &.control-group-oro_type_filter {
+            .date-filter-container {
+                &:not(.date-filter-custom) {
+                    .control-group {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        &.control-group-oro_entity_relation_type {
+            > .controls {
+                margin-left: 0;
+            }
+        }
+
+        > .pull-right {
+            flex-grow: 1;
+            text-align: right;
+        }
+    }
+
+    .control-group-oro_pricing_price_lists_settings,
+    .control-group-oro_file {
+        .controls:first-child {
+            margin-left: 0 !important;
+        }
+    }
+
+    &:not(.form) {
+        .control-group {
+            &.attribute-row label.control-label {
+                cursor: default;
+            }
+        }
+    }
+
+    .control-group-button {
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: $field-width;
+        }
+    }
+}
+
+.choice-widget-expanded {
+    &__item {
+        &:not(:last-child) {
+            margin-bottom: $content-padding-small / 2;
+        }
+    }
+}
+
+.form-vertical {
+    .control-group,
+    .control-group-container {
+        margin-bottom: 0;
+
+        + .control-group,
+        .control-group-container {
+            margin-top: $form-container-control-row-space;
+        }
+    }
+
+    .control-label {
+        margin-bottom: $form-container-control-row-space / 2;
+    }
+}
+
+.user-fieldset {
+    margin-bottom: 22px;
+
+    span {
+        background-color: #fff;
+        padding: 0 20px 0 0;
+        display: inline-block;
+    }
+
+    &-block-actions:first-child {
+        text-align: right;
+        margin-bottom: $content-padding-medium;
+    }
+}
+
+input[type='radio'] + label,
+input[type='checkbox'] + label {
+    margin-bottom: 2px;
+    display: inline-block;
+}
+
+.form-row {
+    padding: 0 0 $margin-bottom-box/2;
+}
+
+label {
+    &.required {
+        position: relative;
+
+        em {
+            color: $danger-dark;
+            font-size: 21px;
+            font-style: normal;
+            position: absolute;
+
+            margin-top: -2px;
+            margin-left: 4px;
+        }
+    }
+
+    &:not(.required) {
+        em {
+            display: none;
+        }
+    }
+}

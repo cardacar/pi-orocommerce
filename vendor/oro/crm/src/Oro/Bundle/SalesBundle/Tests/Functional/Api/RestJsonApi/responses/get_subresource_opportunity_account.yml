@@ -1,0 +1,20 @@
+data:
+    type: accounts
+    id: '<toString(@account1->id)>'
+    attributes:
+        name: 'Account 1'
+        createdAt: '@account1->createdAt->format("Y-m-d\TH:i:s\Z")'
+        updatedAt: '@account1->updatedAt->format("Y-m-d\TH:i:s\Z")'
+    relationships:
+        owner:
+            data: null
+        contacts:
+            data: []
+        defaultContact:
+            data: null
+        organization:
+            data:
+                type: organizations
+                id: '<toString(@organization->id)>'
+        referredBy:
+            data: null

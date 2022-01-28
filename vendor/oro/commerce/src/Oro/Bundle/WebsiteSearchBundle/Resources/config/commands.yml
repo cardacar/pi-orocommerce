@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\WebsiteSearchBundle\Command\ReindexCommand:
+        arguments:
+            - '@doctrine'
+            - '@event_dispatcher'
+        tags:
+            - { name: console.command }

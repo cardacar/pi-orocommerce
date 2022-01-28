@@ -1,0 +1,333 @@
+Oro\Bundle\CustomerBundle\Entity\Customer:
+    customer1:
+        name: 'Company A'
+        organization: '@organization'
+        owner: '@admin'
+
+Oro\Bundle\CustomerBundle\Entity\CustomerUser:
+    amanda:
+        email: 'AmandaRCole@example.org'
+        username: 'AmandaRCole@example.org'
+        password: 'gxP1L8r86hrdUMg9wKdfnsS/EZC4a7jOIdn6BMzegqL2S6e+KBIuHCrDVciMdiR/64osNnabmFonwK8l09vQxA=='
+        salt: 'fgswya1kzw0sck8ck48kosowckwo0ws'
+        firstName: 'Amanda'
+        lastName: 'Cole'
+        enabled: '1'
+        confirmed: '1'
+        customer: '@customer1'
+        organization: '@organization'
+        roles: ['@buyer']
+        owner: '@admin'
+        website: '@website1'
+    branda:
+        email: 'BrandaJSanborn@example.org'
+        username: 'BrandaJSanborn@example.org'
+        password: 'y12bJY3cVtGLKLAfR+CuegOlw9bZBbLa5DPSJpkyD0APjybCxCDG2YZNr3NePQIQrev7FGOesraw2IP70y5a/w=='
+        salt: 'alm84p22l2osog8kksw0g4ckc4cgcwc'
+        firstName: 'Branda'
+        lastName: 'Sanborn'
+        enabled: '1'
+        confirmed: '1'
+        customer: '@customer1'
+        organization: '@organization'
+        roles: ['@buyer']
+        owner: '@admin'
+        website: '@website1'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    precision1:
+        unit: '@item'
+        precision: '1'
+    precision2:
+        unit: '@set'
+        precision: '1'
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        sku: '5GN30'
+        attributeFamily: '@defaultProductFamily'
+        primaryUnitPrecision: '@precision1'
+        __calls:
+            - addUnitPrecision: ['@precision1', '@precision2']
+            - addName: ['@locValue1']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+        organization: '@organization'
+    product2:
+        sku: '9OL25'
+        attributeFamily: '@defaultProductFamily'
+        primaryUnitPrecision: '@precision2'
+        __calls:
+            - addUnitPrecision: ['@precision1', '@precision2']
+            - addName: ['@locValue2']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+        organization: '@organization'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    locValue1:
+        string: 'Physician’s 5-Pocket Lab Coat'
+        text: 'Physician’s 5-Pocket Lab Coat'
+    locValue2:
+        string: 'Women’s White Slip-On Clogs'
+        text: 'Women’s White Slip-On Clogs'
+
+Oro\Bundle\OrderBundle\Entity\Order:
+    order1:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.01.2016 11:00"))>'
+        identifier: 'OID1'
+        poNumber: 'OID1'
+        currency: 'USD'
+        total: 10.0
+        internal_status: '@order_internal_status_open'
+    order2:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.01.2016 11:00"))>'
+        identifier: 'OID2'
+        poNumber: 'OID2'
+        currency: 'USD'
+        total: 20.0
+        internal_status: '@order_internal_status_open'
+    order3:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.01.2016 13:00"))>'
+        updatedAt: '<(new DateTime("01.01.2016 13:00"))>'
+        identifier: 'OID3'
+        poNumber: 'OID3'
+        currency: 'USD'
+        total: 30.0
+        internal_status: '@order_internal_status_open'
+    order4:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.01.2016 13:00"))>'
+        updatedAt: '<(new DateTime("01.01.2016 13:00"))>'
+        identifier: 'OID4'
+        poNumber: 'OID4'
+        currency: 'USD'
+        total: 40.0
+        internal_status: '@order_internal_status_open'
+    order5:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("10.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("10.01.2016 11:00"))>'
+        identifier: 'OID5'
+        poNumber: 'OID5'
+        currency: 'USD'
+        total: 50.0
+        internal_status: '@order_internal_status_open'
+    order6:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("03.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("03.01.2016 11:00"))>'
+        identifier: 'OID6'
+        poNumber: 'OID6'
+        currency: 'USD'
+        total: 60.0
+        internal_status: '@order_internal_status_open'
+    order7:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("03.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("03.01.2016 11:00"))>'
+        identifier: 'OID7'
+        poNumber: 'OID7'
+        currency: 'USD'
+        total: 70.0
+        internal_status: '@order_internal_status_open'
+    order8:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("03.01.2016 11:00"))>'
+        updatedAt: '<(new DateTime("03.01.2016 11:00"))>'
+        identifier: 'OID8'
+        poNumber: 'OID8'
+        currency: 'USD'
+        total: 80.0
+        internal_status: '@order_internal_status_open'
+    order9:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.02.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.02.2016 11:00"))>'
+        identifier: 'OID9'
+        poNumber: 'OID9'
+        currency: 'USD'
+        total: 90.0
+        internal_status: '@order_internal_status_open'
+    order10:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.02.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.02.2016 11:00"))>'
+        identifier: 'OID10'
+        poNumber: 'OID10'
+        currency: 'USD'
+        total: 100.0
+        internal_status: '@order_internal_status_open'
+    order11:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.05.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.05.2016 11:00"))>'
+        identifier: 'OID11'
+        poNumber: 'OID11'
+        currency: 'USD'
+        total: 110.0
+        internal_status: '@order_internal_status_open'
+    order12:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.05.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.05.2016 11:00"))>'
+        identifier: 'OID12'
+        poNumber: 'OID12'
+        currency: 'USD'
+        total: 120.0
+        internal_status: '@order_internal_status_archived'
+    order13:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.06.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.06.2016 11:00"))>'
+        identifier: 'OID13'
+        poNumber: 'OID13'
+        currency: 'USD'
+        total: 130.0
+        internal_status: '@order_internal_status_cancelled'
+    order14:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.06.2016 11:00"))>'
+        updatedAt: '<(new DateTime("01.06.2016 11:00"))>'
+        identifier: 'OID14'
+        poNumber: 'OID14'
+        currency: 'USD'
+        total: 140.0
+        internal_status: '@order_internal_status_closed'
+    order15:
+        organization: '@organization'
+        customerUser: '@branda'
+        createdAt: '<(new DateTime("01.01.2017 11:00"))>'
+        updatedAt: '<(new DateTime("01.01.2017 11:00"))>'
+        identifier: 'OID15'
+        poNumber: 'OID15'
+        currency: 'USD'
+        total: 150.0
+        internal_status: '@order_internal_status_open'
+    order16:
+        organization: '@organization'
+        customerUser: '@amanda'
+        createdAt: '<(new DateTime("01.01.2017 11:00"))>'
+        updatedAt: '<(new DateTime("01.01.2017 11:00"))>'
+        identifier: 'OID16'
+        poNumber: 'OID16'
+        currency: 'USD'
+        total: 160.0
+        internal_status: '@order_internal_status_shipped'
+
+Oro\Bundle\OrderBundle\Entity\OrderLineItem:
+    lineitem1:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '20'
+        productUnit: '@item'
+        order: '@order1'
+    lineitem2:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '15'
+        productUnit: '@set'
+        order: '@order2'
+    lineitem3:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '5'
+        productUnit: '@item'
+        order: '@order3'
+    lineitem4:
+        product: '@product1'
+        productSku: '5GN30'
+        quantity: '5'
+        productUnit: '@item'
+        order: '@order4'
+    lineitem5:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '16'
+        productUnit: '@item'
+        order: '@order5'
+    lineitem6:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '41'
+        productUnit: '@item'
+        order: '@order6'
+    lineitem7:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '40'
+        productUnit: '@set'
+        order: '@order7'
+    lineitem8:
+        product: '@product1'
+        productSku: '5GN30'
+        quantity: '11'
+        productUnit: '@set'
+        order: '@order8'
+    lineitem9:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '21'
+        productUnit: '@item'
+        order: '@order9'
+    lineitem10:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '17'
+        productUnit: '@set'
+        order: '@order10'
+    lineitem11:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '30'
+        productUnit: '@item'
+        order: '@order11'
+    lineitem12:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '44'
+        productUnit: '@set'
+        order: '@order12'
+    lineitem13:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '4'
+        productUnit: '@item'
+        order: '@order13'
+    lineitem14:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '56'
+        productUnit: '@set'
+        order: '@order14'
+    lineitem15:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '20'
+        productUnit: '@item'
+        order: '@order15'
+    lineitem16:
+        product: '@product2'
+        productSku: '9OL25'
+        quantity: '10'
+        productUnit: '@set'
+        order: '@order16'

@@ -1,0 +1,25 @@
+/* @theme: default; */
+
+.checkout-order-summary {
+    &__header {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        margin: $checkout-order-summary-header-margin;
+
+        &.in-sticky {
+            margin: 0;
+
+            .checkout-order-summary__subtitle {
+                color: get-color('additional', 'middle');
+            }
+        }
+    }
+
+    &__totals {
+        @include clearfix();
+    }
+}

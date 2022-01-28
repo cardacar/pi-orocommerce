@@ -1,0 +1,48 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%taxCode%": entity.code } }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_tax_index'),
+        'indexLabel': 'oro.tax.entity_plural_label'|trans,
+        'entityTitle': entity.code|default('N/A'|trans)
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set taxInfo %}
+        {% set FRACTION_DIGITS = constant('\\NumberFormatter::FRACTION_DIGITS') %}
+        {% set MIN_FRACTION_DIGITS = constant('\\NumberFormatter::MIN_FRACTION_DIGITS') %}
+        {% set MAX_FRACTION_DIGITS = constant('\\NumberFormatter::MAX_FRACTION_DIGITS') %}
+        {% set CALCULATION_SCALE_AS_PERCENT = constant('Oro\\Bundle\\TaxBundle\\Provider\\TaxationSettingsProvider::CALCULATION_SCALE_AS_PERCENT') %}
+
+        {{ UI.renderProperty('oro.tax.code.label'|trans, entity.code) }}
+        {{ UI.renderProperty('oro.tax.description.label'|trans, entity.description) }}
+        {{ UI.renderProperty('oro.tax.rate.label'|trans, entity.rate|oro_format_percent({
+            attributes: {
+                FRACTION_DIGITS: CALCULATION_SCALE_AS_PERCENT,
+                MIN_FRACTION_DIGITS: 0,
+                MAX_FRACTION_DIGITS: CALCULATION_SCALE_AS_PERCENT
+            }
+        })) }}
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'oro.tax.sections.general'|trans,
+        'subblocks': [
+            {'data' : [taxInfo]},
+        ]
+    }] %}
+
+    {% set id = 'tax-tax-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}

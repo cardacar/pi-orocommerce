@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\ShoppingListBundle\Command\ClearExpiredShoppingListsCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_entity_extend.db_id_name_generator'
+            - '@oro_config.manager'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\ShoppingListBundle\Command\ClearExpiredCustomerVisitorsCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_entity_extend.db_id_name_generator'
+            - '@oro_config.manager'
+        tags:
+            - { name: console.command }

@@ -1,0 +1,296 @@
+entity_config:
+    entity:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#entity
+        entity:
+            form:
+                block_config:
+                    general:
+                        title:              oro.entity_config.block_titles.general.label
+                        priority:           100
+                    associations:
+                        title:              oro.entity_config.block_titles.associations.label
+                        priority:           50
+                    other:
+                        title:              oro.entity_config.block_titles.other.label
+                        priority:           -255
+            items:
+                icon:
+                    options:
+                        priority:           10
+                    form:
+                        type:               Oro\Bundle\FormBundle\Form\Type\OroIconType
+                        options:
+                            label:          oro.entity.entity_config.entity.entity.items.icon
+                            block:          general
+                            required:       false
+                label:
+                    options:
+                        translatable:       true
+                        priority:           20
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
+                    grid:
+                        type:               html
+                        label:              oro.entity.entity_config.entity.entity.items.label
+                        required:           true
+                        template:           OroEntityConfigBundle:Config:propertyLabel.html.twig
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\TextType
+                        options:
+                            label:          oro.entity.entity_config.entity.entity.items.label
+                            block:          general
+                            required:       true
+                            strip_tags:     true
+                plural_label:
+                    options:
+                        translatable:       true
+                        priority:           35
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\TextType
+                        options:
+                            label:          oro.entity.entity_config.entity.entity.items.plural_label
+                            block:          general
+                            required:       true
+                            strip_tags:     true
+                description:
+                    options:
+                        translatable:       true
+                        priority:           50
+                    constraints:
+                        - Length:
+                            max:            500
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\TextareaType
+                        options:
+                            label:          oro.entity.entity_config.entity.entity.items.description
+                            block:          general
+                            required:       false
+                            strip_tags:     true
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#entity
+        field:
+            form:
+                block_config:
+                    general:
+                        title:              oro.entity_config.block_titles.general.label
+                        priority:           100
+                    other:
+                        title:              oro.entity_config.block_titles.other.label
+                        priority:           -255
+            items:
+                label:
+                    options:
+                        translatable:       true
+                        priority:           10
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
+                    grid:
+                        type:               html
+                        label:              oro.entity.entity_config.entity.field.items.label
+                        required:           true
+                        template:           OroEntityConfigBundle:Config:propertyLabel.html.twig
+                        sortable:           true
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\TextType
+                        options:
+                            label:          oro.entity.entity_config.entity.field.items.label
+                            tooltip:        oro.entity.entity_config.entity.field.items.label.tooltip
+                            block:          general
+                            required:       true
+                            strip_tags:     true
+                description:
+                    options:
+                        translatable:       true
+                        priority:           30
+                    constraints:
+                        - Length:
+                            max:            500
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\TextareaType
+                        options:
+                            label:          oro.entity.entity_config.entity.field.items.description
+                            tooltip:        oro.entity.entity_config.entity.field.items.description.tooltip
+                            block:          general
+                            required:       false
+                            strip_tags:     true
+                actualize_owning_side_on_change:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                        allowed_type: [ref-many, oneToMany]
+                    form:
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            label: oro.entity.entity_config.entity.field.items.actualize_owning_side_on_change
+                            tooltip: oro.entity.entity_config.entity.field.items.actualize_owning_side_on_change.tooltip
+                            choices:
+                                No: 0
+                                Yes: 1
+                            placeholder: false
+                            required: false
+                            block: other
+    datagrid:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#datagrid
+        field:
+            items:
+                is_visible:
+                    options:
+                        require_schema_update: true
+                        value_type:         integer
+                        default_value:      1
+                        allowed_type:       [string, integer, smallint, bigint, boolean, datetime, date, time, float, decimal, money, percent, enum, multiEnum, manyToOne, oneToOne]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    form:
+                        type:               Oro\Bundle\EntityExtendBundle\Form\Type\ChoiceType
+                        options:
+                            choices:
+                                No: 0
+                                oro.entity.entity_config.datagrid.field.items.is_visible.shown: 1
+                                oro.entity.entity_config.datagrid.field.items.is_visible.hidden: 3
+                                oro.entity.entity_config.datagrid.field.items.is_visible.mandatory: 2
+                            placeholder:    false
+                            block:          other
+                            label:          oro.entity.entity_config.datagrid.field.items.is_visible
+                            tooltip:        oro.entity.entity_config.datagrid.field.items.is_visible.tooltip
+                show_filter:
+                    options:
+                        value_type:         boolean
+                        allowed_type:       [string, integer, smallint, bigint, boolean, datetime, date, time, float, decimal, money, percent, enum, multiEnum, manyToOne, oneToOne]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No:         0
+                                Yes:        1
+                            placeholder:    false
+                            block:          other
+                            label:          oro.entity.entity_config.datagrid.field.items.show_filter
+                order:
+                    options:
+                        value_type:         integer
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\IntegerType
+                        options:
+                            block:          other
+                            label:          oro.entity.entity_config.datagrid.field.items.order
+                            required:       false
+
+    form:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#form
+        entity:
+            items:
+                form_type:
+                    options: []
+                form_options:
+                    options:
+                        auditable: false
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#form
+        field:
+            items:
+                form_type:
+                    options: []
+                form_options:
+                    options:
+                        auditable: false
+                is_enabled:
+                    options:
+                        value_type:         boolean
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No:         0
+                                Yes:        1
+                            placeholder:    false
+                            block:          other
+                            label:          oro.entity.entity_config.form.field.items.is_enabled
+    # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#view
+    view:
+        field:
+            items:
+                is_displayable:
+                    options:
+                        value_type:         boolean
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No:         0
+                                Yes:        1
+                            placeholder:    false
+                            block:          other
+                            label:          oro.entity.entity_config.view.field.items.is_displayable
+                priority:
+                    options:
+                        value_type:         integer
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    form:
+                        type:               Symfony\Component\Form\Extension\Core\Type\IntegerType
+                        options:
+                            block:          other
+                            label:          oro.entity.entity_config.view.field.items.priority
+                            required:       false
+    grouping:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#grouping
+        entity:
+            items:
+                groups:
+                    options: []
+    dictionary:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#dictionary
+        entity:
+            items:
+                virtual_fields:
+                    options:
+                        auditable: false
+                search_fields:
+                    options:
+                        auditable: false
+                representation_field:
+                    options:
+                        auditable: false
+    fallback:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#fallback
+        entity:
+            items: ~

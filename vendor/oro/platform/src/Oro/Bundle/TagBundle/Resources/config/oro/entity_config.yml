@@ -1,0 +1,28 @@
+entity_config:
+    tag:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#tag
+        entity:
+            items:
+                enabled:
+                    options:
+                        require_schema_update: false
+                        priority:              250
+                        default_value:         false
+                    form:
+                        type:               Oro\Bundle\TagBundle\Form\Type\TagConfigChoiceType
+                        options:
+                            block:          other
+                            required:       true
+                            label:          oro.tag.config.enabled
+                immutable:
+                    options:
+                        auditable:          false
+                enableGridColumn:
+                    options:
+                        default_value:      true
+                enableGridFilter:
+                    options:
+                        default_value:      true
+                enableDefaultRendering:
+                    options:
+                        default_value:      true

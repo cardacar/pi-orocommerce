@@ -1,0 +1,20 @@
+entity_config:
+    comment:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#comment
+        entity:
+            items:
+                enabled:
+                    options:
+                        require_schema_update: true
+                        priority:              10
+                        default_value:         false
+                    form:
+                        type: Oro\Bundle\EntityExtendBundle\Form\Type\AssociationChoiceType
+                        options:
+                            block:             associations
+                            required:          true
+                            label:             oro.comment.enabled
+                            association_class: 'OroCommentBundle:Comment'
+                immutable:
+                    options:
+                        auditable: false

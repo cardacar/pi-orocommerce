@@ -1,0 +1,67 @@
+services:
+    oro_api.update_relationship.processor:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\UpdateRelationshipProcessor
+        arguments:
+            - '@oro_api.processor_bag'
+            - update_relationship
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.update_relationship.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\UpdateRelationship\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: update_relationship, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # data_security_check
+    #
+
+    #
+    # transform_data
+    #
+
+    oro_api.update_relationship.build_form_builder:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\Shared\BuildFormBuilder
+        arguments:
+            - '@oro_api.form_helper'
+        tags:
+            - { name: oro.api.processor, action: update_relationship, group: transform_data, priority: 100 }
+
+    oro_api.update_relationship.handle_unidirectional_associations:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\UpdateRelationship\HandleUnidirectionalAssociations
+        arguments:
+            - '@oro_api.form.unidirectional_association_handler'
+        tags:
+            - { name: oro.api.processor, action: update_relationship, group: transform_data, priority: -150 }
+
+    #
+    # save_data
+    #
+
+    #
+    # finalize
+    #
+
+    #
+    # normalize_result
+    #

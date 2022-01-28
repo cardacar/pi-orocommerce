@@ -1,0 +1,34 @@
+Oro\Bundle\SegmentBundle\Entity\Segment:
+    group_sequence:
+        - PreQueryValidate
+        - Segment
+    constraints:
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\NotEmptyColumns:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\NoColumnDuplicates:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\SegmentBundle\Validator\Constraints\NotEmptySorting:
+            groups: [PreQueryValidate]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [ nameLowercase ]
+            message: 'oro.segment.validation.unique.name'
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\QueryDefinition: ~
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\Query: ~
+    properties:
+        name:
+            - NotBlank:     ~
+            - Length:
+                max: 255
+        type:
+            - NotBlank:     ~
+        recordsLimit:
+            - Type:
+                type: integer
+            - GreaterThan:
+                value: 0
+        entity:
+            - NotBlank:     ~
+            - Length:
+                max: 255
+        organization:
+            - NotBlank: ~

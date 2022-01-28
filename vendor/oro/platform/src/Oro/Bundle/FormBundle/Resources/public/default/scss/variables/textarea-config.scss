@@ -1,0 +1,20 @@
+/* @theme: default; */
+
+$textarea-padding: 9px 11px 8px;
+$textarea-padding--m: 8px 9px 7px;
+$textarea-padding--s: 5px 9px 4px;
+
+// Hover
+$textarea-box-shadow-hover-state: inset 0 1px 1px transparentize(get-color('additional', 'ultra'), .75),
+                                        0 0 8px transparentize(get-color('ui', 'focus'), .6);
+
+// Focus
+$textarea-border-color-focus-state: $base-ui-element-border-color-focus;
+$textarea-box-shadow-focus-state: $base-ui-element-focus-style;
+
+// Error
+$textarea-border-color-error-state: get-color('ui', 'error-dark');
+$textarea-box-shadow-error-state: 0 1px 7px 0 transparentize(get-color('ui', 'error-dark'), .6);
+
+// Disabled
+$textarea-background-color-disabled-state: get-color('additional', 'base') !default;

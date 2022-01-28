@@ -1,0 +1,33 @@
+<div class="widget-content import-widget-content">
+    <div class="alert alert-info import-notice" role="alert">
+        <strong>{{ 'oro.importexport.import.importance'|trans }}</strong>:
+        {{ 'oro.importexport.import.columns_notice'|trans }}
+    </div>
+    <div class="form-container">
+        {{ form_start(form, {
+            'action': path('oro_importexport_import_validation_form', {entity: entityName, importJob: importJob, importValidateJob: importValidateJob, options: options}),
+            'attr': {
+                'id': form.vars.id,
+                'data-nohash': 'true',
+                'class': 'form-horizontal'
+            }
+        }) }}
+
+            <fieldset class="form">
+                <div class="control-group-container import-file">
+                    {{ form_row(form.file, {'label': 'oro.importexport.import.file'}) }}
+                </div>
+                <div class="control-group-container" {% if form.processorAlias.vars.choices|length <= 1 %}style="display: none;"{% endif %}>
+                    {{ form_row(form.processorAlias, {'label': 'oro.importexport.import.strategy'}) }}
+                </div>
+                {{ form_rest(form) }}
+            </fieldset>
+
+            <div class="widget-actions">
+                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'Submit'|trans }}</button>
+            </div>
+        {{ form_end(form) }}
+        {{ oro_form_js_validation(form) }}
+    </div>
+</div>

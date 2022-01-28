@@ -1,0 +1,5 @@
+{% block text_with_placeholders_widget %}
+    {% if text %}
+        {{ text|render_content }}
+    {% endif %}
+{% endblock %}

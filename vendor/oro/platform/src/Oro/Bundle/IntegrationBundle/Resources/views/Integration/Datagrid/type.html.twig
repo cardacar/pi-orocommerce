@@ -1,0 +1,9 @@
+{% set types = registry.getRegisteredChannelTypes() %}
+{% for choiceLabel, choiceValue in choices %}
+    {% if choiceValue == value %}
+        {% if types[value] is defined and types[value].icon is defined %}
+            <span class="integration-icon" style="background: url({{ asset(types[value].icon)|json_encode }}) 0 0 no-repeat" ></span>
+        {% endif %}
+        {{ choiceLabel|trans }}
+    {% endif %}
+{% endfor %}

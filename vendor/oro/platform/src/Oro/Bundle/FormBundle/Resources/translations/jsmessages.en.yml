@@ -1,0 +1,31 @@
+Default: Default
+Remove: Remove
+Add: Add
+"Select {{ entity }}": "Select {{ entity }}"
+"Create {{ entity }}": "Create {{ entity }}"
+"Please select": "Please select"
+oro:
+    form:
+        choose_date: Choose a date
+        choose_time: time
+        new: New
+        add_new: Add new
+        inlineEditing:
+            inline_edits: "Inline edits"
+            successMessage: "Record has been successfully updated"
+            helpMessage: "Double click on cell to edit"
+            loadingError: "Cannot load component or view for inline grid editor"
+            saving_progress: "Inline edits are being saved"
+            action:
+                save: Save changes
+                cancel: Cancel
+            multi_checkbox_editor:
+                filter.placeholder: Filter values...
+        tinymce:
+            paragraph: "Normal Text"
+            h1: "Heading 1"
+            h2: "Heading 2"
+            h3: "Heading 3"
+            h4: "Heading 4"
+            h5: "Heading 5"
+            h6: "Heading 6"

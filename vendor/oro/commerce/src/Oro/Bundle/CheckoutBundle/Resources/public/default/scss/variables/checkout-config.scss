@@ -1,0 +1,27 @@
+/* @theme: default; */
+
+$checkout-padding: 30px 32px !default;
+$checkout-border-radius: $base-ui-element-border-radius !default;
+$checkout-background-color: get-color('additional', 'base') !default;
+
+$checkout-title-badge-size: 32px !default;
+$checkout-title-badge-font-size: $badge-font-size !default;
+$checkout-title-badge-offset: $offset-x-m !default;
+
+$checkout-head-position: relative !default;
+$checkout-head-margin: 0 0 $offset-y !default;
+
+$checkout-approval-note-margin: $offset-x 0 0 !default;
+
+$checkout-summary-grid-container-shadow-background: linear-gradient(to bottom, rgba(245,245,245,0) 0%, rgba(245,245,245,1) 100%) !default;
+
+
+// Tablet
+$checkout-tablet-padding: $offset-y !default;
+$checkout-tablet-border-radius: 0 !default;
+
+$checkout-submit-tooltip-left: auto !default;
+$checkout-submit-tooltip-right: 65px !default;
+
+//Tablet small
+$checkout-submit-btn-tablet-small-width: 100% !default;

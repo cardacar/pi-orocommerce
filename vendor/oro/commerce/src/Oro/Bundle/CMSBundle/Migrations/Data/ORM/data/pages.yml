@@ -1,0 +1,138 @@
+about:
+    slug: about
+    title: 'About'
+    content: >
+        <h1>H1. We Are the Leading RV & Gear Seller in the US</h1>
+    
+        <p> Are you considering buying a recreational vehicle (RV) to spend weekends outdoors with your family? We offer you a wide choice of options, from small campers to motorhomes. You can also find all the necessary RV accessories, inside and outside, to make your holiday trips the most enjoyable experience. If you’re happy, we’re happy!</p>
+    
+        <code> We have the best membership programs that offer worldwide emergency assistance, 24/7 towing, discounts on RV accessories, and many more!</code>
+    
+        <h2>H2. Do You Need an RV?</h2>
+        
+        <p> RVs are a great way to explore the country while enjoying the modern comforts and the company of your family 24/7. If you feel the passion for a nomadic adventure across some breath-taking sites of mother nature, an RV will definitely take you there!</p>
+        
+        <figure>
+            <picture>
+                <source srcset="/bundles/orocms/images/landing-page/320.jpg"
+                        media="(max-width: 414px)">
+                <source srcset="/bundles/orocms/images/landing-page/768.jpg"
+                        media="(max-width: 992px)">
+                <img src="/bundles/orocms/images/landing-page/1384.jpg"
+                     alt="Image">
+            </picture>
+            <figcaption>RV & Gear Seller</figcaption>
+        </figure>
+        
+        <p>
+            <small> There are so many beautiful places in this country that are left unnoticed by most people. Whenever you’re up to having a break from a hectic urban life, take your home with you to the heart of nature.</small>
+        </p>
+        
+        <h3>H3. How Do You Choose an RV?</h3>
+        
+        <p> There are different types of RVs for weekends, travelling, and living. We can <a href="#">help you</a> find your dream RV in minutes. You could also read some of our articles to educate yourself on different aspects of RV as well as email us call our office to ask all the questions you may have.</p>
+    
+        <div class="row">
+            <div class="col-md">
+                <p>
+                    <strong>Popular RV types</strong>
+                </p>
+
+                <ul>
+                    <li>Pop up</li>
+                    <li>Small camper</li>
+                    <li>Fifth wheel</li>
+                    <li>Class C</li>
+                </ul>
+            </div>
+
+            <div class="col-md">
+                <p>
+                    <strong>Our recommended top gear</strong>
+                </p>
+
+                <ol>
+                    <li>Camp kitchen</li>
+                    <li>RV cover</li>
+                    <li>GPS accessories</li>
+                    <li>Power generator</li>
+                </ol>
+            </div>
+
+            <div class="col-md">
+                <p>
+                    <strong>Our popular membership programs</strong>
+                </p>
+
+                <dl>
+                    <dt>Travel assistance</dt>
+                    <dd>Emergency medical evacuation and home transportation</dd>
+                    <dt>Roadside assistance</dt>
+                    <dd>Emergency fuel delivery, towing, flat tyre and low battery service</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <h4>H4. We Can Help You Finance Your RV</h4>
+        
+        <p>Over decades helping our customers get financing, we’ve developed relationships with most financial institutions—from national banks to local lenders. We know which lenders are RV-friendly. We pitch your specific finance needs to several lenders, and leverage our relationships to make sure you get the best financing terms possible.</p>
+        
+        <h5>H5. Start Your RV Journey Today</h5>
+
+        <p>
+            <em>Explore our online store for America’s favorite brands, such as Coleman, Pioneer, Mallard, Freedom Elite, Satellite, or Hymer. Read our blog to learn about your RV maintenance, best camping recipes, tips for family trips, and great destinations for your next holiday. We’d like you to become an expert in a million-star recreational experience amidst the wonders of mother nature, just like in this quote from Forrest Stevens.</em>
+        </p>
+        
+        <h6>H6. I find myself...</h6>
+        
+        <p>“I find myself happier and more enthused about life when I’m outside and in what people would consider wilderness. That feels like home to me, so creating my own space that facilitates that is worth it, and that’s going to be different for everyone.”</p>
+        
+        <blockquote>Whatever your RV, our RV service team will keep you on the road. We offer a variety of services for all types of RVs. Workmanship on installations is guaranteed as long as you own your vehicle. Workmanship on service and collision repair guaranteed for 12 months.</blockquote>
+
+        <p>Photographs are a way of preserving a moment in our lives for the rest of our lives. Many of us have at least been tempted at the flashy array of photo printers which seemingly leap off the shelves at even the least tech-savvy. It surely seems old fashioned to talk about 35mm film and non-digital cameras in today’s day and age.</p>
+
+        <hr>
+        
+        <address>
+            Visit us at:<br>
+            buysellrv.com<br>
+            Box 564, Disneyland<br>
+            USA
+        </address>
+
+        <h2>H2. RV Search Example</h2>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>RV Class</th>
+                        <th>RV Type</th>
+                        <th>Max Length <sub>ft</sub></th>
+                        <th>Max Dry Weight <sup>lbs</sup></th>
+                        <th>Max Sleep Number</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Towable</td>
+                        <td>Travel Trailer</td>
+                        <td>30</td>
+                        <td>3500</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>Motorized</td>
+                        <td>Class A</td>
+                        <td>40</td>
+                        <td>2500</td>
+                        <td>6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn--info" title="We offer a variety of services for all types of RVs">Select Your RV Now</a>
+        </div>

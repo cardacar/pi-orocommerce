@@ -1,0 +1,513 @@
+services:
+    oro_order.order.entity.id_generator:
+        class: 'Oro\Bundle\OrderBundle\Doctrine\ORM\Id\SimpleEntityAwareGenerator'
+        public: false
+
+    oro_order.order.listener.orm.order_listener:
+        class: 'Oro\Bundle\OrderBundle\EventListener\ORM\OrderListener'
+        public: false
+        arguments:
+            - '@oro_order.order.entity.id_generator'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\Order', event: postPersist}
+
+    oro_order.order.listener.orm.order_status_listener:
+        class: 'Oro\Bundle\OrderBundle\EventListener\ORM\OrderStatusListener'
+        public: false
+        arguments:
+            - '@oro_order.provider.configuration'
+            - '@doctrine'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\Order', event: prePersist}
+
+    oro_order.provider.shipping_cost_subtotal:
+        class: 'Oro\Bundle\OrderBundle\Provider\ShippingCostSubtotalProvider'
+        public: false
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_pricing.subtotal_processor.provider.arguments'
+        tags:
+            - { name: oro_pricing.subtotal_provider, alias: oro_order.subtotal_shipping_cost, priority: 20 }
+
+    oro_order.provider.discount_subtotal:
+        class: 'Oro\Bundle\OrderBundle\Provider\DiscountSubtotalProvider'
+        public: false
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_pricing.subtotal_processor.provider.subtotal_line_item'
+            - '@oro_security.token_accessor'
+            - '@oro_pricing.subtotal_processor.provider.arguments'
+        tags:
+            - { name: oro_pricing.subtotal_provider, alias: oro_order.subtotal_discount_cost, priority: 10 }
+
+    oro_order.order.provider.order_address:
+        class: 'Oro\Bundle\OrderBundle\Provider\OrderAddressProvider'
+        public: false
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.token_accessor'
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - 'Oro\Bundle\CustomerBundle\Entity\CustomerAddress'
+            - 'Oro\Bundle\CustomerBundle\Entity\CustomerUserAddress'
+
+    oro_order.order.provider.order_address_security:
+        class: 'Oro\Bundle\OrderBundle\Provider\OrderAddressSecurityProvider'
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_frontend.request.frontend_helper'
+            - '@oro_order.order.provider.order_address'
+            - 'Oro\Bundle\CustomerBundle\Entity\CustomerAddress'
+            - 'Oro\Bundle\CustomerBundle\Entity\CustomerUserAddress'
+
+    Oro\Bundle\OrderBundle\Provider\OrderAddressSecurityProvider:
+        alias: 'oro_order.order.provider.order_address_security'
+
+    oro_order.manager.order_address:
+        class: 'Oro\Bundle\OrderBundle\Manager\OrderAddressManager'
+        # This service marked as public (origin private) for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
+        public: true
+        arguments:
+            - '@oro_order.order.provider.order_address'
+            - '@doctrine'
+            - 'Oro\Bundle\OrderBundle\Entity\OrderAddress'
+        calls:
+            - [addEntity, ['a', 'Oro\Bundle\CustomerBundle\Entity\CustomerAddress']]
+            - [addEntity, ['au', 'Oro\Bundle\CustomerBundle\Entity\CustomerUserAddress']]
+
+    oro_order.request_handler.order_request_handler:
+        class: 'Oro\Bundle\OrderBundle\RequestHandler\OrderRequestHandler'
+        arguments:
+            - '@doctrine'
+            - '@request_stack'
+            - 'Oro\Bundle\CustomerBundle\Entity\Customer'
+            - 'Oro\Bundle\CustomerBundle\Entity\CustomerUser'
+
+    Oro\Bundle\OrderBundle\RequestHandler\OrderRequestHandler:
+        alias: 'oro_order.request_handler.order_request_handler'
+
+    oro_order.handler.order_currency_handler:
+        class: 'Oro\Bundle\OrderBundle\Handler\OrderCurrencyHandler'
+        arguments:
+            - '@oro_currency.config.currency'
+
+    oro_order.handler.order_totals_handler:
+        class: 'Oro\Bundle\OrderBundle\Handler\OrderTotalsHandler'
+        public: true
+        deprecated: The "%service_id%" service is deprecated since v1.3. Use oro_order.order.total.total_helper instead
+        arguments:
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_pricing.subtotal_processor.provider.subtotal_line_item'
+            - '@oro_currency.converter.rate'
+
+    oro_order.delete_handler.order_line_item:
+        class: Oro\Bundle\OrderBundle\Handler\OrderLineItemDeleteHandler
+        parent: oro_entity.delete_handler
+        arguments:
+            - '@oro_order.order.total.total_helper'
+        tags:
+            - { name: oro_entity.delete_handler, entity: Oro\Bundle\OrderBundle\Entity\OrderLineItem }
+
+    oro_order.delete_handler_extension.order_line_item:
+        class: Oro\Bundle\OrderBundle\Handler\OrderLineItemDeleteHandlerExtension
+        parent: oro_entity.delete_handler_extension
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_entity.delete_handler_extension, entity: Oro\Bundle\OrderBundle\Entity\OrderLineItem }
+
+    oro_order.delete_handler.order_discount:
+        class: Oro\Bundle\OrderBundle\Handler\OrderDiscountDeleteHandler
+        parent: oro_entity.delete_handler
+        arguments:
+            - '@oro_order.order.total.total_helper'
+        tags:
+            - { name: oro_entity.delete_handler, entity: Oro\Bundle\OrderBundle\Entity\OrderDiscount }
+
+    oro_order.handler.order_shipping_tracking:
+        class: 'Oro\Bundle\OrderBundle\Handler\OrderShippingTrackingHandler'
+        public: true
+        arguments:
+            - "@doctrine"
+
+    oro_order.event_listener.form_view:
+        class: 'Oro\Bundle\OrderBundle\EventListener\FormViewListener'
+        arguments:
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.customer-user-view, method: onCustomerUserView }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.customer-view, method: onCustomerView }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.shopping-list-view, method: onShoppingListView }
+
+    oro_order.event_listener.product_db_query_restriction:
+        class: 'Oro\Bundle\ProductBundle\EventListener\ScopedProductDBQueryRestrictionEventListener'
+        parent: oro_product.event_listener.abstract_product_db_query_restriction
+        calls:
+            - [setScope, ['order']]
+            - [setFrontendSystemConfigurationPath, ['oro_order.frontend_product_visibility']]
+            - [setBackendSystemConfigurationPath, ['oro_order.backend_product_visibility']]
+        tags:
+            - { name: kernel.event_listener, event: oro_product.product_db_query.restriction, method: onDBQuery }
+
+    oro_order.event_listener.product_search_query_restriction:
+        class: 'Oro\Bundle\ProductBundle\EventListener\ScopedProductSearchQueryRestrictionEventListener'
+        parent: oro_product.event_listener.abstract_product_search_query_restriction
+        calls:
+            - [setScope, ['order']]
+            - [setRequestStack, ['@request_stack']]
+            - [setFrontendSystemConfigurationPath, ['oro_order.frontend_product_visibility']]
+        tags:
+            - { name: kernel.event_listener, event: oro_product.product_search_query.restriction, method: onSearchQuery }
+
+    oro_order.event_listener.order.total:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\OrderTotalEventListener'
+        arguments:
+            - '@oro_order.provider.total_processor'
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent, priority: -255 }
+
+    oro_order.event_listener.order.form.abstract:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\AbstractFormEventListener'
+        abstract: true
+        arguments:
+            - '@templating'
+            - '@form.factory'
+
+    oro_order.event_listener.order.address:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\OrderAddressEventListener'
+        parent: oro_order.event_listener.order.form.abstract
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent }
+
+    oro_order.event_listener.order.discount:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\OrderDiscountEventListener'
+        parent: oro_order.event_listener.order.form.abstract
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent }
+
+    oro_order.event_listener.order.payment_term:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\OrderPaymentTermEventListener'
+        arguments:
+            - '@oro_payment_term.provider.payment_term'
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent }
+
+    oro_order.event_listener.order.possible_shipping_methods:
+        class: 'Oro\Bundle\OrderBundle\EventListener\PossibleShippingMethodEventListener'
+        arguments:
+            - '@oro_order.factory.shipping_context'
+            - '@oro_order.converter.shipping_prices'
+            - '@?oro_shipping.shipping_price.provider'
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onEvent }
+
+    oro_order.event_listener.order.matching_price:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\MatchingPriceEventListener'
+        arguments:
+            - '@oro_order.pricing.price_matcher'
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent }
+
+    oro_order.event_listener.order.tier_prices:
+        class: 'Oro\Bundle\OrderBundle\EventListener\Order\TierPriceEventListener'
+        arguments:
+            - '@oro_pricing.provider.product_price'
+            - '@oro_pricing.model.product_price_scope_criteria_factory'
+        tags:
+            - { name: kernel.event_listener, event: oro_order.order, method: onOrderEvent }
+
+    oro_order.event_listener.payment_shipping_surcharge:
+        class: 'Oro\Bundle\PaymentBundle\EventListener\PaymentShippingSurchargeListener'
+        arguments:
+            - '@oro_order.provider.shipping_cost_subtotal'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.event.collect_surcharge, method: onCollectSurcharge }
+
+# TODO: Uncomment and apply in BB-4834
+#    oro_order.event_listener.payment_discount_surcharge:
+#        class: 'Oro\Bundle\PaymentBundle\EventListener\PaymentDiscountSurchargeListener'
+#        arguments:
+#            - '@oro_order.provider.discount_subtotal'
+#        tags:
+#            - { name: kernel.event_listener, event: oro_payment.event.collect_surcharge, method: onCollectSurcharge }
+
+    oro_order.twig.order:
+        class: 'Oro\Bundle\OrderBundle\Twig\OrderExtension'
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_order.twig.order_shipping:
+        class: 'Oro\Bundle\OrderBundle\Twig\OrderShippingExtension'
+        public: false
+        arguments:
+            - "@oro_platform.twig.service_locator"
+        tags:
+            - { name: twig.extension }
+
+    oro_order.formatter.source_document:
+        class: 'Oro\Bundle\OrderBundle\Formatter\SourceDocumentFormatter'
+        arguments:
+            - '@oro_entity.entity_class_name_provider'
+
+    oro_order.formatter.shipping_tracking:
+        class: 'Oro\Bundle\OrderBundle\Formatter\ShippingTrackingFormatter'
+        arguments:
+            - "@?oro_shipping.tracking_aware_shipping_methods_provider"
+
+    oro_order.order.listener.total_calculate_listener:
+        class: 'Oro\Bundle\OrderBundle\EventListener\TotalCalculateListener'
+        arguments:
+            - '@form.factory'
+            - '@form.registry'
+            - '@oro_frontend.request.frontend_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_pricing.total_calculate_before_event, method: onBeforeTotalCalculate }
+
+    oro_order.pricing.price_matcher:
+        class: 'Oro\Bundle\OrderBundle\Pricing\PriceMatcher'
+        public: false
+        arguments:
+            - '@oro_pricing.provider.matching_price'
+            - '@oro_pricing.model.product_price_scope_criteria_factory'
+            - '@logger'
+
+    oro_order.order.total.total_helper:
+        class: 'Oro\Bundle\OrderBundle\Total\TotalHelper'
+        # This service marked as public (origin private) for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
+        public: true
+        arguments:
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_pricing.subtotal_processor.provider.subtotal_line_item'
+            - '@oro_order.provider.discount_subtotal'
+            - '@oro_currency.converter.rate'
+
+    oro_order.layout.provider.order_payment_status:
+        class: 'Oro\Bundle\OrderBundle\Layout\DataProvider\OrderPaymentStatusProvider'
+        arguments:
+            - '@oro_payment.provider.payment_status'
+        tags:
+            - { name: layout.data_provider, alias: oro_order_frontend_payment_status_provider }
+
+    oro_order.event_listener.order_datagrid:
+        class: 'Oro\Bundle\OrderBundle\EventListener\OrderDatagridListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_payment.formatter.payment_method_label'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.orders-grid, method: onResultAfter }
+
+    oro_order.event_listener.frontend_order_datagrid:
+        class: 'Oro\Bundle\OrderBundle\EventListener\OrderDatagridListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_payment.formatter.payment_method_label'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.frontend-orders-grid, method: onResultAfter }
+
+    oro_order.layout.provider.top_selling_items:
+        class: 'Oro\Bundle\OrderBundle\Layout\DataProvider\TopSellingItemsProvider'
+        arguments:
+            - "@oro_product.repository.product"
+            - "@oro_product.product.manager"
+            - "@oro_security.acl_helper"
+        tags:
+            - { name: layout.data_provider, alias: top_selling_items }
+
+    oro_order.layout.provider.top_selling_items.cache_decorator:
+        parent: oro_product.doctrine.abstract_cached_provider_decorator
+        decorates: oro_order.layout.provider.top_selling_items
+        decoration_priority: 10
+        arguments:
+            - '@oro_order.layout.provider.top_selling_items.cache_decorator.inner'
+            - '@oro.cache.memory_cache_chain'
+            - 'oro_order.layout.provider.top_selling_items'
+
+    oro_order.factory.shipping_context:
+        class: 'Oro\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_order.shipping_line_item.converter_basic'
+            - '@?oro_shipping.context.builder_factory_basic'
+
+    oro_order.factory.payment_context:
+        class: 'Oro\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
+        arguments:
+            - '@oro_order.payment_line_item.converter_basic'
+            - '@?oro_payment.context.builder_factory_basic'
+
+    oro_order.shipping_line_item.converter_basic:
+        class: 'Oro\Bundle\OrderBundle\Converter\BasicOrderShippingLineItemConverter'
+        arguments:
+            - '@?oro_shipping.context.line_item_collection_factory.set_shipping_options_if_null'
+            - '@?oro_shipping.line_item.factory_basic'
+
+    oro_order.payment_line_item.converter_basic:
+        class: 'Oro\Bundle\OrderBundle\Converter\BasicOrderPaymentLineItemConverter'
+        arguments:
+            - '@?oro_payment.context.doctrine_line_item_collection_factory'
+            - '@?oro_payment.line_item.builder_factory_basic'
+
+    oro_order.provider.order_currency_checker:
+        class: Oro\Bundle\OrderBundle\Provider\CurrencyCheckerProvider
+        public: false
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_multi_currency.currency_checker_provider }
+
+    oro_order.provider.total_processor:
+        class: Oro\Bundle\OrderBundle\Provider\TotalProvider
+        arguments:
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_currency.config.currency'
+            - '@oro_currency.converter.rate'
+
+    Oro\Bundle\OrderBundle\Provider\TotalProvider:
+        alias: 'oro_order.provider.total_processor'
+
+    oro_order.event_listener.unit_visibility.datagrid:
+        parent: oro_product.event_listener.unit_visibility.datagrid_basic
+        arguments:
+            index_0: 'productUnitCode'
+            index_3: {isShortUnitCode: false}
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.order-line-items-grid, method: onBuildBefore }
+
+    oro_order.converter.shipping_prices:
+        class: 'Oro\Bundle\OrderBundle\Converter\ShippingPricesConverter'
+
+    oro_order.factory.supports_order_payment_context:
+        class: 'Oro\Bundle\OrderBundle\Factory\SupportsOrderPaymentContextFactory'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_order.factory.payment_context'
+        tags:
+            - { name: oro_payment.supports_entity_payment_context_factory }
+        public: false
+        lazy: true
+
+    oro_order.provider.order_entity_name:
+          class: 'Oro\Bundle\OrderBundle\Provider\OrderEntityNameProvider'
+          public: false
+          tags:
+            - { name: oro_entity.name_provider, priority: 100 }
+
+    oro_order.datagrid.orders_view_list:
+        class: Oro\Bundle\OrderBundle\Datagrid\OrdersViewList
+        public: true
+        arguments:
+            - '@translator'
+
+    oro_order.provider.configuration:
+        class: 'Oro\Bundle\OrderBundle\Provider\OrderConfigurationProvider'
+        public: true
+        arguments:
+            - '@oro_config.manager'
+
+    oro_order.provider.latest_ordered_products_info:
+        class: 'Oro\Bundle\OrderBundle\Provider\LatestOrderedProductsInfoProvider'
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_order.provider.previously_purchased_order_statuses'
+
+    oro_order.event_listener.product_website_search_index:
+        class: 'Oro\Bundle\OrderBundle\EventListener\WebsiteSearchProductIndexerListener'
+        arguments:
+            - '@oro_website_search.manager.website_context_manager'
+            - '@oro_order.provider.latest_ordered_products_info'
+        tags:
+            - { name: kernel.event_listener, event: oro_website_search.event.index_entity.product, method: onWebsiteSearchIndex }
+            - { name: oro_featuretogle.feature, feature: previously_purchased_products }
+
+    oro_order.previously_purchased.configuration:
+        class: 'Oro\Bundle\OrderBundle\Provider\PreviouslyPurchasedConfigProvider'
+        public: true
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_locale.settings'
+            - '@oro_search.formatter.datetime_formatter'
+
+    oro_order.order.listener.orm.reindex_product_line_item_listener:
+        class: 'Oro\Bundle\OrderBundle\EventListener\ORM\ReindexProductLineItemListener'
+        public: false
+        arguments:
+            - '@oro_product.search.product_reindex_manager'
+            - '@oro_order.provider.previously_purchased_order_statuses'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\OrderLineItem', event: postPersist, method: reindexProductOnLineItemCreateOrDelete}
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\OrderLineItem', event: postRemove, method: reindexProductOnLineItemCreateOrDelete}
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\OrderLineItem', event: preUpdate, method: reindexProductOnLineItemUpdate}
+            - { name: oro_featuretogle.feature, feature: previously_purchased_products }
+
+    oro_order.order.listener.orm.reindex_product_order_listener:
+        class: 'Oro\Bundle\OrderBundle\EventListener\ORM\ReindexProductOrderListener'
+        public: false
+        arguments:
+            - '@oro_product.search.product_reindex_manager'
+            - '@oro_order.provider.previously_purchased_order_statuses'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\Order', event: preUpdate, method: processOrderUpdate}
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\Order', event: postRemove, method: processOrderRemove}
+            - { name: oro_featuretogle.feature, feature: previously_purchased_products }
+
+    oro_order.provider.previously_purchased_order_statuses:
+        class: Oro\Bundle\OrderBundle\Provider\PreviouslyPurchasedOrderStatusesProvider
+
+    oro_order.event_listener.change_config_option:
+        class: Oro\Bundle\OrderBundle\EventListener\PreviouslyPurchasedFeatureToggleListener
+        arguments:
+            - '@oro_product.search.product_reindex_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: reindexProducts }
+
+    oro_order.access_rule.frontend_order_line_item:
+        class: Oro\Bundle\OrderBundle\Acl\AccessRule\OrderLineItemAccessRule
+        tags:
+            - { name: oro_security.access_rule, entityClass: Oro\Bundle\OrderBundle\Entity\OrderLineItem, frontend: true }
+
+    oro_order.entity_listener.order_line_item.product_variant_fields:
+        class: 'Oro\Bundle\OrderBundle\EventListener\OrderLineItem\OrderLineItemEventListener'
+        public: false
+        arguments:
+            - '@oro_product.layout.data_provider.configurable_products'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\OrderLineItem', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrderBundle\Entity\OrderLineItem', event: preUpdate }
+
+    oro_order.datagrid.order_line_items_grid_frontend_access_listener:
+        class: 'Oro\Bundle\OrderBundle\Datagrid\OrderLineItemsGridFrontendAccessListener'
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.order-line-items-grid-frontend, method: onBuildBefore }
+
+    oro_order.updater.customer_user_reassign.order_updater:
+        parent: oro_customer.updater.customer_user_reassign.abstract
+        calls:
+            - [ setEntityClass, [ 'Oro\Bundle\OrderBundle\Entity\Order' ] ]
+        tags:
+            - { name: oro_customer.updater.customer_user_reassign }
+        public: false
+
+    oro_order.datagrid.order_line_items_grid_frontend_order_object_access_listener:
+        class: 'Oro\Bundle\OrderBundle\Datagrid\OrderLineItemsOrderObjectAccessListener'
+        arguments:
+            - '@security.authorization_checker'
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.order-line-items-grid-frontend, method: onBuildBefore }
+
+    oro_order.validator.customer_or_user_address_granted:
+        class: 'Oro\Bundle\OrderBundle\Validator\Constraints\CustomerOrUserAddressGrantedValidator'
+        arguments:
+            - '@oro_order.order.provider.order_address'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_order_customer_or_user_address_granted }

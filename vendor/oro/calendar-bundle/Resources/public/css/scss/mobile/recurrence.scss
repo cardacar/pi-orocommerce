@@ -1,0 +1,55 @@
+/* @theme: admin.oro; */
+
+.recurrence {
+    &-subview-control {
+        &__number {
+            max-width: 48px;
+            margin-right: 6px;
+        }
+
+        &__item {
+            label {
+                height: auto;
+                line-height: normal;
+            }
+
+            &-datetime {
+                label {
+                    margin-top: 9px;
+                }
+
+                &-wrapper {
+                    max-width: 231px;
+                }
+            }
+
+            .fields-row {
+                .hasDatepicker {
+                    width: 133px;
+                }
+
+                .timepicker-input {
+                    width: 90px;
+                }
+            }
+        }
+    }
+
+    &-summary {
+        padding: 4px 8px 8px;
+
+        .controls {
+            display: inline-block;
+        }
+
+        .control-label {
+            display: inline-block;
+        }
+    }
+
+    &-repeats {
+        &__select {
+            min-width: 285px;
+        }
+    }
+}

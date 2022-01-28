@@ -1,0 +1,222 @@
+include:
+    - '@OroLocaleBundle:LocalizationFixture.yml'
+    - '@OroProductBundle:ProductUnitItemTranslation.yml'
+
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+  businessUnit:
+    name: Common Business Unit
+    organization: '@organization'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    locvalue1:
+        string: <("Product1`\"'&йёщ®&reg;>")>
+    locvalue1_loc1:
+        string: 'Product1 (Localization1)'
+        localization: '@localization1'
+    locvalue2:
+        string: 'Product2'
+    locvalue3:
+        string: 'Product3'
+    locvalue4:
+        string: 'Product4'
+    locvalue5:
+        string: 'Product5(disabled)'
+    locvalue6:
+        string: 'Product6Class'
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    localNewCategory:
+        string: 'NewCategory'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    precision1:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision2:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision3:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision4:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision5:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision6:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    precision-set:
+        unit: '@set'
+        precision: '1'
+        sell: true
+
+Oro\Bundle\CatalogBundle\Entity\Category:
+    categoryLightingProducts:
+        __calls:
+            - addTitle: ['@localNewCategory']
+            - setParentCategory: ['@root_category']
+            - addProduct: ['@product1']
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        sku: 'psku1'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision1'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - setNames: [['@locvalue1' , '@locvalue1_loc1']]
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product2:
+        sku: 'PSKU2'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision2'
+        __calls:
+            - addUnitPrecision: ['@precision-set']
+            - addName: ['@locvalue2']
+        attributeFamily: '@defaultProductFamily'
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product3:
+        sku: 'PSKU3'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision3'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue3']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product4:
+        sku: 'PSKUwithlowercase'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision4'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue4']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product5:
+        sku: 'pskulowercaseonly'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision5'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue5']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'disabled'
+    product6:
+        sku: 'classPSKU'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        primaryUnitPrecision: '@precision6'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            -   addName: [ '@locvalue6' ]
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    price1:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 45
+    price2:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 9
+    price3:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@set'
+        value: 35
+    price4:
+        product: '@product3'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 5
+    price5:
+        product: '@product5'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 2
+        unit: '@item'
+        value: 6
+    price6:
+        product: '@product6'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 12
+        unit: '@item'
+        value: 10
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+    priceRelation1:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+    priceRelation2:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+    priceRelation3:
+        product: '@product3'
+        priceList: '@defaultPriceList'
+    priceRelation5:
+        product: '@product5'
+        priceList: '@defaultPriceList'
+    priceRelation6:
+        product: '@product6'
+        priceList: '@defaultPriceList'
+
+Oro\Bundle\InventoryBundle\Entity\InventoryLevel:
+    inventoryLevel1:
+        product: '@product1'
+        productUnitPrecision: '@precision1'
+        quantity: 100
+    inventoryLevel2:
+        product: '@product2'
+        productUnitPrecision: '@precision2'
+        quantity: 100
+    inventoryLevel3:
+        product: '@product2'
+        productUnitPrecision: '@precision-set'
+        quantity: 100
+    inventoryLevel4:
+        product: '@product3'
+        productUnitPrecision: '@precision3'
+        quantity: 100
+    inventoryLevel5:
+        product: '@product5'
+        productUnitPrecision: '@precision4'
+        quantity: 100
+    inventoryLevel6:
+        product: '@product6'
+        productUnitPrecision: '@precision6'
+        quantity: 100

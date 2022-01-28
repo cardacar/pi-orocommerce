@@ -1,0 +1,58 @@
+include:
+    - '@OroCustomerBundle:BuyerCustomerFixture.yml'
+
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+  businessUnit:
+    name: Common Business Unit
+    organization: '@organization'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    locvalue1:
+        string: 'Product1'
+    locvalue2:
+        string: 'Product2'
+    locvalue3:
+        string: 'Product3'
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    localNewCategory:
+        string: 'NewCategory'
+
+Oro\Bundle\CatalogBundle\Entity\Category:
+    categoryLightingProducts:
+        __calls:
+            - addTitle: ['@localNewCategory']
+            - setParentCategory: ['@root_category']
+            - addProduct: ['@product1']
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        sku: '1'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue1']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product2:
+        sku: '2'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue2']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product3:
+        sku: '3'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue3']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'

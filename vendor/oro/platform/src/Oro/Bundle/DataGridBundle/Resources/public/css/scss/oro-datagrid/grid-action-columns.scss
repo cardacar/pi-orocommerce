@@ -1,0 +1,108 @@
+/* @theme: admin.oro; */
+
+%header-cell-dropdown {
+    .dropdown-toggle {
+        border: 0;
+        background-color: transparent;
+    }
+
+    .dropdown-menu {
+        min-width: 60px;
+        padding-bottom: 5px;
+
+        text-transform: none;
+    }
+
+    .icon {
+        min-width: $oro-datagrid-action-min-size;
+
+        font-size: $oro-datagrid-action-font-size;
+    }
+
+    .show {
+        .dropdown-toggle {
+            background-color: $oro-datagrid-action-active-bg-color;
+            box-shadow: none;
+            color: $oro-datagrid-label-color;
+        }
+    }
+}
+
+.action-column {
+    width: $oro-datagrid-action-size;
+    padding: $oro-datagrid-action-inner-offset;
+
+    text-align: right;
+
+    @extend %header-cell-dropdown;
+
+    .dropdown-toggle {
+        width: $oro-datagrid-action-size;
+        height: $oro-datagrid-action-size;
+
+        line-height: $oro-datagrid-action-size;
+
+        border-radius: $oro-datagrid-action-column-radius;
+        color: $oro-datagrid-action-color;
+    }
+}
+
+.action-cell {
+    width: $oro-datagrid-action-size;
+
+    padding: $oro-datagrid-action-cell-offset;
+
+    line-height: 0;
+    text-align: right;
+
+    vertical-align: top;
+}
+
+.select-all-header-cell {
+    width: $oro-datagrid-all-header-cell-width;
+
+    @extend %header-cell-dropdown;
+
+    &:first-of-type {
+        padding: $oro-datagrid-all-header-cell-offset;
+    }
+
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-toggle {
+        padding: $oro-datagrid-all-header-cell-toggle-offset;
+
+        border-radius: $oro-datagrid-radius;
+        color: $oro-datagrid-label-color;
+
+        line-height: 1;
+    }
+
+    .icon {
+        height: $oro-datagrid-action-font-size;
+        margin-left: $oro-datagrid-all-header-cell-icon-offset;
+
+        vertical-align: middle;
+
+        @include fa-icon($oro-datagrid-all-header-cell-icon);
+    }
+}
+
+.select-row-cell-input {
+    // Reset global styles
+    margin: 0;
+}
+
+.select-row-cell {
+    padding-left: $oro-grid-first-cell-offset;
+
+    .checkbox-view {
+        vertical-align: $oro-datagrid-body-cell-checkbox-vertical-align;
+    }
+}
+
+.row-click-action {
+    cursor: pointer;
+}

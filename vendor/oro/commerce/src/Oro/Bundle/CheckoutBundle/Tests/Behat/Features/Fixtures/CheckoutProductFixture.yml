@@ -1,0 +1,30 @@
+include:
+    - '@OroCheckoutBundle:CheckoutProductWithoutPricesFixture.yml'
+
+Oro\Bundle\CurrencyBundle\Entity\Price:
+    price:
+        value: '10'
+        currency: 'USD'
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+    priceRelationSku123ToPriceListDefault:
+        product: '@product'
+        priceList: '@defaultPriceList'
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    productPrice:
+        pricelist: '@defaultPriceList'
+        product: '@product'
+        productSku: 'SKU123'
+        quantity: 5
+        unit: '@item'
+        value: 2
+        currency: 'USD'
+    productPriceEur:
+        pricelist: '@defaultPriceList'
+        product: '@product'
+        productSku: 'SKU123'
+        quantity: 5
+        unit: '@item'
+        value: 1.9
+        currency: 'EUR'

@@ -1,0 +1,30 @@
+<div class="list-group-item__inner">
+    <a href="#" class="btn btn-icon btn-square-lighter remove-btn" title="<%- _.__('Remove') %>">
+        <span class="fa-close"></span>
+    </a>
+    <div class="list-group-item__header">
+        <% if (hasDefault) { %>
+        <div class="list-group-item__default">
+            <input type="radio" class="default-selector"
+                   name="<%= name %>_default"
+                   title="<%= _.__('Default') %>"
+                   value="<%= id %>"
+            <% if(isDefault) { %>
+            checked="checked"
+            <% } %>
+            />
+        </div>
+        <% } %>
+        <h4 class="list-group-item__title">
+            <a href="<%- link %>" class="list-group-item__link entity-info" title="<%- label %>"><%- label %></a>
+        </h4>
+    </div>
+    <div class="list-group-item__extra-info">
+        <% _.each(extraData, function(item) { %>
+        <% if (!_.isUndefined(item.label)) { %>
+            <% if (!item.hasOwnProperty('value') || !item.value) { item.value = _.__('N/A'); } %>
+            <div><%- item.label %>: <%- item.value %></div>
+        <% } %>
+        <% }); %>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+/* @theme: blank; */
+
+$datagrid-massaction-toggle-color: lighten(get-color('additional', 'dark'), 21%) !default;
+
+$datagrid-massaction-dropdown-menu-action-offset-inner: $offset-y-s ($offset-x - 1px) !default;
+$datagrid-massaction-dropdown-menu-action-color: get-color('additional', 'dark') !default;
+$datagrid-massaction-dropdown-menu-action-hover-bg: get-color('additional', 'base') !default;

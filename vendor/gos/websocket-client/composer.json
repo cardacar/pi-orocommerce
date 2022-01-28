@@ -1,0 +1,41 @@
+{
+	"name": "gos/websocket-client",
+	"type": "library",
+	"description": "WAMP client in PHP",
+	"keywords": ["Ratchet", "WAMP", "WebSocket"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Martin Bažík",
+			"email": "martin@bazo.sk"
+		},
+		{
+			"name": "Johann Saunier",
+			"email": "johann_27@hotmail.fr"
+		}
+	],
+	"require": {
+		"php": "^7.2 || ^8.0",
+		"ext-json": "*",
+		"psr/log": "^1.0 || ^2.0 || ^3.0",
+		"symfony/deprecation-contracts": "^2.1",
+		"symfony/options-resolver": "^4.4 || ^5.2 || ^6.0"
+	},
+	"require-dev": {
+		"cboden/ratchet": "^0.4.2",
+		"phpstan/extension-installer": "^1.1",
+		"phpstan/phpstan": "^0.12.92",
+		"phpstan/phpstan-phpunit": "^0.12.21",
+		"phpunit/phpunit": "^8.5 || ^9.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"Gos\\Component\\WebSocketClient\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Gos\\Component\\WebSocketClient\\Tests\\": "tests/"
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{{ UI.link({
+    'path': path('oro_sales_opportunity_customer_aware_create', {
+        targetId: entity.id,
+        targetClass: oro_class_name(entity, true)
+    }),
+    'iCss': 'fa-usd',
+    'aCss': 'dropdown-item',
+    'title': 'oro.sales.opportunity.create.label'|trans,
+    'label': 'oro.sales.opportunity.create.label'|trans
+}) }}

@@ -1,0 +1,184 @@
+parameters:
+    oro_platform.composer.installed_json: '%kernel.project_dir%/vendor/composer/installed.json'
+
+    jms_serializer.twig_extension.class: Oro\Bundle\PlatformBundle\Twig\SerializerExtension
+
+    oro_platform.collector.template: '@@OroPlatform/Collector/platform.html.twig'
+
+services:
+    oro_platform.psr7.http_factory:
+        class: Oro\Bundle\PlatformBundle\Psr7\HttpFactory
+    # provide default implementations for PSR-17 based on guzzlehttp/psr7
+    Psr\Http\Message\ServerRequestFactoryInterface:
+        alias: oro_platform.psr7.http_factory
+    Psr\Http\Message\StreamFactoryInterface:
+        alias: oro_platform.psr7.http_factory
+    Psr\Http\Message\UploadedFileFactoryInterface:
+        alias: oro_platform.psr7.http_factory
+    Psr\Http\Message\ResponseFactoryInterface:
+        alias: oro_platform.psr7.http_factory
+
+    jms_serializer.twig_extension.serializer:
+        class: Oro\Bundle\PlatformBundle\Twig\SerializerExtension
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_platform.service_link.service_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        arguments:
+            - []
+        tags:
+            - { name: container.service_locator }
+
+    oro_platform.maintenance:
+        class: Oro\Bundle\PlatformBundle\Maintenance\Mode
+        arguments:
+            - "@lexik_maintenance.driver.factory"
+            - "@event_dispatcher"
+
+    Oro\Bundle\PlatformBundle\Maintenance\Mode:
+        alias: oro_platform.maintenance
+
+    oro_platform.event_listener.driver_lock:
+        class: Oro\Bundle\PlatformBundle\EventListener\Console\DriverLockCommandListener
+        arguments:
+            - "@event_dispatcher"
+        tags:
+            - { name: kernel.event_listener, event: console.terminate, method: afterExecute }
+
+    oro_platform.composer.local_repo_factory:
+        class: Oro\Bundle\PlatformBundle\Composer\LocalRepositoryFactory
+        public: false
+        arguments:
+            - '%oro_platform.composer.installed_json%'
+
+    oro_platform.version.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_platform_version' ] ]
+
+    oro_platform.url.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_platform_url' ] ]
+
+    oro_platform.composer.version_helper:
+        class: Oro\Bundle\PlatformBundle\Composer\VersionHelper
+        arguments:
+            - '@oro_platform.composer.local_repo_factory'
+            - '@oro_platform.version.cache'
+
+    oro_platform.form.url_generator:
+        class: 'Oro\Bundle\PlatformBundle\Form\UrlGenerator'
+        public: true
+        arguments:
+            - '@oro_platform.provider.package'
+            - '@oro_platform.url.cache'
+
+    oro_platform.provider.package:
+        class: 'Oro\Bundle\PlatformBundle\Provider\PackageProvider'
+        arguments:
+            - '@oro_platform.composer.local_repo_factory'
+
+    Oro\Bundle\PlatformBundle\Provider\PackageProvider:
+        alias: oro_platform.provider.package
+
+    oro_platform.provider.deployment_variables:
+        class: 'Oro\Bundle\PlatformBundle\Provider\DeploymentVariableProvider'
+        arguments:
+            - '@parameter_bag'
+
+    Oro\Bundle\PlatformBundle\Provider\DeploymentVariableProvider:
+        alias: oro_platform.provider.deployment_variables
+
+    oro_platform.twig.platform_extension:
+        class: Oro\Bundle\PlatformBundle\Twig\PlatformExtension
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_platform.optional_listeners.manager:
+        class: Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager
+        public: true
+        arguments:
+           - []
+           - '@service_container'
+
+    oro_platform.event_listener.data_fixtures_listener.abstract:
+        class: 'Oro\Bundle\PlatformBundle\EventListener\AbstractDemoDataFixturesListener'
+        abstract: true
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+
+    oro_platform.event_listener.demo_data_fixtures_listener.abstract:
+        parent: oro_platform.event_listener.data_fixtures_listener.abstract
+        class: 'Oro\Bundle\PlatformBundle\EventListener\AbstractDemoDataFixturesListener'
+        abstract: true
+
+    oro_platform.provider.console.global_options_provider_registry:
+        class: Oro\Bundle\PlatformBundle\Provider\Console\GlobalOptionsProviderRegistry
+        arguments:
+            - !tagged_iterator oro_platform.console.global_options_provider
+
+    oro_platform.provider.console.optional_listeners_global_options_provider:
+        class: Oro\Bundle\PlatformBundle\Provider\Console\OptionalListenersGlobalOptionsProvider
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+        tags:
+            - { name: oro_platform.console.global_options_provider }
+
+    oro_platform.event_listener.console.global_options_listener:
+        class: Oro\Bundle\PlatformBundle\EventListener\Console\GlobalOptionsListener
+        arguments:
+            - '@oro_platform.provider.console.global_options_provider_registry'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand, priority: 250 }
+
+    oro_platform.command_executor:
+        class: Oro\Component\PhpUtils\Tools\CommandExecutor\CommandExecutor
+        public: true
+        arguments:
+            - '%kernel.project_dir%/bin/console'
+            - '%kernel.environment%'
+
+    oro_platform.collector:
+        class: Oro\Bundle\PlatformBundle\Collector\PlatformCollector
+        tags:
+            - { name: data_collector, template: "%oro_platform.collector.template%", id: oro_platform, priority: -260 }
+
+    oro_platform.twig.service_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        public: false
+        arguments:
+            - [] # services. Will be set in Oro\Bundle\PlatformBundle\DependencyInjection\Compiler\TwigServiceLocatorPass
+        tags:
+            - { name: container.service_locator }
+
+    Doctrine\Persistence\ManagerRegistry:
+        alias: 'doctrine'
+
+    Doctrine\Inflector\Inflector:
+        factory: [ !service { class: Doctrine\Inflector\Rules\English\InflectorFactory }, 'build' ]
+
+    oro_platform.listener.maintenance_propagation:
+        class: Oro\Bundle\PlatformBundle\EventListener\MaintenancePropagationListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 1024 }
+
+    oro_platform.maintenance_listener:
+        decorates: lexik_maintenance.listener
+        decoration_priority: 100
+        parent: lexik_maintenance.listener
+        class: Oro\Bundle\PlatformBundle\EventListener\MaintenanceListener
+
+    oro_platform.decorator.maintenance_listener:
+        decorates: lexik_maintenance.listener
+        class: Oro\Bundle\PlatformBundle\EventListener\MaintenanceListenerDecorator
+        arguments:
+            - '@oro_platform.decorator.maintenance_listener.inner'
+            - '@lexik_maintenance.driver.factory'
+            - '@router_listener'

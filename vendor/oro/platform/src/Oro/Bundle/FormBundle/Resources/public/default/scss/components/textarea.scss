@@ -1,0 +1,25 @@
+/* @theme: default; */
+
+.textarea {
+    @include placeholder {
+        color: get-color('additional', 'middle');
+    }
+
+    &--size-m {
+        padding: $textarea-padding--m;
+    }
+
+    &--size-s {
+        padding: $textarea-padding--s;
+    }
+
+    @include element-state('error') {
+        box-shadow: $textarea-box-shadow-error-state;
+    }
+
+    @include element-state('disabled') {
+        background: $textarea-background-color-disabled-state;
+        box-shadow: none;
+        border: $textarea-border;
+    }
+}

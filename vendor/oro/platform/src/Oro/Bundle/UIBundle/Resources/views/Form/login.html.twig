@@ -1,0 +1,36 @@
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
+
+{% block form_row %}
+    {% spaceless %}
+        {% if hint|default() %}
+            <div{{ block('hint_attributes') }}>{{ hint|raw }}</div>
+        {% endif %}
+        <div class="control-group{% if errors|length > 0 %} error{% endif %}">
+            <label class="control-label">{{ form_label(form, '') }}</label>
+            <div class="controls">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+        {{ form_errors(form) }}
+    {% endspaceless %}
+{% endblock form_row %}
+
+{# Errors #}
+
+{% block form_errors %}
+    {%- spaceless -%}
+        {% if form.parent %}
+            {{ parent() }}
+        {% else %}
+                {%- for error in errors -%}
+                    <div>{{ error.message }}</div>
+                {%- endfor -%}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+    {% spaceless %}
+        {{ label|trans({}, translation_domain) }}
+    {% endspaceless %}
+{% endblock form_label %}

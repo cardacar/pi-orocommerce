@@ -1,0 +1,9 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: 'OroFrontendBundle:layouts:default/imports/scroll_top/scroll_top.html.twig'
+
+        - '@add':
+            id: __scroll_top
+            parentId: __root
+            blockType: scroll_top

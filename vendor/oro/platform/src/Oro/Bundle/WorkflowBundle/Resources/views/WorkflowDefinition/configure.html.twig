@@ -1,0 +1,65 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% oro_title_set({params : {"%workflow_definition.label%": entity.label|trans([], 'workflows')} }) %}
+
+{% block stats %}
+    <li>{{ 'oro.ui.created_at'|trans }}: {{ entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+    <li>{{ 'oro.ui.updated_at'|trans }}: {{ entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+{% endblock stats %}
+
+{% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': 'oro_workflow_definition_view', 'params': {'name': entity.name}
+    }) ~ UI.saveAndStayButton() %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+
+    {{ UI.cancelButton(path('oro_workflow_definition_view', {'name': entity.name})) }}
+{% endblock navButtons %}
+
+{% block breadcrumbs %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_workflow_definition_index'),
+        'indexLabel': 'oro.workflow.workflowdefinition.entity_plural_label'|trans,
+        'additional': [{
+            'indexPath': path('oro_workflow_definition_view', {name: entity.name}),
+            'indexLabel': entity.label|trans([], 'workflows')
+        }],
+        'entityTitle': 'oro.workflow.workflowdefinition.configuration.label'|trans
+    } %}
+
+    {{ parent() }}
+
+    <span class="page-title__status">
+        {% if entity.isActive %}
+            {{ UI.badge('Active'|trans, 'enabled') }}
+        {% else %}
+            {{ UI.badge('Inactive'|trans, 'disabled') }}
+        {% endif %}
+    </span>
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set data = [] %}
+    {% for child in form %}
+        {% if child.children %}
+            {% set data = data|merge([form_row_collection(child)]) %}
+        {% else %}
+            {% set data = data|merge([form_row(child)]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% set id = 'workflow-variables' %}
+    {% set data = {
+        'dataBlocks': [{
+            'title': 'oro.workflow.workflowdefinition.configuration.label'|trans,
+            'class': 'nav-item active',
+            'subblocks': [{'data': data}]
+        }],
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

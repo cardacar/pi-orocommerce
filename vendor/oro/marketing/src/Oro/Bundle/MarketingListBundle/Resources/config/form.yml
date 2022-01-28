@@ -1,0 +1,76 @@
+services:
+    # MarketingList
+    oro_marketing_list.form.type.marketing_list:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
+        tags:
+            - { name: form.type, alias: oro_marketing_list }
+
+    oro_marketing_list.form.type.marketing_list_removed_item:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType
+        tags:
+            - { name: form.type, alias: oro_marketing_list_removed_item }
+
+    oro_marketing_list.form.type.marketing_list_removed_item_api:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListRemovedItemApiType
+        tags:
+            - { name: form.type, alias: oro_marketing_list_removed_item_api }
+
+    oro_marketing_list.form.marketing_list_removed_item:
+        class: Symfony\Component\Form\Form
+        public: true
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListRemovedItemApiType
+
+    oro_marketing_list.form.handler.marketing_list_removed_item:
+        parent: oro_form.form_handler.api
+        public: true
+        calls:
+            - [setForm, ['@oro_marketing_list.form.marketing_list_removed_item']]
+
+    oro_marketing_list.form.type.marketing_list_unsubscribed_item:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeUnsubscribedItemType
+        tags:
+            - { name: form.type, alias: oro_marketing_list_unsubscribed_item }
+
+    oro_marketing_list.form.type.marketing_list_unsubscribed_item_api:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListUnsubscribedItemApiType
+        tags:
+            - { name: form.type, alias: oro_marketing_list_unsubscribed_item_api }
+
+    oro_marketing_list.form.marketing_list_unsubscribed_item:
+        class: Symfony\Component\Form\Form
+        public: true
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListUnsubscribedItemApiType
+
+    oro_marketing_list.form.handler.marketing_list_unsubscribed_item:
+        parent: oro_form.form_handler.api
+        public: true
+        calls:
+            - [setForm,  ["@oro_marketing_list.form.marketing_list_unsubscribed_item"]]
+
+    oro_marketing_list.form.handler.marketing_list:
+        class: Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler
+        arguments:
+            - "@doctrine"
+            - "@validator"
+            - "@translator"
+
+    Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler:
+        alias: oro_marketing_list.form.handler.marketing_list
+
+    oro_marketing_list.form.type.entity_choice:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType
+        arguments:
+            - "@oro_marketing_list.entity_provider.contact_information"
+        tags:
+            - { name: form.type, alias: oro_marketing_list_contact_information_entity_choice }
+
+    oro_marketing_list.form.type.marketing_list_select:
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType
+        tags:
+            - { name: form.type, alias: "oro_marketing_list_select" }

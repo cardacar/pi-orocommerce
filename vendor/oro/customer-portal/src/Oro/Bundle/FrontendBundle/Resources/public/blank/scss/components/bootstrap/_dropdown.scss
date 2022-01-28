@@ -1,0 +1,44 @@
+/* @theme: blank; */
+
+.dropdown-menu {
+    @if not $enable-shadows {
+        box-shadow: $dropdown-box-shadow;
+    }
+
+    /*rtl:ignore*/
+    right: auto;
+    /*rtl:ignore*/
+
+
+    &[x-adjusted-height] {
+        overflow-y: auto;
+    }
+
+    &[x-displayed-arrow] {
+        @include flexible-arrow();
+    }
+
+    &[x-placement] {
+        .dropdown-item {
+            white-space: normal;
+        }
+    }
+}
+
+.dropdown-toggle {
+    &--no-caret:after {
+        content: none;
+    }
+
+    &--no-offset:after {
+        margin-left: 0;
+    }
+}
+
+@include breakpoint('tablet') {
+    .dropdown-toggle--expanded {
+        &:after {
+            content: none;
+        }
+    }
+}

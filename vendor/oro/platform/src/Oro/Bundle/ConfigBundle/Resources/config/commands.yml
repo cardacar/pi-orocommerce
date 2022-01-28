@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\ConfigBundle\Command\ConfigUpdateCommand:
+        arguments:
+            - '@oro_config.global'
+        tags:
+            - { name: console.command }

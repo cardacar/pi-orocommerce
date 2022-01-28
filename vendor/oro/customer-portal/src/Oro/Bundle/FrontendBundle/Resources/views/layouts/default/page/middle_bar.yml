@@ -1,0 +1,8 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: 'OroFrontendBundle:layouts:default/page/middle_bar.html.twig'
+        - '@add':
+            id: middle_bar_search
+            parentId: middle_bar_center
+            blockType: block

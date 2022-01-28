@@ -1,0 +1,326 @@
+services:
+    oro_imap.connector.factory:
+        class: Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory
+        public: true
+        arguments:
+            - '@oro_imap.services.factory'
+            - Oro\Bundle\ImapBundle\Connector\ImapConnector
+
+    oro_imap.services.factory:
+        class: Oro\Bundle\ImapBundle\Connector\ImapServicesFactory
+        arguments:
+            - # The configuration of IMAP services. The empty key is used to configure IMAP servers which have not any special preferences
+                "":
+                    - Oro\Bundle\ImapBundle\Mail\Storage\Imap
+                    - Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
+                X-GM-EXT-1:
+                    - Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
+                    - Oro\Bundle\ImapBundle\Connector\Search\GmailSearchStringManager
+
+    oro_imap.email_body_loader:
+        class: Oro\Bundle\ImapBundle\Provider\ImapEmailBodyLoader
+        arguments:
+            - '@oro_imap.connector.factory'
+            - '@oro_security.encoder.default'
+            - '@oro_imap.oauth_manager_registry'
+            - '@oro_config.global'
+        tags:
+            - { name: oro_email.email_body_loader }
+
+    oro_imap.email_flag_manager_loader:
+        class: Oro\Bundle\ImapBundle\Provider\ImapEmailFlagManagerLoader
+        arguments:
+            - '@oro_imap.connector.factory'
+            - '@oro_security.encoder.default'
+            - '@oro_imap.oauth_manager_registry'
+        tags:
+            - { name: oro_email.email_flag_manager_loader }
+
+    oro_imap.email_synchronizer:
+        shared: false
+        class: Oro\Bundle\ImapBundle\Sync\ImapEmailSynchronizer
+        arguments:
+            - '@doctrine'
+            - '@oro_email.known_email_address_checker_factory'
+            - '@oro_imap.email_sync_processor_factory'
+            - '@oro_imap.connector.factory'
+            - '@oro_security.encoder.default'
+            - '@oro_imap.oauth_manager_registry'
+        calls:
+            - ['setMessageProducer', ['@oro_message_queue.client.message_producer']]
+            - [setLogger, ['@logger']]
+            - ['setCredentialsManager', ['@oro_imap.origin_credentials.issue_manager']]
+        tags:
+            - { name: oro_email.email_synchronizer }
+
+    oro_imap.email_sync_processor_factory:
+        class: Oro\Bundle\ImapBundle\Sync\ImapEmailSynchronizationProcessorFactory
+        shared: false
+        arguments:
+            - '@doctrine'
+            - '@oro_email.email.entity.builder'
+            - '@oro_imap.imap_email_remove_manager'
+        calls:
+            - ['setLogger', ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: oro_imap_email }
+
+    oro_imap.imap_email_remove_manager:
+        class: Oro\Bundle\ImapBundle\Sync\ImapEmailRemoveManager
+        arguments:
+            - '@doctrine'
+        calls:
+            - [setLogger, ['@logger']]
+
+    oro_imap.form.type.configuration:
+        class: Oro\Bundle\ImapBundle\Form\Type\ConfigurationType
+        arguments:
+            - '@oro_security.encoder.default'
+            - '@oro_security.token_accessor'
+            - '@translator'
+        tags:
+             - { name: form.type, alias: oro_imap_configuration }
+
+    oro_imap.form.type.check_button:
+        class: Oro\Bundle\ImapBundle\Form\Type\CheckButtonType
+        tags:
+            - { name: form.type, alias: oro_imap_configuration_check }
+
+    oro_imap.form.type.choice_account:
+        class: Oro\Bundle\ImapBundle\Form\Type\ChoiceAccountType
+        arguments:
+             - '@translator'
+             - '@oro_imap.oauth_manager_registry'
+        tags:
+             - { name: form.type, alias: oro_imap_choice_account_type }
+
+    oro_imap.form.configuration_gmail_type:
+        class: Oro\Bundle\ImapBundle\Form\Type\ConfigurationGmailType
+        arguments:
+             - '@translator'
+             - '@oro_config.user'
+             - '@oro_security.token_accessor'
+             - '@request_stack'
+             - '@oro_imap.oauth_manager_registry'
+        tags:
+             - { name: form.type, alias: oro_imap_configuration_gmail }
+
+    oro_imap.form.configuration_microsoft_type:
+        class: Oro\Bundle\ImapBundle\Form\Type\ConfigurationMicrosoftType
+        arguments:
+             - '@translator'
+             - '@oro_config.user'
+             - '@oro_security.token_accessor'
+             - '@request_stack'
+             - '@oro_imap.oauth_manager_registry'
+        tags:
+             - { name: form.type }
+
+    oro_imap.listener.user_email_origin:
+        class: Oro\Bundle\ImapBundle\EventListener\UserEmailOriginListener
+        arguments:
+            - '@oro_security.encoder.default'
+            - '@oro_imap.connector.factory'
+            - '@doctrine'
+            - '@oro_imap.oauth_manager_registry'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\ImapBundle\Entity\UserEmailOrigin, event: prePersist }
+
+    oro_imap.manager.clear:
+        class: Oro\Bundle\ImapBundle\Manager\ImapClearManager
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_search.async.indexer'
+        calls:
+            - [setLogger, ['@logger']]
+
+    oro_imap.form.type.google_sync_checkbox:
+        class: Oro\Bundle\ImapBundle\Form\Type\GoogleSyncConfigCheckbox
+        tags:
+            - { name: form.type, alias: oro_config_google_imap_sync_checkbox }
+
+    oro_imap.form.google_imap_config_handler:
+        class: Oro\Bundle\ImapBundle\Form\Handler\GoogleImapConfigHandler
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_imap.oauth_manager_registry'
+            - '@logger'
+
+    oro_imap.form.microsoft_imap_config_handler:
+        class: Oro\Bundle\ImapBundle\Form\Handler\MicrosoftImapConfigHandler
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_imap.oauth_manager_registry'
+            - '@logger'
+
+    oro_imap.oauth_manager_registry:
+        class: Oro\Bundle\ImapBundle\Manager\OAuthManagerRegistry
+        public: true
+        arguments:
+            - !tagged_iterator oro_imap.oauth_manager
+
+    oro_imap.imap_email_google_oauth_manager:
+        class: Oro\Bundle\ImapBundle\Manager\ImapEmailGoogleOAuthManager
+        arguments:
+            - '@doctrine'
+            - '@oro_imap.google_oauth_provider'
+            - '@oro_config.global'
+        tags:
+            - { name: oro_imap.oauth_manager }
+
+    oro_imap.imap_email_microsoft_oauth_manager:
+        class: Oro\Bundle\ImapBundle\Manager\ImapEmailMicrosoftOAuthManager
+        arguments:
+            - '@doctrine'
+            - '@oro_imap.microsoft_oauth_provider'
+            - '@oro_config.global'
+        tags:
+            - { name: oro_imap.oauth_manager }
+
+    oro_imap.google_oauth_provider:
+        class: Oro\Bundle\ImapBundle\Provider\GoogleOAuthProvider
+        public: true
+        arguments:
+            - '@hwi_oauth.http_client'
+            - '@hwi_oauth.resource_ownermap.main'
+            - '@oro_config.global'
+            - '@oro_security.encoder.default'
+
+    oro_imap.microsoft_oauth_provider:
+        class: Oro\Bundle\ImapBundle\Provider\MicrosoftOAuthProvider
+        public: true
+        arguments:
+            - '@hwi_oauth.http_client'
+            - '@hwi_oauth.resource_ownermap.main'
+            - '@oro_config.global'
+            - '@oro_security.encoder.default'
+            - '@router'
+
+    oro_imap.microsoft_oauth_scope_provider:
+        class: Oro\Bundle\ImapBundle\Provider\MicrosoftOAuthScopeProvider
+        public: true
+
+    oro_imap.manager.controller.connection:
+        class: Oro\Bundle\ImapBundle\Manager\ConnectionControllerManager
+        public: true
+        arguments:
+            - '@form.factory'
+            - '@oro_security.encoder.default'
+            - '@doctrine'
+            - '@oro_imap.connector.factory'
+            - '@oro_imap.oauth_manager_registry'
+            - oro_user_emailsettings
+            - Oro\Bundle\UserBundle\Form\Type\EmailSettingsType
+            - oro_email_mailbox
+            - Oro\Bundle\EmailBundle\Form\Type\MailboxType
+
+    oro_imap.listener.send_email_transport_listener:
+        class: Oro\Bundle\ImapBundle\EventListener\SendEmailTransportListener
+        arguments:
+            - '@oro_security.encoder.default'
+            - '@oro_imap.oauth_manager_registry'
+        tags:
+            - { name: kernel.event_listener, event: oro_email.send_email_transport, method: setSmtpTransport }
+
+    oro_imap.async.clear_inactive_mailbox_processor:
+        class: Oro\Bundle\ImapBundle\Async\ClearInactiveMailboxMessageProcessor
+        arguments:
+            - '@oro_imap.manager.clear'
+            - '@oro_message_queue.job.runner'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_imap.async.sync_email:
+        shared: false
+        class: Oro\Bundle\ImapBundle\Async\SyncEmailMessageProcessor
+        arguments:
+            - '@oro_imap.email_synchronizer'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_imap.async.sync_emails:
+        shared: false
+        class: Oro\Bundle\ImapBundle\Async\SyncEmailsMessageProcessor
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_imap.validator.email_folders:
+        class: Oro\Bundle\ImapBundle\Validator\EmailFoldersValidator
+        tags:
+            - { name: validator.constraint_validator, alias: oro_imap.validator.email_folders }
+
+    oro_imap.listener.user_email_change:
+        class: Oro\Bundle\ImapBundle\EventListener\UserEmailChangeListener
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\UserBundle\Entity\User', event: preUpdate }
+
+    oro_imap.origin_credentials.issue_manager:
+        class: Oro\Bundle\ImapBundle\OriginSyncCredentials\SyncCredentialsIssueManager
+        arguments:
+            - '@oro_imap.origin_credentials.storage_dbal'
+            - '@security.authorization_checker'
+
+    oro_imap.origin_credentials.storage_dbal:
+        class: Oro\Bundle\ImapBundle\OriginSyncCredentials\Driver\DbalWrongCredentialsOriginsDriver
+        arguments:
+            - '@doctrine'
+            - '@logger'
+
+    oro_imap.origin_credentials.notification_sender.socket:
+        class: Oro\Bundle\ImapBundle\OriginSyncCredentials\NotificationSender\SocketNotificationSender
+        arguments:
+            - '@oro_sync.websocket_client'
+            - '@oro_sync.client.connection_checker'
+        tags:
+            - {name: oro_imap.origin_credentials.notification_sender}
+
+    oro_imap.origin_credentials.notification_sender.email:
+        class: Oro\Bundle\ImapBundle\OriginSyncCredentials\NotificationSender\EmailNotificationSender
+        arguments:
+            - '@oro_notification.model.notification_settings'
+            - '@oro_email.manager.template_email'
+        tags:
+            - {name: oro_imap.origin_credentials.notification_sender}
+
+    oro_imap.origin_credentials.notification_sender.flash_bag:
+        class: Oro\Bundle\ImapBundle\OriginSyncCredentials\NotificationSender\FlashBagNotificationSender
+        arguments:
+            - '@request_stack'
+            - '@translator'
+        tags:
+            - {name: oro_imap.origin_credentials.user_notification_sender}
+
+    oro_imap.listener.login:
+        class: Oro\Bundle\ImapBundle\EventListener\LoginListener
+        arguments:
+             - '@oro_imap.origin_credentials.issue_manager'
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+
+    oro_imap.topic.sync_fail:
+        class: Oro\Bundle\ImapBundle\Topic\SyncFailTopic
+        arguments:
+            - 'oro_imap.sync_fail'
+            - '@gos_web_socket.client.manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
+
+    oro_imap.manager.checker.imap_settings:
+        class: Oro\Bundle\ImapBundle\Manager\ImapSettingsChecker
+        arguments:
+            - '@oro_imap.connector.factory'
+            - '@oro_security.encoder.default'
+
+    oro_imap.validator.connection_configuration.imap:
+        class: Oro\Bundle\ImapBundle\Validator\ImapConnectionConfigurationValidator
+        arguments:
+            - '@oro_imap.manager.checker.imap_settings'
+        tags:
+            - { name: validator.constraint_validator }

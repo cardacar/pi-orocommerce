@@ -1,0 +1,347 @@
+operations:
+    oro_translation_language_add:
+        label: oro.translation.action.add
+        acl_resource: oro_translation_language_create
+        applications: [default]
+        routes:
+            - oro_translation_language_index
+        button_options:
+            icon: fa-plus
+        frontend_options:
+            options:
+                width: 375
+                height: 150
+                minHeight: 150
+                okText: oro.translation.action.add
+        attributes:
+            language_code:
+                label: oro.translation.language.entity_label
+                type: string
+        form_options:
+            attribute_fields:
+                language_code:
+                    form_type: Oro\Bundle\TranslationBundle\Form\Type\AddLanguageType
+                    options:
+                        required: true
+                        constraints:
+                            - NotBlank: ~
+        actions:
+            - '@create_entity':
+                class: Oro\Bundle\TranslationBundle\Entity\Language
+                attribute: $.language
+                data:
+                    code: $.language_code
+                flush: true
+            - '@flash_message':
+                message: oro.translation.language.message.added
+                type: 'success'
+            - '@run_action_group':
+                action_group: oro_translation_language_update_cache_message
+            - '@refresh_grid': oro-translation-language-grid
+
+    oro_translation_language_disable:
+        label: oro.translation.action.disable
+        acl_resource: [EDIT, $.data]
+        applications: [default]
+        datagrids:
+            - oro-translation-language-grid
+        order: 10
+        button_options:
+            icon: fa-close
+        preconditions:
+            '@and':
+                - '@not_equal': [$code, 'en']
+                - '@not':
+                    - '@is_default_language': $.data
+                - '@equal': [$enabled, true]
+        actions:
+            - '@run_action_group':
+                action_group: oro_translation_language_set_enabled
+                parameters_mapping:
+                    data: $.data
+                    value: false
+            - '@flash_message':
+                message: oro.translation.language.message.disabled
+                type: 'success'
+            - '@refresh_grid': oro-translation-language-grid
+
+    oro_translation_language_enable:
+        label: oro.translation.action.enable
+        acl_resource: [EDIT, $.data]
+        applications: [default]
+        datagrids:
+            - oro-translation-language-grid
+        order: 10
+        button_options:
+            icon: fa-check
+        preconditions:
+            '@equal': [$enabled, false]
+        actions:
+            - '@run_action_group':
+                action_group: oro_translation_language_set_enabled
+                parameters_mapping:
+                    data: $.data
+                    value: true
+            - '@flash_message':
+                message: oro.translation.language.message.enabled
+                type: 'success'
+            - '@refresh_grid': oro-translation-language-grid
+
+    oro_translation_language_import:
+        label: oro.translation.action.import
+        acl_resource: [TRANSLATE, $.data]
+        datagrids:
+            - oro-translation-language-grid
+        order: 20
+        datagrid_options:
+            data:
+                type: import
+                entity_class: 'Oro\Bundle\TranslationBundle\Entity\Translation'
+                importProcessor: 'oro_translation_translation'
+                importJob: 'language_translations_import_from_csv'
+        button_options:
+            icon: upload
+            data:
+                options:
+                    refreshPageOnSuccess: $.isDefaultLanguage
+                    importTitle: $.importTitle
+                    datagridName: ~
+                    routeOptions:
+                        language_code: $code
+        preconditions:
+            '@acl': oro_importexport_import
+        preactions:
+            - '@check_if_default_language':
+                language: $.data
+                result: $.isDefaultLanguage
+            - '@trans':
+                attribute: $.entityLabel
+                id: 'oro.translation.language.entity_label'
+            - '@trans':
+                attribute: $.importTitle
+                id: 'oro.importexport.import.entity'
+            - '@format_string':
+                attribute: $.importTitle
+                string: $.importTitle
+                arguments:
+                    entityName: $.entityLabel
+
+    oro_translation_language_export:
+        acl_resource: [TRANSLATE, $.data]
+        datagrids:
+            - oro-translation-language-grid
+        label: oro.translation.action.export
+        order: 30
+        datagrid_options:
+            data:
+                type: export
+                entity_class: 'Oro\Bundle\TranslationBundle\Entity\Translation'
+                exportProcessor: 'oro_translation_translation'
+                exportJob: 'language_translations_export_to_csv'
+        button_options:
+            icon: download
+            data:
+                options:
+                    filePrefix: $.filePrefix
+                    routeOptions:
+                        language_code: $code
+        preconditions:
+            '@acl': oro_importexport_export
+        preactions:
+            - '@format_string':
+                attribute: $.filePrefix
+                string: 'translations-%%lang%%'
+                arguments:
+                    lang: $code
+
+    oro_translation_language_load_base:
+        label: oro.translation.action.install
+        acl_resource: [TRANSLATE, $.data]
+        frontend_options:
+            template: 'OroTranslationBundle:Operation:loadLanguage.html.twig'
+            title_parameters:
+                '%%language%%': $.languageName
+        button_options:
+            data:
+                fullRedirect: true
+        attributes:
+            language_code:
+                label: 'Language code'
+                type: string
+        form_init:
+            - '@get_language_translation_metrics':
+                language: $code
+                result: $.stat
+        form_options:
+            attribute_fields:
+                language_code:
+                    form_type: Symfony\Component\Form\Extension\Core\Type\HiddenType
+                    options:
+                        required: true
+            attribute_default_values:
+                language_code: $code
+        preactions:
+            - '@call_service_method':
+                service: oro_locale.formatter.language_code
+                method: formatLocale
+                method_parameters: [$code]
+                attribute: $.languageName
+        actions:
+            - '@download_update_language_translation':
+                language: $.data
+                result: $.installed
+            - '@tree':
+                conditions:
+                    '@equal': [$.installed, true]
+                actions:
+                    - '@flash_message':
+                        message: $.successMessage
+                        type: 'success'
+                    - '@run_action_group':
+                        action_group: oro_translation_language_update_cache_message
+            - '@tree':
+                conditions:
+                    '@equal': [$.installed, false]
+                actions:
+                    - '@flash_message':
+                        message: $.errorMessage
+                        type: 'error'
+            - '@refresh_grid':
+                conditions:
+                    '@not':
+                        - '@is_default_language': $.data
+                parameters:
+                    - oro-translation-language-grid
+
+    oro_translation_language_install:
+        extends: oro_translation_language_load_base
+        label: oro.translation.action.install
+        datagrids:
+            - oro-translation-language-grid
+        button_options:
+            icon: fa-cloud-download
+        frontend_options:
+            title: oro.translation.action.install.title
+            options:
+                okText: oro.translation.action.install
+        preactions:
+            - '@assign_value': [$.successMessage, 'oro.translation.language.message.installed']
+            - '@assign_value': [$.errorMessage, 'oro.translation.language.error.install']
+        preconditions:
+            '@is_language_translation_install_available': $.data
+
+    oro_translation_language_update:
+        extends: oro_translation_language_load_base
+        datagrids:
+            - oro-translation-language-grid
+        label: oro.translation.action.update
+        button_options:
+            icon: fa-cloud-download
+        frontend_options:
+            title: oro.translation.action.update.title
+            options:
+                okText: oro.translation.action.update
+        preactions:
+            - '@assign_value': [$.successMessage, 'oro.translation.language.message.updated']
+            - '@assign_value': [$.errorMessage, 'oro.translation.language.error.update']
+        preconditions:
+            '@is_language_translation_update_available': $.data
+
+    oro_translation_rebuild_cache:
+        label: oro.translation.action.rebuild_cache.label
+        applications: [default]
+        routes:
+            - oro_translation_translation_index
+        button_options:
+            icon: fa-refresh
+            class: btn-danger icons-holder-text
+        acl_resource: oro_translation_language_translate
+        actions:
+            - '@rebuild_translation_cache':
+                attribute: $.result
+            - '@flash_message':
+                conditions:
+                    '@equal': ['$.result[successful]', true]
+                message: oro.translation.translation.message.rebuild_cache
+                type: success
+            - '@flash_message':
+                  conditions:
+                      '@equal': ['$.result[successful]', false]
+                  message: '$.result[message]'
+                  translate: false
+                  type: error
+
+    oro_translation_translation_reset:
+        label: oro.translation.action.reset.hint
+        frontend_options:
+            confirmation:
+                title: oro.translation.action.reset.confirm_title
+                message: oro.translation.action.reset.message
+                okText: oro.translation.action.reset.confirm_ok
+                component: oroui/js/delete-confirmation
+        acl_resource: [TRANSLATE, $language]
+        applications: [default]
+        datagrids:
+            - oro-translation-translations-grid
+        button_options:
+            icon: fa-refresh
+        datagrid_options:
+            mass_action:
+                type: reset_translations
+                label: oro.translation.action.reset.label
+                icon: refresh
+                route: oro_translation_mass_reset
+                handler: oro_translation.mass_action.reset_translation_handler
+                data_identifier: translation.id
+                entity_name: 'Oro\Bundle\TranslationBundle\Entity\Translation'
+                acl_resource: oro_translation_language_translate
+                confirmation: true
+                defaultMessages:
+                    confirm_title: oro.translation.action.reset.confirm_title
+                    confirm_content: oro.translation.action.reset.confirm_content
+                    confirm_ok: oro.translation.action.reset.confirm_ok
+        preconditions:
+            '@not_blank': $id
+        actions:
+            - '@call_service_method':
+                service: oro_translation.manager.translation
+                method: saveTranslation
+                method_parameters:
+                    - $translationKey.key
+                    - null
+                    - $language.code
+                    - $translationKey.domain
+                    - $scope
+            - '@call_service_method':
+                service: oro_translation.manager.translation
+                method: flush
+            - '@refresh_grid': oro-translation-translations-grid
+
+action_groups:
+    oro_translation_language_set_enabled:
+        parameters:
+            data:
+                type: Oro\Bundle\TranslationBundle\Entity\Language
+            value:
+                type: boolean
+        acl_resource: [EDIT, $.data]
+        conditions:
+            '@not_equal': [$.data.enabled, $.value]
+        actions:
+            - '@assign_value': [$.data.enabled, $.value]
+            - '@flush_entity': $.data
+
+    oro_translation_language_update_cache_message:
+        acl_resource: oro_translation_translation_update
+        actions:
+            - '@assign_url':
+                attribute: $.rebuildCacheUrl
+                route: oro_translation_translation_index
+            - '@trans':
+                attribute: $.rebuildCacheMessage
+                id: oro.translation.translation.rebuild_cache_required
+                params:
+                    '%%path%%': $.rebuildCacheUrl
+            - '@flash_message':
+                message: $.rebuildCacheMessage
+                type: 'warning'

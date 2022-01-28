@@ -1,0 +1,3 @@
+dynamic-imports:
+    oroui:
+        - orofrontendlocalization/js/app/components/localization-switcher-component

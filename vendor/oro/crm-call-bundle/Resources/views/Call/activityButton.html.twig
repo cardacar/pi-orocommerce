@@ -1,0 +1,10 @@
+{% extends "OroCallBundle:Call:activityLink.html.twig" %}
+
+{% block action_controll %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = options|merge({
+        'aCss': 'no-hash'
+    }) %}
+    {{ UI.clientButton(options) }}
+{% endblock %}

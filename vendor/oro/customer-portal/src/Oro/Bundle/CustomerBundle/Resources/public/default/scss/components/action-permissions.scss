@@ -1,0 +1,73 @@
+/* @theme: default; */
+
+.action-permissions {
+    @include clearfix();
+
+    &-contaier {
+        margin-left: $action-permissions-offset-left;
+        margin-right: $action-permissions-offset-right;
+    }
+
+    &__item {
+        float: $action-permissions-item-float;
+        width: $action-permissions-item-width;
+        margin-right: $action-permissions-item-offset-right;
+    }
+
+    &__item-wrapper {
+        position: relative;
+
+        display: inline-block;
+        max-width: $action-permissions-item-wrapper-max-width;
+        padding: $action-permissions-item-wrapper-offset-inner;
+        box-sizing: content-box;
+
+        @include ellipsis();
+
+        &--no-access {
+            opacity: $action-permissions-item-wrapper-no-access-opacity;
+        }
+
+        &_changed {
+            background: $action-permissions-item-wrapper-changed-background;
+            box-shadow: $action-permissions-item-wrapper-changed-box-shadow;
+        }
+    }
+
+    &__dropdown-toggle {
+        padding-right: $action-permissions-dropdown-toggle-offset;
+
+        cursor: pointer;
+
+        &:after {
+            position: absolute;
+            right: $action-permissions-item-wrapper-toggle-icon-right;
+
+            margin-top: $action-permissions-item-wrapper-toggle-icon-offset-top;
+            margin-left: $action-permissions-item-wrapper-toggle-icon-offset-left;
+
+            vertical-align: top;
+
+            color: $action-permissions-item-wrapper-toggle-icon-color;
+
+            content: '';
+
+            @include caret-down();
+        }
+    }
+}
+
+.dropdown-menu__role-permissions-action {
+    &.dropdown-menu {
+        min-width: $action-permissions-dropdown-min-width;
+
+        white-space: $action-permissions-dropdown-white-space;
+        z-index: $action-permissions-dropdown-z-index;
+    }
+}
+
+.dropdown-menu__permissions-item {
+    &.dropdown-menu {
+        z-index: $action-permissions-dropdown-z-index;
+    }
+}

@@ -1,0 +1,27 @@
+<% var labelId = _.uniqueId('label-') %>
+<% var regionId = _.uniqueId('collapse-region-') %>
+<td class="grid-body-cell" colspan="<%- columnsCount %>" role="presentation">
+    <div role="row" aria-rowindex="<%- ariaRowIndex %>" class="entity-permission-container <% if (fields.length === 0) {%> field-less<% } %>">
+        <div role="gridcell" aria-colindex="1" class="permissions-cell collapse-expand-action-container">
+            <a href="#" class="collapse-action collapsed" role="button" title="<%- _.__('Expand') %>"
+                <% if (!fields.length) { %>
+                    tabindex="-1"
+                <% } %>
+                data-collapsed-title="<%- _.__('Expand') %>" data-expanded-title="<%- _.__('Collapse') %>"
+                data-toggle="collapse" data-target="#<%- regionId %>"
+                aria-controls="<%- regionId %>" aria-expanded="false"
+                aria-label="<%- _.__('Expand') + '/' + _.__('Collapse') %>"></a>
+            <div id="<%- labelId %>" class="entity-name"><%- label %></div>
+        </div>
+        <div role="gridcell" aria-colindex="2" class="permissions-cell action-permissions-container">
+            <ul data-name="action-permissions-items" class="action-permissions"></ul>
+        </div>
+        <% if (obj.readonlyMode !== true) { %>
+        <div role="gridcell" aria-colindex="3" class="permissions-cell entity-row-action more-bar-holder" data-name="row-action"></div>
+        <% } %>
+    </div>
+    <% if (obj.fields && fields.length) { %>
+    <div id="<%- regionId %>" class="collapse fields-list" data-name="fields-list"
+         role="region" aria-labelledby="<%- labelId %>"></div>
+    <% } %>
+</td>

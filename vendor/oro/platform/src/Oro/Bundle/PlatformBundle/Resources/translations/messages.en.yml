@@ -1,0 +1,25 @@
+oro:
+    platform:
+        system_info: System Information
+        packages: Packages
+        deployment_variables: Deployment
+        deployment_type:
+            label: Deployment Type
+
+        no_packages: There are no installed packages
+        package:
+            name: Package Name
+            version: Version
+            license: License
+
+        caption:
+            deployment_variables: Deployment
+            oro: Oro Packages
+            thirdParty: 3rd Party Packages
+        acl:
+            action:
+                system_info.label: Access system information
+
+        deployment_variable:
+            label: Label
+            value: Value

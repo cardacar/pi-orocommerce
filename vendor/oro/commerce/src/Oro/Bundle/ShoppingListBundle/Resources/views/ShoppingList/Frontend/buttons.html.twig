@@ -1,0 +1,166 @@
+{% macro addToCurrentButton(options) %}
+    {% import _self as buttons %}
+    {% set options = {
+        defaultLabel: 'oro.shoppinglist.entity_label'|trans,
+        actionLabel: 'oro.shoppinglist.actions.add_to_shopping_list'|trans
+    }|merge(options) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro addToButton(options) -%}
+    {% import _self as buttons %}
+    {% set options = {
+        actionLabel: 'oro.shoppinglist.actions.add_to_shopping_list'|trans
+    }|merge(options) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro addToNewButton(options) %}
+    {% import _self as buttons %}
+    {% set dataAttributes = options.dataAttributes|merge({
+        intention: 'new'
+    }) %}
+    {% set options = {
+        actionLabel: 'oro.shoppinglist.actions.add_to_new_shopping_list'|trans
+    }|merge(options)|merge({
+        dataAttributes: dataAttributes
+    }) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro buttonTemplate(options) %}
+    {% import 'OroFrontendBundle:layouts/blank:utils.html.twig' as utils %}
+    {% import _self as buttons %}
+    {{ utils.underscoreRaw(buttons.addToCurrentButton({
+        shoppingList: {
+            id: '<%= id %>',
+            label: '<%= _.escape(label) %>'
+        }
+    }|merge(options))) }}
+{% endmacro %}
+
+{% macro getButton(options) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = {
+        shoppingList: null,
+        defaultLabel: '',
+        ariaLabel: null,
+        aCss: 'btn--info'
+    }|merge(options) %}
+
+    {% set shoppingListId = options.shoppingList ? options.shoppingList.id : null %}
+    {% set shoppingListLabel = options.shoppingList ? options.shoppingList.label : options.defaultLabel %}
+
+    {% set dataAttributes = options.dataAttributes|merge({
+        shoppinglist: {
+            id: shoppingListId
+        }
+    }) %}
+
+    {% set buttonOptions = {
+        'role': 'button',
+        'dataAttributes': dataAttributes,
+        'aCss': 'btn btn--block btn-main add-to-shopping-list-button ' ~ options.aCss,
+        'moreButtonExtraClass': 'btn--action',
+        'dataId': shoppingListId,
+        'label' : options.actionLabel|replace({
+            '{{ shoppingList }}': shoppingListLabel
+        })
+    } %}
+
+    {% if options.iCss is defined %}
+        {% set buttonOptions = buttonOptions|merge({
+            'iCss': options.iCss
+        }) %}
+    {% endif %}
+    {% if options.labelInIcon is defined %}
+        {% set buttonOptions = buttonOptions|merge({
+            'labelInIcon': options.labelInIcon
+        }) %}
+    {% endif %}
+    {% if options.ariaLabel %}
+        {% set buttonOptions = buttonOptions|merge({
+            'ariaLabel': options.ariaLabel
+        }) %}
+    {% endif %}
+    {% if options.dataUrl %}
+        {% set buttonOptions = buttonOptions|merge({
+            'dataUrl': options.dataUrl,
+        }) %}
+    {% endif %}
+    {% if options.pageComponent is defined %}
+        {% set buttonOptions = buttonOptions|merge({
+            'pageComponent': options.pageComponent,
+        }) %}
+    {% endif %}
+
+    <div class="btn-group--flex icons-holder btn-group--loading">
+        {{ UI.clientLink(buttonOptions) }}
+    </div>
+{% endmacro %}
+
+{% macro getButtonsHtml(options) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import _self as buttons %}
+    {% set isShoppingListCreateEnabled = (feature_enabled('shopping_list_create') and is_granted('oro_shopping_list_frontend_create')) %}
+    {% set showSingleAddToShoppingListButton = isShoppingListCreateEnabled or not app.user %}
+    <div class="btn-group product-add-to-shopping-list-container"
+         {{ UI.renderPageComponentAttributes({
+             module: 'oroui/js/app/components/view-component',
+             options: {
+                 view: options.componentModule|default('oroshoppinglist/js/app/views/product-add-to-shopping-list-view'),
+                 buttonTemplate: '<%#' ~ buttons.buttonTemplate(options.current) ~ '#%>',
+                 removeButtonTemplate: options.remove is defined ? '<%#' ~ buttons.buttonTemplate(options.remove) ~ '#%>',
+                 createNewButtonTemplate: '<%#' ~ buttons.buttonTemplate(options.new) ~ '#%>',
+                 shoppingListCreateEnabled: isShoppingListCreateEnabled,
+                 showSingleAddToShoppingListButton: showSingleAddToShoppingListButton,
+                 emptyMatrixAllowed: oro_config_value('oro_product.matrix_form_allow_empty')
+             }|merge(options.componentOptions|default({}))
+         }) }}
+        >
+        {% if options.shoppingLists is not empty %}
+            {% set existingShoppingLists = [] %}
+            {% for shoppingList in options.shoppingLists %}
+                {% if shoppingList.current %}
+                    {{ buttons.addToCurrentButton(options.current|merge({shoppingList: shoppingList})) }}
+                {% else %}
+                    {%  set existingShoppingLists = existingShoppingLists|merge([shoppingList]) %}
+                {% endif %}
+            {% endfor %}
+            {% for shoppingList in existingShoppingLists %}
+                {{ buttons.addToButton(options.existing|merge({shoppingList: shoppingList})) }}
+            {% endfor %}
+            {% if isShoppingListCreateEnabled %}
+                {{ buttons.addToNewButton(options.new) }}
+            {% endif %}
+        {% elseif showSingleAddToShoppingListButton %}
+            {% set aCss = options.singleButtonACss is defined ? options.singleButtonACss : "" %}
+            {{ buttons.addToCurrentButton(options.current|merge({shoppingList: null, aCss: aCss})) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro getQuickSearchHtml(options) %}
+    <div data-page-component-view="oroshoppinglist/js/app/views/shopping-list-quick-search"
+         data-page-component-options="{{ {
+             minimumResultsForSearch: options.minimumResultsForSearch|default(5)
+         }|json_encode }}"
+         class="{{ options.quickSearchRootClass|default('dropdown-search') }} hide"
+         data-intention="search"
+    >
+        <input type="text"
+               class="{{ options.quickSearchInputClass|default('input input--full input--size-s') }}"
+               placeholder="{{ options.quickSearchInputPlaceholder|default('oro.frontend.shoppinglist.dropdown.quick_search.placeholder')|trans }}"
+               aria-label="{{ options.quickSearchInputAriaLabel|default('oro.frontend.shoppinglist.dropdown.quick_search.aria_label')|trans }}"
+               data-role="quick-search"
+        >
+        <button class="btn btn--plain clear-search-button"
+                aria-label="{{ options.quickSearchActionAriaLabel|default('oro.frontend.shoppinglist.dropdown.quick_search.clear')|trans }}"
+                disabled="disabled"
+        >
+            <span class="{{ options.quickSearchActionIcon|default('fa fa-remove fa--no-offset') }}" aria-hidden="true"></span>
+        </button>
+        <span class="quick-search-icon {{ options.quickSearchIcon|default('fa fa-search fa--no-offset') }}" aria-hidden="true"></span>
+    </div>
+{% endmacro %}

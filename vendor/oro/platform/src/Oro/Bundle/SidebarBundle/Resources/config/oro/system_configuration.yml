@@ -1,0 +1,51 @@
+system_configuration:
+    groups:
+        sidebar_settings:
+            title:       oro.sidebar.system_configuration.groups.sidebar_settings.title
+    fields:
+        oro_sidebar.sidebar_left_active:
+            data_type: boolean
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            search_type: choice
+            options:
+                label: oro.sidebar.system_configuration.fields.sidebar_left_active.label
+                choices:
+                    No: 0
+                    Yes: 1
+        oro_sidebar.sidebar_right_active:
+            data_type: boolean
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            search_type: choice
+            options:
+                label: oro.sidebar.system_configuration.fields.sidebar_right_active.label
+                choices:
+                    No: 0
+                    Yes: 1
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    sidebar_settings:
+                                        children:
+                                            - oro_sidebar.sidebar_left_active
+                                            - oro_sidebar.sidebar_right_active
+        user_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    sidebar_settings:
+                                        children:
+                                            - oro_sidebar.sidebar_left_active
+                                            - oro_sidebar.sidebar_right_active
+
+    api_tree:
+        look-and-feel:
+            oro_sidebar.sidebar_left_active: ~
+            oro_sidebar.sidebar_right_active: ~

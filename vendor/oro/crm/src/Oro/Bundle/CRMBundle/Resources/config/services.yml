@@ -1,0 +1,11 @@
+parameters:
+    oro_platform.collector.template: '@@OroCRM/Collector/crm.html.twig'
+
+services:
+    Oro\Bundle\CRMBundle\CacheWarmer\ExtendEntityCacheWarmer:
+        arguments:
+            - '@doctrine'
+            - '@logger'
+            - '%installed%'
+        tags:
+            - { name: oro_entity_extend.warmer }

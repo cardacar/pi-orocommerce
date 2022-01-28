@@ -1,0 +1,37 @@
+navigation:
+    menu_config:
+        items:
+            oro_notification_emailnotification_list:
+                label: 'oro.notification.emailnotification.entity_plural_label'
+                route: 'oro_notification_emailnotification_index'
+                extras:
+                    routes: ['oro_notification_emailnotification_*']
+                    description: 'oro.notification.menu.emailnotification_list.description'
+            oro_notification_massnotification_list:
+                label: 'oro.notification.massnotification.entity_plural_label'
+                route: 'oro_notification_massnotification_index'
+                extras:
+                    routes: ['oro_notification_massnotification_*']
+            oro_notification_notificationalerts_list:
+                label: 'oro.notification.menu.notification_alerts.label'
+                route: 'oro_notification_notificationalert_index'
+                acl_resource_id: 'oro_notification_notificationalert_view'
+
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                          emails:
+                              children:
+                                  oro_notification_emailnotification_list: ~
+                                  oro_notification_massnotification_list: ~
+                          oro_notification_notificationalerts_list: ~
+
+    titles:
+        oro_notification_emailnotification_index: ~
+        oro_notification_emailnotification_update: "Notification Rule %id% - Edit"
+        oro_notification_emailnotification_create: "Add Notification Rule"
+
+        oro_notification_massnotification_index: ~
+        oro_notification_notificationalert_index: ~

@@ -1,0 +1,16 @@
+services:
+    oro_importexport.job_executor:
+        class: Oro\Bundle\ImportExportBundle\Job\JobExecutor
+        arguments:
+            - '@akeneo_batch.connectors'
+            - '@akeneo_batch.job_repository'
+            - '@oro_importexport.context_registry'
+            - '@doctrine'
+            - '@oro_importexport.job.context.aggregator_registry'
+        lazy: true
+        public: true
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
+
+    Oro\Bundle\ImportExportBundle\Job\JobExecutor:
+        alias: oro_importexport.job_executor

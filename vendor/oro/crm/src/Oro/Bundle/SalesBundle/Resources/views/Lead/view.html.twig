@@ -1,0 +1,104 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+
+{% oro_title_set({params : {"%lead.name%": entity.name} }) %}
+
+{% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% if is_granted('EDIT', entity) %}
+        {% if (isDisqualifyAllowed)  %}
+            {{ UI.ajaxButton({
+                'dataUrl':  path('oro_sales_lead_disqualify', {'id': entity.id}),
+                'aCss':  'btn btn-danger action-button no-hash',
+                'iCss':  'fa-ban',
+                'dataMethod': 'POST',
+                'label': 'oro.sales.lead.disqualify'|trans,
+                'title': 'oro.sales.lead.disqualify'|trans,
+                'dataRedirect': path('oro_sales_lead_view', {'id': entity.id}),
+                'successMessage': 'oro.sales.controller.lead.saved.message'|trans,
+                'errorMessage': 'oro.sales.lead.status.change_error_message'|trans
+            }) }}
+        {% endif %}
+        {% if (isConvertToOpportunityAllowed)  %}
+            {{ UI.button({
+                'path':  path('oro_sales_lead_convert_to_opportunity', {'id': entity.id}),
+                'aCss':  'btn action-button',
+                'iCss':  'fa-usd',
+                'label': 'oro.sales.lead.convert_to_opportunity'|trans,
+                'title': 'oro.sales.lead.convert_to_opportunity'|trans,
+            }) }}
+        {% endif %}
+        {{ UI.editButton({
+            'path' : path('oro_sales_lead_update', { 'id': entity.id }),
+            'entity_label': 'oro.sales.lead.entity_label'|trans
+        }) }}
+    {% endif %}
+    {% if is_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_lead', {'id': entity.id}),
+            'dataRedirect': path('oro_sales_lead_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-lead',
+            'dataId': entity.id,
+            'entity_label': 'oro.sales.lead.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block stats %}
+    <li>{{ 'oro.ui.created_at'|trans }}: {{ entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+    <li>{{ 'oro.ui.updated_at'|trans }}: {{ entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+{% endblock stats %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_sales_lead_index'),
+        'indexLabel': 'oro.sales.lead.entity_plural_label'|trans,
+        'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {{ parent() }}
+    <span class="page-title__status">
+        {{ UI.badge(entity.status.name, entity.status.id != 'canceled' ? 'enabled' : 'disabled') }}
+    </span>
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set leadInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_sales_lead_info', {id: entity.id}),
+            'title': 'oro.sales.lead.information'|trans
+        }) }}
+    {% endset %}
+
+    {% set addressBookWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'contentClasses': [],
+            'url': path('oro_sales_lead_address_book', {id: entity.id}),
+            'title': 'oro.sales.lead.address_book'|trans
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'subblocks': [
+                {'data' : [leadInformationWidget] },
+                {'data' : [addressBookWidget] },
+            ]
+        }
+    ] %}
+
+    {% set id = 'leadView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

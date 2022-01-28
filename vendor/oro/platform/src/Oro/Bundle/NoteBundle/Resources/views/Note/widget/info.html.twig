@@ -1,0 +1,48 @@
+{# Activity action template #}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroActivityBundle::macros.html.twig' as AC %}
+
+<div class="widget-content form-horizontal box-content row-fluid">
+    <div class="responsive-block">
+        <div class="activity-context-activity-list">
+            {{ AC.activity_contexts(entity, target, true, 'oronote/js/app/components/note-context-component') }}
+        </div>
+
+        {{ UI.renderSwitchableHtmlProperty('oro.note.message.label'|trans, entity.message) }}
+    </div>
+    {% if attachment is not empty and attachment.attachmentURL %}
+    <div class="note-attachments">
+        <div class="control-group">
+            <label class="control-label">
+                {{ 'Attachment'|trans }}
+            </label>
+            <div class="attachment-item attachment-item--note">
+                <div class="thumbnail">
+                    {% if attachment.attachmentThumbnail  %}
+                        <a href="{{ attachment.attachmentURL }}" data-gallery="note-view-{{ entity.id }}" class="no-hash" title="{{ attachment.attachmentFileName|e('html_attr') }}">
+                            <span class="thumbnail" style="background: url('{{ attachment.attachmentThumbnail  }}') 50% 50% no-repeat;"></span>
+                        </a>
+                    {% else  %}
+                        <span class="fa {{ attachment.attachmentIcon }} fa-offset-none" aria-hidden="true"></span>
+                    {% endif  %}
+                </div>
+                <div class="dropdown link-to-record">
+                    {% set togglerId = 'dropdown-'|uniqid %}
+                    <a id="{{ togglerId }}" class="no-hash attachment-item__filename dropdown-toggle dropdown-toggle--no-caret file-menu" href="#" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <span class="fa {{ attachment.attachmentIcon }}" aria-hidden="true"></span> {{ attachment.attachmentFileName }}
+                    </a>
+                    <ul class="dropdown-menu file-menu" role="menu" aria-labelledby="{{ togglerId }}">
+                        <li>
+                            <a class="dropdown-item no-hash" tabindex="-1" href="{{ attachment.attachmentURL }}">
+                                {{ 'oro.translation.action.download'|trans }} <span>{{ attachment.attachmentSize }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</div>

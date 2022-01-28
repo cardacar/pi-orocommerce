@@ -1,0 +1,9 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% if isMobileVersion() %}
+    <span id="main-menu-toggle" class="main-menu-toggler">
+        <i class="fa-bars"></i>
+    </span>
+{% endif %}
+<div id="organization-switcher" class="organization-logo-wrapper"
+    {{ UI.renderPageComponentAttributes({view: 'oroui/js/app/views/page/organization-switch-view'}) }}
+    >{% placeholder organization_selector %}</div>

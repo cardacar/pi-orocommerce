@@ -1,0 +1,130 @@
+entity_config:
+    entity_config:
+        entity:
+            items:
+                entity_name:
+                    options:
+                        priority: 200
+                        indexed: true
+                    grid:
+                        type:               string
+                        label:              oro.entity_config.entity_config.entity_name.label
+                        filter_type:        string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                module_name:
+                    options:
+                        priority: 210
+                        indexed: true
+                    grid:
+                        type:               string
+                        label:              oro.entity_config.entity_config.module_name.label
+                        filter_type:        choice
+                        filter_options:
+                            field_options:
+                                multiple: true
+                                choices: "@oro_entity_config.event_listener.entityconfig_grid_listener->getModuleChoices"
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+
+                # this attribute is used to store an alias that was generated for an entity
+                # and helps to resolve duplicated aliases
+                entity_alias: # string
+                    options:
+                        auditable: false
+
+                # this attribute is used to store a plural alias that was generated for an entity
+                # and helps to resolve duplicated aliases
+                entity_plural_alias: # string
+                    options:
+                        auditable: false
+    attribute:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#attribute
+        entity:
+            items:
+                has_attributes:
+                    options:
+                        require_schema_update: false
+                        value_type: boolean
+                        default_value: false
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#attribute
+        field:
+            form:
+                block_config:
+                    attribute:
+                        title: oro.entity_config.block_titles.attribute.label
+                        priority: 50
+            items:
+                is_attribute:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                        indexed: true
+                    grid:
+                        type: boolean
+                        label: oro.entity_config.entity_config.attribute.field.items.is_attribute
+                        renderable: false
+                        is_visible: false
+                        visible: false
+                is_system:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                        indexed: true
+                searchable:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                    form:
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No: 0
+                                Yes: 1
+                            placeholder: false
+                            block: attribute
+                            label: oro.entity_config.entity_config.attribute.field.items.searchable
+                filterable:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                    form:
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No: 0
+                                Yes: 1
+                            placeholder: false
+                            block: attribute
+                            label: oro.entity_config.entity_config.attribute.field.items.filterable
+                filter_by:
+                    options:
+                        value_type: string
+                        default_value: 'exact_value'
+                    form:
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                oro.entity_config.field_config.filter_by.exact_value.label: exact_value
+                                oro.entity_config.field_config.filter_by.fulltext_search.label: fulltext_search
+                            placeholder: false
+                            block: attribute
+                            label: oro.entity_config.entity_config.attribute.field.items.filter_by.label
+                            tooltip: oro.entity_config.entity_config.attribute.field.items.filter_by.tooltip
+                sortable:
+                    options:
+                        value_type: boolean
+                        default_value: false
+                    form:
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                        options:
+                            choices:
+                                No: 0
+                                Yes: 1
+                            placeholder: false
+                            block: attribute
+                            label: oro.entity_config.entity_config.attribute.field.items.sortable

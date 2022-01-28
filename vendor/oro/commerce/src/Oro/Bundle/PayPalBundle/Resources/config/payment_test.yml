@@ -1,0 +1,18 @@
+parameters:
+    oro_paypal.allowed_ips:
+        - 255.255.255.1
+        - 255.255.255.2
+        - 255.255.255.3
+        - 255.255.254.0/24
+
+services:
+    oro_paypal.test.payment_method.express_checkout_provider:
+        class: 'Oro\Bundle\PayPalBundle\Tests\Functional\Stub\Method\ExpressCheckoutMethodProviderStub'
+        public: false
+        tags:
+            - { name: oro_payment.payment_method_provider }
+
+    oro_paypal.test.payment_method.view.express_checkout_provider:
+        class: 'Oro\Bundle\PayPalBundle\Tests\Functional\Stub\Method\View\ExpressCheckoutMethodViewProviderStub'
+        tags:
+            - { name: oro_payment.payment_method_view_provider }

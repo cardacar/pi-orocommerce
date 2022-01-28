@@ -1,0 +1,23 @@
+/* @theme: admin.oro; */
+
+@import '~bootstrap/scss/badge';
+
+.badge {
+    [class^="icon-status-"],
+    [class*=" icon-status-"] {
+        font-size: $badge-icon-height;
+        margin-right: $badge-icon-offset;
+    }
+}
+
+.badge-pill {
+    font-size: $badge-font-size;
+    line-height: $badge-line-height;
+    vertical-align: $badge-vertical-align;
+}
+
+@each $color, $values in $badge-theme-keys {
+    .badge-#{$color} {
+        @include badge-custom-variant($values...);
+    }
+}

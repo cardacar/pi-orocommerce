@@ -1,0 +1,8 @@
+dynamic-imports:
+    oroui:
+        - orofrontend/default/js/app/views/fake-masked-input-view
+map:
+    "*":
+        orodatagrid/templates/datagrid/visible-items-counter.html: orofrontend/default/templates/datagrid/visible-items-counter.html
+        orofilter/templates/filters-no-found.html: orofrontend/templates/multiselect-no-found.html
+        orofilter/templates/multiselect-clear-search.html: orofrontend/templates/multiselect-clear-search.html

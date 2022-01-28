@@ -1,0 +1,70 @@
+Oro\Bundle\ContactBundle\Entity\Contact:
+    constraints:
+        - Oro\Bundle\ContactBundle\Validator\Constraints\HasContactInformation: ~
+    properties:
+        firstName:
+            - Length:
+                max: 100
+        lastName:
+            - Length:
+                max: 100
+        gender:
+            - Choice:
+                choices: [male, female]
+        birthday:
+            - Date: ~
+            - LessThanOrEqual:
+                value: now UTC
+                message: The birth date cannot be in the future.
+        skype:
+            - Length:
+                max: 255
+        twitter:
+            - Length:
+                max: 255
+        facebook:
+            - Length:
+                max: 255
+        googlePlus:
+            - Length:
+                max: 255
+        linkedIn:
+            - Length:
+                max: 255
+        addresses:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.contact.validators.addresses.contains_primary
+            - Oro\Bundle\AddressBundle\Validator\Constraints\UniqueAddressTypes: ~
+        emails:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.contact.validators.emails.contains_primary
+        phones:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.contact.validators.phones.contains_primary
+
+Oro\Bundle\ContactBundle\Entity\Group:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
+    properties:
+        label:
+            - NotBlank: ~
+            - Length:
+                min: 3
+                max: 255
+
+Oro\Bundle\ContactBundle\Entity\ContactAddress:
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\RegionText: ~
+    properties:
+        country:
+            - NotBlank: ~
+        owner:
+            - NotBlank: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField:
+                message: oro.address.validation.owner_changed
+                groups: ['api']
+

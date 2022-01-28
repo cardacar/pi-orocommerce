@@ -1,0 +1,25 @@
+dashboards:
+    widgets:
+        quick_launchpad:
+            items:
+                contacts:
+                    label:      oro.contact.entity_plural_label
+                    icon:       group
+                    route:      oro_contact_index
+                    acl:        oro_contact_view
+                    position:   30
+        my_contacts_activity:
+            label:       oro.dashboard.my_contacts_activity.title
+            route:       oro_dashboard_widget
+            route_parameters: { bundle: OroContactBundle, name: myContactsActivity }
+            acl:         oro_contact_view
+            description: oro.dashboard.my_contacts_activity.description
+            icon:        bundles/orocontact/img/recently_accessed_contacts.png
+            icon_class:  fa-id-card-o
+            configuration:
+                owners:
+                    type: Oro\Bundle\UserBundle\Form\Type\WidgetOwnersType
+                    show_on_widget: true
+                    options:
+                        label: oro.user.dashboard.owners
+                        required: false

@@ -1,0 +1,110 @@
+/* @theme: default; */
+
+.checkout {
+    padding: $checkout-padding;
+
+    border-radius: $checkout-border-radius;
+
+    background: $checkout-background-color;
+
+    &--no-background {
+        background: none;
+        padding: 0;
+    }
+
+    &__head {
+        position: $checkout-head-position;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: $checkout-head-margin;
+    }
+
+    &__title {
+        &-icon {
+            margin-right: $checkout-title-badge-offset;
+
+            @include badge($checkout-title-badge-size, $checkout-title-badge-font-size);
+        }
+
+        &-text {
+            vertical-align: middle;
+
+            + * {
+                margin: 0 0 0 $offset-x-m;
+            }
+        }
+    }
+
+    &__approval-note {
+        margin: $checkout-approval-note-margin;
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: row;
+
+        &-col {
+            &:first-child {
+                flex-grow: 1;
+                padding-right: $offset-x-m;
+            }
+
+            &:last-child {
+                padding-left: $offset-x-m;
+                margin-left: auto;
+            }
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+}
+
+@include breakpoint('tablet') {
+    .checkout {
+        padding: $checkout-tablet-padding;
+        border-radius: $checkout-tablet-border-radius;
+
+        &--no-background {
+            background: none;
+            padding: 0;
+        }
+
+        &__submit-btn {
+            > .tooltip.tooltip-top .tooltip-inner:before,
+            > .tooltip.tooltip-bottom .tooltip-inner:before {
+                left: $checkout-submit-tooltip-left;
+                right: $checkout-submit-tooltip-right;
+            }
+        }
+
+        &__footer {
+            flex-direction: column;
+
+            &-col {
+                &:first-child {
+                    margin-bottom: $offset-x;
+                    flex-grow: 0;
+                    padding-right: 0;
+                }
+
+                &:last-child {
+                    padding-left: 0;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+@include breakpoint('tablet-small') {
+    .checkout {
+        &__submit-btn {
+            width: $checkout-submit-btn-tablet-small-width;
+        }
+    }
+}

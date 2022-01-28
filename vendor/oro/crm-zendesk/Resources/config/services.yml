@@ -1,0 +1,146 @@
+services:
+    oro_zendesk.entity_mapper:
+        class: Oro\Bundle\ZendeskBundle\Model\EntityMapper
+        arguments:
+            - '@doctrine'
+            - '%oro_zendesk.map%'
+
+    oro_zendesk.sync_state:
+        class: Oro\Bundle\ZendeskBundle\Model\SyncState
+        arguments:
+            - '@doctrine'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+
+    # Forms and extensions
+    oro_zendesk.form.type.rest_transport_setting:
+        class: Oro\Bundle\ZendeskBundle\Form\Type\RestTransportSettingsFormType
+        tags:
+            - { name: form.type, alias: oro_zendesk_rest_transport_setting_form_type }
+
+    oro_zendesk.form.extension.sync_with_zendesk:
+        class: Oro\Bundle\ZendeskBundle\Form\Extension\SyncWithZendeskExtension
+        arguments:
+            - '@oro_zendesk.entity_provider.zendesk'
+            - '@oro_zendesk.entity_provider.oro'
+        tags:
+            - { name: form.type_extension, alias: oro_case_entity, extended_type: Oro\Bundle\CaseBundle\Form\Type\CaseEntityType }
+
+    oro_zendesk.form.extension.channel_connectors:
+        class: Oro\Bundle\ZendeskBundle\Form\Extension\ChannelConnectorsExtension
+        tags:
+            - { name: form.type_extension, alias: oro_integration_channel_form, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+    oro_zendesk.form.extension.case_comment_public:
+        class: Oro\Bundle\ZendeskBundle\Form\Extension\CaseCommentPublicExtension
+        arguments:
+            - '@oro_zendesk.entity_provider.zendesk'
+        tags:
+            - { name: form.type_extension, alias: oro_case_comment, extended_type: Oro\Bundle\CaseBundle\Form\Type\CaseCommentType }
+
+    # Integration related services
+    oro_zendesk.transport.rest_transport:
+        class: Oro\Bundle\ZendeskBundle\Provider\Transport\Rest\ZendeskRestTransport
+        parent: oro_integration.transport.rest.abstract_transport
+        arguments:
+            - '@oro_importexport.serializer'
+        tags:
+            - { name: oro_integration.transport, type: zendesk_rest, channel_type: zendesk }
+
+    oro_zendesk.model.sync_manager:
+        class: Oro\Bundle\ZendeskBundle\Model\SyncManager
+        public: true
+        arguments:
+            - '@oro_integration.sync_scheduler'
+            - '@doctrine'
+            - '@oro_zendesk.entity_provider.zendesk'
+
+    # Listeners
+    oro_zendesk.listener.doctrine.sync_abstract:
+        abstract: true
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@oro_integration.sync_scheduler.link'
+
+    oro_zendesk.listener.doctrine.sync_update_case:
+        parent: oro_zendesk.listener.doctrine.sync_abstract
+        class: Oro\Bundle\ZendeskBundle\EventListener\Doctrine\SyncUpdateCaseListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    oro_zendesk.listener.case_entity:
+        class: Oro\Bundle\ZendeskBundle\EventListener\CaseEntity\CaseEntityListener
+        arguments:
+            - '@oro_zendesk.model.sync_manager'
+            - '@oro_zendesk.entity_provider.oro'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_zendesk.listener.channel_update:
+        class: Oro\Bundle\ZendeskBundle\EventListener\Channel\ChannelUpdateListener
+        arguments:
+            - '@oro_zendesk.model.sync_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Entity providers
+    oro_zendesk.entity_provider.oro:
+        class: Oro\Bundle\ZendeskBundle\Model\EntityProvider\OroEntityProvider
+        arguments:
+            - '@doctrine'
+            - '%oro_zendesk.name_prefixes%'
+            - '%oro_zendesk.name_suffixes%'
+        lazy: true
+
+    oro_zendesk.entity_provider.zendesk:
+        class: Oro\Bundle\ZendeskBundle\Model\EntityProvider\ZendeskEntityProvider
+        arguments:
+            - '@doctrine'
+
+    # Sync helpers
+    oro_zendesk.sync_helper.abstract:
+        abstract: true
+        arguments:
+            - '@oro_zendesk.entity_provider.zendesk'
+            - '@oro_zendesk.entity_provider.oro'
+            - '@oro_case.manager'
+
+    oro_zendesk.sync_helper.ticket:
+        parent: oro_zendesk.sync_helper.abstract
+        class: Oro\Bundle\ZendeskBundle\Model\SyncHelper\TicketSyncHelper
+        arguments:
+            - '@oro_zendesk.entity_mapper'
+
+    oro_zendesk.sync_helper.ticket_comment:
+        parent: oro_zendesk.sync_helper.abstract
+        class: Oro\Bundle\ZendeskBundle\Model\SyncHelper\TicketCommentSyncHelper
+
+    oro_zendesk.sync_helper.user:
+        parent: oro_zendesk.sync_helper.abstract
+        class: Oro\Bundle\ZendeskBundle\Model\SyncHelper\UserSyncHelper
+
+    # Twig extensions
+    oro_zendesk.twig.extension:
+        class: Oro\Bundle\ZendeskBundle\Twig\ZendeskExtension
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    # Placeholder filter
+    oro_zendesk.placeholder.filter:
+        class: Oro\Bundle\ZendeskBundle\Placeholder\PlaceholderFilter
+        public: true
+        arguments:
+            - '@oro_zendesk.entity_provider.oro'
+            - '@oro_zendesk.entity_provider.zendesk'
+
+    oro_zendesk.provider.phone.user:
+        class: Oro\Bundle\ZendeskBundle\Provider\UserPhoneProvider
+        tags:
+            - { name: oro_address.phone_provider, class: 'Oro\Bundle\ZendeskBundle\Entity\User' }
+
+    #handler
+    oro_zendesk.handler.ticket_comment_exception:
+        class: Oro\Bundle\ZendeskBundle\Handler\TicketCommentExceptionHandler

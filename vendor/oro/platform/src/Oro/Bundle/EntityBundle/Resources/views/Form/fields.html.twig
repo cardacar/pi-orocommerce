@@ -1,0 +1,32 @@
+{% block _oro_entity_config_type_view_is_displayable_widget %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        view: 'oroentity/js/app/views/displayable-priority-view',
+        options: {
+            prioritySelector: '#' ~ form.parent.children.priority.vars.id
+        }
+    }) }}>
+        {{ form_widget(form, { attr: { 'data-field': 'is_displayable'}}) }}
+    </div>
+{% endblock %}
+
+{% block oro_entity_fallback_value_widget %}
+    <div class="entity-fallback-container"
+           data-page-component-module="oroui/js/app/components/view-component"
+           data-page-component-options="{{ {view: 'oroentity/js/app/views/entity-field-fallback'}|json_encode }}"
+    >
+        <div class="entity-fallback-container__value">
+            {{ form_widget(form.scalarValue, {'attr': {'class': 'entity-field-value'}}) }}
+            {{ form_errors(form.scalarValue) }}
+        </div>
+        <div class="entity-fallback-container__line">
+            <div class="entity-fallback-container__use">
+                {{ form_widget(form.useFallback, {'attr': {'class': 'use-fallback-checkbox'} }) }}{{ form.useFallback.vars.label|trans }}
+            </div>
+            <div class="entity-fallback-container__fallback">
+                {{ form_widget(form.fallback, {'attr': {'class': 'fallback fallback-select'}}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

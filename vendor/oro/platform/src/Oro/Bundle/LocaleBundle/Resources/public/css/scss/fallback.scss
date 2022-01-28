@@ -1,0 +1,150 @@
+/* @theme: admin.oro; */
+
+.oro-quarter {
+    .selector {
+        width: $oro-quarter-width;
+        min-width: $oro-quarter-min-width;
+        float: $oro-quarter-float;
+
+        &:not(:last-child) {
+            margin-right: $oro-quarter-offset-right;
+        }
+
+        span {
+            width: $oro-quarter-span-width;
+        }
+
+        select {
+            width: $oro-quarter-select-width;
+            min-width: $oro-quarter-select-min-width;
+        }
+    }
+}
+
+.fallback-container {
+    input {
+        &[type="radio"],
+        &[type="checkbox"] {
+            margin-top: $fallback-container-input-offset-top;
+        }
+    }
+
+    div {
+        &.input-widget-select {
+            width: $fallback-container-select-width;
+            max-width: $fallback-container-select-max-width;
+
+            span {
+                padding-right: $fallback-container-select-span-inner-offset-right;
+            }
+        }
+    }
+}
+
+.tox-tinymce {
+    &.disabled {
+        button {
+            opacity: $mce-tinymce-opacity;
+        }
+
+        .disabled-overlay {
+            position: $mce-tinymce-disabled-overlay-position;
+            top: $mce-tinymce-disabled-overlay-top;
+            left: $mce-tinymce-disabled-overlay-left;
+            width: $mce-tinymce-disabled-overlay-width;
+            height: $mce-tinymce-disabled-overlay-height;
+            background: $mce-tinymce-disabled-overlay-background;
+            opacity: $mce-tinymce-disabled-overlay-opacity;
+        }
+    }
+}
+
+.fallback-item {
+    &:not(.tab-pane):not(:first-child) {
+        border-top: $fallback-item-border;
+    }
+
+    &:not(.tab-pane):last-child {
+        border-bottom: $fallback-item-border;
+    }
+
+    .tox-tinymce {
+        &:not(.tox-fullscreen) {
+            max-width: $fallback-item-mce-tinymce-max-width;
+        }
+    }
+}
+
+.fallback-item-top {
+    margin: $fallback-item-top-offset;
+}
+
+.fallback-item-value-top {
+    padding-top: $fallback-item-value-top-inner-offset-top;
+}
+
+.fallback-item-label {
+    max-width: $fallback-item-label-max-width;
+    margin: $fallback-item-label-offset;
+}
+
+.fallback-item-fallback-line {
+    display: flex;
+    align-items: center;
+    margin: $fallback-item-fallback-line-offset;
+    max-width: $fallback-item-label-max-width;
+}
+
+.fallback-item-fallback {
+    flex-grow: 1;
+    min-width: $fallback-item-fallback-min-width;
+    max-width: $fallback-item-fallback-max-width;
+
+    + .fallback-item-value {
+        margin-top: $form-container-control-row-space;
+    }
+}
+
+.fallback-item-use-fallback {
+    min-width: $fallback-item-use-fallback-width;
+    @include text-line-truncate($max-width: $fallback-item-use-fallback-max-width);
+
+    padding-right: $content-padding-small;
+
+    .checkbox-view {
+        margin-right: $content-padding-small;
+    }
+
+    .oro-checkbox-view {
+        display: $fallback-item-use-fallback-oro-checkbox-view-display;
+    }
+}
+
+.fallback-item-value-input {
+    width: 100%;
+}
+
+.fallback-status {
+    i {
+        font-size: $fallback-status-font-size;
+        cursor: $fallback-status-cursor;
+    }
+}
+
+.fallback-item-value--first {
+    display: $fallback-item-value--first-display;
+    width: $fallback-item-value--first-width;
+
+    .validation-failed {
+        width: $fallback-item-value--first-validation-width;
+        order: $fallback-item-value--first-validation-order;
+        max-width: $fallback-item-label-max-width;
+    }
+
+    .input-append {
+        .input-group {
+            display: block;
+            margin-right: $fallback-item-value--first-input-group-offset-end;
+        }
+    }
+}

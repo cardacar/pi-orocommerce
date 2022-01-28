@@ -1,0 +1,249 @@
+/* @theme: admin.oro; */
+
+.grid-main-container {
+    display: table;
+    width: 100%;
+    max-width: 100%;
+
+    font-size: $oro-datagrid-font-size;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    overflow: hidden;
+}
+
+.grid-header,
+.grid-footer {
+    text-transform: uppercase;
+    font-size: $oro-datagrid-header-font-size;
+
+    .sortable-icon {
+        display: none;
+        margin-left: $oro-datagrid-base-offset;
+    }
+
+    .ascending {
+        .sortable-icon {
+            display: inline-block;
+
+            transform: translateY(0.5px);
+
+            @include fa-icon($oro-datagrid-caret-ascending-icon);
+        }
+    }
+
+    .descending {
+        .sortable-icon {
+            display: inline-block;
+
+            @include fa-icon($oro-datagrid-caret-descending-icon);
+        }
+    }
+}
+
+.grid-header.thead-sizing {
+    display: none;
+}
+
+.grid-body {
+    color: $oro-datagrid-body-color;
+}
+
+.grid-cell {
+    display: table-cell;
+
+    text-align: left;
+}
+
+.grid-header-cell {
+    padding: $oro-datagrid-header-cell-inner-offset;
+
+    white-space: nowrap;
+
+    &__label,
+    &__link {
+        line-height: $oro-datagrid-label-line-height;
+
+        color: $oro-datagrid-label-color;
+    }
+
+    &__link,
+    &__label-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    &:first-child {
+        border-top-left-radius: $oro-datagrid-header-cell-radius;
+        border-bottom-left-radius: $oro-datagrid-header-cell-radius;
+    }
+
+    &:last-child {
+        border-top-right-radius: $oro-datagrid-header-cell-radius;
+        border-bottom-right-radius: $oro-datagrid-header-cell-radius;
+    }
+}
+
+.grid-body-cell {
+    padding: $oro-datagrid-body-cell-inner-offset;
+
+    line-height: $oro-datagrid-body-cell-line-height;
+
+    border-bottom: $oro-datagrid-body-cell-border-bottom;
+
+    vertical-align: top;
+
+    &-identifier,
+    &-productSku,
+    &-poNumber,
+    &-identifier,
+    &-primaryEmail,
+    &-sku,
+    &-email,
+    &-zip,
+    &.direction-ltr {
+        /*rtl:ignore*/
+        direction: ltr;
+    }
+}
+
+.grid-body-cell-contexts {
+    padding: $oro-datagrid-body-cell-wide-inner-offset;
+}
+
+.grid-footer-cell {
+    padding: $oro-datagrid-footer-cell-inner-offset;
+
+    font-weight: $oro-datagrid-footer-cell-font-weight;
+
+    background-color: $oro-datagrid-footer-cell-background-color;
+    color: $oro-datagrid-footer-cell-color;
+
+    @at-root tr:first-child .grid-footer-cell {
+        padding-top: $oro-datagrid-footer-cell-outer-inner-offset;
+    }
+
+    @at-root tr:last-child .grid-footer-cell {
+        padding-bottom: $oro-datagrid-footer-cell-outer-inner-offset;
+    }
+
+    &.number-cell,
+    &.integer-cell {
+        font-size: $oro-datagrid-footer-cell-numeric-font-size;
+    }
+}
+
+.grid-header-cell {
+    background-color: $oro-datagrid-header-background;
+}
+
+.grid-header-cell,
+.grid-body-cell,
+.grid-footer-cell {
+    &:first-of-type {
+        padding-left: $oro-grid-first-cell-offset;
+    }
+}
+
+.grid-row {
+    &.row-selected {
+        background-color: $oro-datagrid-row-selected;
+
+        &:hover {
+            background-color: $oro-datagrid-row-selected;
+        }
+    }
+
+    &.row-disabled {
+        opacity: $oro-datagrid-row-disabled-opacity;
+    }
+
+    &.row-new {
+        background-color: $cell-success-background;
+
+        &:hover {
+            background-color: darken($cell-success-background, 5%);
+        }
+    }
+
+    &.row-edit-mode,
+    &:hover {
+        background-color: $oro-datagrid-cell-background-hover;
+    }
+}
+
+.header-cell-highlight {
+    background: $oro-datagrid-header-cell-highlight;
+}
+
+.string-cell,
+.uri-cell,
+.email-cell,
+.select-cell,
+.date-cell,
+.time-cell,
+.datetime-cell,
+.boolean-cell {
+    text-align: left;
+}
+
+.boolean-cell .checkbox-view {
+    vertical-align: $oro-datagrid-body-cell-checkbox-vertical-align;
+}
+
+.number-cell,
+.integer-cell {
+    text-align: right;
+
+    &:first-child {
+        text-align: left;
+    }
+
+    &:not(:first-child) {
+        .grid-header-cell__label {
+            margin-left: auto;
+        }
+    }
+}
+
+.date-cell {
+    white-space: nowrap;
+}
+
+.multi-select-cell,
+.multi-relation-cell {
+    .value-item {
+        &:after {
+            content: ', ';
+        }
+
+        &:last-child:after {
+            content: '';
+        }
+    }
+}
+
+[data-blank-content] {
+    &::after {
+        content: attr(data-blank-content);
+    }
+}
+
+.ascending,
+.descending {
+    .grid-header-cell__link,
+    .grid-header-cell__label {
+        color: $oro-datagrid-label-active-color;
+    }
+}
+
+@media print {
+    .select-all-header-cell,
+    .select-row-cell,
+    .action-column,
+    .action-cell {
+        display: none;
+    }
+}

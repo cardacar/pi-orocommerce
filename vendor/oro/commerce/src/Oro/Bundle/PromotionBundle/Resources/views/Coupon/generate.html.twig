@@ -1,0 +1,38 @@
+{% extends 'OroActionBundle:Operation:form.html.twig' %}
+
+{% block form %}
+    {% set buttonOptions = operation.definition.buttonOptions %}
+    {% set pageComponentOptions = {} %}
+    <div class="widget-content">
+        {{ form_start(form, {
+            'action': app.request.uri,
+            'attr': {
+                'id': form.vars.id,
+                'data-collect': 'true',
+                'class': 'form-dialog',
+                'data-page-component-module': 'oroui/js/app/components/view-component',
+                'data-page-component-options': {view: 'oropromotion/js/app/views/coupon-generation-preview-view'}|json_encode
+            }
+        }) }}
+            <fieldset class="form-horizontal">
+                {{ form_widget(form.couponGenerationOptions) }}
+                <div class="control-group attribute-row">
+                    <label class="control-label">{{ 'oro.promotion.coupon.generation.codePreview.label'|trans }}</label>
+                    <div class="controls">
+                        <div id="coupon-code-preview" class="control-label" dir="ltr">{{ oro_promotion_generate_coupon_code(actionData.couponGenerationOptions) }}</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="hidden">
+                {{ form_rest(form) }}
+            </div>
+
+            <div class="widget-actions">
+                <button type="reset" class="btn">{{ 'oro.order.shipping_tracking.action.cancel'|trans }}</button>
+                <button type="submit" class="btn btn-success">{{ 'oro.promotion.coupon.generation.action.generate'|trans }}</button>
+            </div>
+        {{ form_end(form) }}
+        {{ oro_form_js_validation(form) }}
+    </div>
+{% endblock %}

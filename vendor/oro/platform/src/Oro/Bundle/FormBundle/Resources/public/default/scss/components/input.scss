@@ -1,0 +1,56 @@
+/* @theme: default; */
+
+.input {
+    @include placeholder {
+        color: $base-ui-element-placeholder-color;
+    }
+
+    &--size-m {
+        height: $base-ui-element-height-size-m;
+        padding: $input-padding--m;
+    }
+
+    &--size-s {
+        padding: $input-padding--s;
+
+        &[type="date"],
+        &[type="time"] {
+            min-height: $input-date-size-s-height;
+
+            &::-webkit-calendar-picker-indicator{
+                height: 1em;
+                padding: 0;
+            }
+        }
+    }
+
+    &--size-x-s {
+        padding: $input-padding--x-s;
+    }
+
+    &--has-datepicker {
+        max-width: 140px;
+        padding-left: 39px;
+    }
+
+    &[type="number"] {
+        -moz-appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            margin: 0;
+
+            @include appearance();
+        }
+    }
+
+    @include element-state('error') {
+        box-shadow: $input-box-shadow-error-state;
+    }
+
+    @include element-state('disabled') {
+        background: $input-background-color-disabled-state;
+        box-shadow: none;
+        border: $input-border;
+    }
+}

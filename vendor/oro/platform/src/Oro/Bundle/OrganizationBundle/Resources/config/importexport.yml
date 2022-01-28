@@ -1,0 +1,12 @@
+services:
+    oro_organization.importexport.template_fixture.business_unit:
+        class: Oro\Bundle\OrganizationBundle\ImportExport\TemplateFixture\BusinessUnitFixture
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    oro_organization.importexport.template_fixture.organization:
+        class: Oro\Bundle\OrganizationBundle\ImportExport\TemplateFixture\OrganizationFixture
+        arguments:
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: oro_importexport.template_fixture }

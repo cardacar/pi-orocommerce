@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/oroshoppinglist/css/scss/main.scss'

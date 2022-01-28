@@ -1,0 +1,21 @@
+{% extends 'OroDashboardBundle:Dashboard:grid.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'dashboard-recent-calls-grid' %}
+
+{% block content %}
+    {{ dataGrid.renderGrid(gridName, params|default({}), {
+        'routerEnabled': false,
+        'enableFilters': false,
+    }|merge(renderParams|default({}))) }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+        'url': path('oro_call_index'),
+        'type': 'link',
+        'label': 'oro.dashboard.recent_calls.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}
+

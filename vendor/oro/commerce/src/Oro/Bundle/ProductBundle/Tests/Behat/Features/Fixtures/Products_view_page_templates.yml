@@ -1,0 +1,137 @@
+include:
+    - '@OroCustomerBundle:BuyerCustomerFixture.yml'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    product1_name:
+        string: 'Green shirt L'
+    product2_name:
+        string: 'Red shirt M'
+    configurable_product_name:
+        string: 'Shirt_1'
+
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    product1_meta_title:
+        string: 'Meta title for Green simple product'
+    product1_meta_description:
+        string: 'Meta description for Green simple product'
+    product1_meta_keywords:
+        string: 'Meta keywords for Green simple product'
+    product2_meta_title:
+        string: 'Meta title for Red simple product'
+    product2_meta_description:
+        string: 'Meta description for Red simple product'
+    product2_meta_keywords:
+        string: 'Meta keywords for Red simple product'
+    configurable_meta_title:
+        string: 'Meta title for configurable product'
+    configurable_meta_description:
+        string: 'Meta description for configurable product'
+    configurable_meta_keywords:
+        string: 'Meta keywords for configurable product'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    unit_precision1:
+        unit: '@item'
+        precision: '1'
+    unit_precision2:
+        unit: '@item'
+        precision: '1'
+    unit_precision3:
+        unit: '@item'
+        precision: '1'
+    unit_precision_additional1:
+        unit: '@set'
+        precision: '1'
+    unit_precision_additional2:
+        unit: '@set'
+        precision: '1'
+    unit_precision_additional3:
+        unit: '@set'
+        precision: '1'
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        type: 'simple'
+        sku: 'gtsh_l'
+        organization: '@organization'
+        owner: '@business_unit'
+        attributeFamily: '@defaultProductFamily'
+        primaryUnitPrecision: '@unit_precision1'
+        __calls:
+            - addName: ['@product1_name']
+            - addAdditionalUnitPrecision: ['@unit_precision_additional1']
+        status: 'enabled'
+        inventoryStatus: '@enumInventoryStatuses'
+        metaTitles: ['@product1_meta_title']
+        metaDescriptions: ['@product1_meta_description']
+        metaKeywords: ['@product1_meta_keywords']
+
+    product2:
+        type: 'simple'
+        sku: 'rtsh_m'
+        organization: '@organization'
+        owner: '@business_unit'
+        attributeFamily: '@defaultProductFamily'
+        primaryUnitPrecision: '@unit_precision2'
+        __calls:
+            - addName: ['@product2_name']
+            - addAdditionalUnitPrecision: ['@unit_precision_additional2']
+        status: 'enabled'
+        inventoryStatus: '@enumInventoryStatuses'
+        metaTitles: ['@product2_meta_title']
+        metaDescriptions: ['@product2_meta_description']
+        metaKeywords: ['@product2_meta_keywords']
+
+    configurable_product:
+        type: 'configurable'
+        sku: 'shirt_main'
+        organization: '@organization'
+        owner: '@business_unit'
+        attributeFamily: '@defaultProductFamily'
+        primaryUnitPrecision: '@unit_precision3'
+        __calls:
+            - addName: ['@configurable_product_name']
+            - addAdditionalUnitPrecision: ['@unit_precision_additional3']
+        status: 'enabled'
+        inventoryStatus: '@enumInventoryStatuses'
+        metaTitles: ['@configurable_meta_title']
+        metaDescriptions: ['@configurable_meta_description']
+        metaKeywords: ['@configurable_meta_keywords']
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    product1ItemPrice:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 10
+    product1SetPrice:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@set'
+        value: 445.50
+    product2ItemPrice:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 7
+    product2SetPrice:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@set'
+        value: 432.30
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+    priceRelationRpoduct1DefaultPriceList:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+    priceRelationRpoduct2DefaultPriceList:
+        product: '@product2'
+        priceList: '@defaultPriceList'

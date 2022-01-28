@@ -1,0 +1,3 @@
+css:
+    inputs:
+      - 'bundles/oroentityextend/css/scss/main.scss'

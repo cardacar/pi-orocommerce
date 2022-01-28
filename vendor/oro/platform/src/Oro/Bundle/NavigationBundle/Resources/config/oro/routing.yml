@@ -1,0 +1,52 @@
+oro_navigation_js_routing_js:
+    path: "/media/js/%oro_navigation.js_routing_filename_prefix%routes.{_format}"
+    methods: [GET]
+    defaults: { _controller: fos_js_routing.controller:indexAction }
+    requirements:
+        _format: json
+
+oro_navigation_bundle:
+    resource:     "@OroNavigationBundle/Controller"
+    type:         annotation
+
+oro_navigation_api_pinbar:
+    resource:     "@OroNavigationBundle/Controller/Api/NavigationItemController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+oro_navigation_api_shortcut:
+    resource:     "@OroNavigationBundle/Controller/Api/ShortcutsController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+oro_navigation_api_pagestate:
+    resource:     "@OroNavigationBundle/Controller/Api/PagestateController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+# deprecated API route
+oro_api_post_pagestate_deprecated:
+    path:            /api/rest/{version}/pagestate.{_format}
+    methods:         [POST]
+    defaults:
+        _controller: Oro\Bundle\NavigationBundle\Controller\Api\PagestateController::postAction
+        _format:     json
+        version:     latest
+    requirements:
+        _format:     json|html
+        version:     latest|v1

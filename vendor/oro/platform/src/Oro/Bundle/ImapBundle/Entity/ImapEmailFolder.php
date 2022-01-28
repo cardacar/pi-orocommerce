@@ -1,0 +1,116 @@
+<?php
+
+namespace Oro\Bundle\ImapBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+
+/**
+ * IMAP Email
+ *
+ * @ORM\Table(name="oro_email_folder_imap")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\ImapBundle\Entity\Repository\ImapEmailFolderRepository")
+ */
+class ImapEmailFolder
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var EmailFolder
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailFolder", cascade={"persist"})
+     * @ORM\JoinColumn(name="folder_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    protected $folder;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="uid_validity", type="integer")
+     */
+    protected $uidValidity;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="last_uid", type="integer", nullable=true)
+     */
+    private $lastUid;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get related email object
+     *
+     * @return EmailFolder
+     */
+    public function getFolder()
+    {
+        return $this->folder;
+    }
+
+    /**
+     * Set related email object
+     *
+     * @param EmailFolder $folder
+     *
+     * @return ImapEmailFolder
+     */
+    public function setFolder(EmailFolder $folder)
+    {
+        $this->folder = $folder;
+
+        return $this;
+    }
+
+    /**
+     * Get email UIDVALIDITY
+     *
+     * @return int
+     */
+    public function getUidValidity()
+    {
+        return $this->uidValidity;
+    }
+
+    /**
+     * Set email UIDVALIDITY
+     *
+     * @param int $uidValidity
+     *
+     * @return ImapEmailFolder
+     */
+    public function setUidValidity($uidValidity)
+    {
+        $this->uidValidity = $uidValidity;
+
+        return $this;
+    }
+
+    public function getLastUid(): ?int
+    {
+        return $this->lastUid;
+    }
+
+    public function setLastUid(int $lastUid): ImapEmailFolder
+    {
+        $this->lastUid = $lastUid;
+
+        return $this;
+    }
+}

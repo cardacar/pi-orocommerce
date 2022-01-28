@@ -1,0 +1,34 @@
+entity_config:
+    merge:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#merge
+        entity:
+            items:
+                cast_method: ~
+                template: ~
+                enable: ~
+                max_entities_count: 5
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#merge
+        field:
+            items:
+                label: ~
+                display: ~
+                readonly: ~
+                merge_modes:
+                    options:
+                        auditable: false
+                is_collection: ~
+                cast_method: ~
+                template: ~
+                setter: ~
+                getter: ~
+                inverse_display: ~
+                inverse_merge_modes: ~
+                inverse_label: ~
+                inverse_cast_method: ~
+                render_number_style: ~
+                render_date_type: ~
+                render_time_type: ~
+                render_datetime_pattern: ~
+                autoescape:
+                    options:
+                        default_value:      true

@@ -1,0 +1,4 @@
+css:
+    inputs:
+        - 'bundles/orocalendar/css/scss/main.scss'
+        - 'bundles/orocalendar/css/scss/print.scss'

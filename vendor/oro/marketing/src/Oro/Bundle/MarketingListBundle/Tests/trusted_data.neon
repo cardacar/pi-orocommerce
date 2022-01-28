@@ -1,0 +1,16 @@
+# Configuration for https://github.com/oroinc/phpstan-rules/
+trusted_data:
+    variables:
+        Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider:
+            getMarketingListEntitiesQueryBuilder:
+                entityAlias: true
+            getEntitiesIterator:
+                expr: true
+                alias: true
+        Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension:
+            visitDatasource:
+                part: true
+    properties:
+        Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension:
+            createItemsQuery:
+                marketingListId: true

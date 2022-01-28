@@ -1,0 +1,16 @@
+/* @theme: admin.oro; */
+
+div.disabled-choice {
+    div.selector {
+        background: none;
+        border: none;
+
+        span {
+            color: inherit;
+
+            &:after {
+                content: '';
+            }
+        }
+    }
+}

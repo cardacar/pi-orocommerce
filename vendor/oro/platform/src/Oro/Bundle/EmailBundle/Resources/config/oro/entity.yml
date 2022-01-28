@@ -1,0 +1,11 @@
+oro_entity:
+    exclusions:
+        - { entity: Oro\Bundle\EmailBundle\Entity\EmailTemplate, field: translations }
+
+    entity_alias_exclusions:
+        - Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent
+        - Oro\Bundle\EmailBundle\Entity\EmailBody
+        - Oro\Bundle\EmailBundle\Entity\EmailRecipient
+
+    entity_name_formats:
+        email: ~

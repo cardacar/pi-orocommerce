@@ -1,0 +1,153 @@
+services:
+    oro_tax.form.type.product_tax_code:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\ProductTaxCodeType'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\ProductTaxCode']]
+        tags:
+            - { name: form.type, alias: oro_tax_product_tax_code_type }
+
+    oro_tax.form.type.customer_tax_code:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\CustomerTaxCodeType'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\CustomerTaxCode']]
+        tags:
+            - { name: form.type, alias: oro_tax_customer_tax_code_type }
+
+    oro_tax.form.type.product_tax_code_autocomplete:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\ProductTaxCodeAutocompleteType'
+        tags:
+            - { name: form.type, alias: oro_product_tax_code_autocomplete }
+
+    oro_tax.form.type.product_tax_code_multiselect:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\ProductTaxCodeMultiSelectType'
+        tags:
+            - { name: form.type, alias: oro_tax_product_tax_code_multiselect }
+
+    oro_tax.form.type.customer_tax_code_autocomplete:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\CustomerTaxCodeAutocompleteType'
+        tags:
+            - { name: form.type, alias: oro_customer_tax_code_autocomplete }
+
+    oro_tax.form.extension.product_tax:
+        class: 'Oro\Bundle\TaxBundle\Form\Extension\ProductTaxExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - 'Oro\Bundle\TaxBundle\Entity\ProductTaxCode'
+        tags:
+            - { name: form.type_extension, alias: oro_product, extended_type: Oro\Bundle\ProductBundle\Form\Type\ProductType }
+
+    oro_tax.form.extension.customer_tax:
+        class: 'Oro\Bundle\TaxBundle\Form\Extension\CustomerTaxExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode'
+        tags:
+            - { name: form.type_extension, alias: oro_customer_type, extended_type: Oro\Bundle\CustomerBundle\Form\Type\CustomerType }
+
+    oro_tax.form.extension.customer_group_tax:
+        class: 'Oro\Bundle\TaxBundle\Form\Extension\CustomerGroupTaxExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode'
+        tags:
+            - { name: form.type_extension, alias: oro_customer_group_type, extended_type: Oro\Bundle\CustomerBundle\Form\Type\CustomerGroupType }
+
+    oro_tax.form.extension.order_line_item:
+        class: 'Oro\Bundle\TaxBundle\Form\Extension\OrderLineItemTypeExtension'
+        arguments:
+            - '@oro_tax.provider.taxation_settings_provider'
+            - '@oro_tax.provider.tax_provider_registry'
+            - '@oro_pricing.subtotal_processor.total_processor_provider'
+            - '@oro_order.form.section.provider'
+        tags:
+            - { name: form.type_extension, alias: oro_order_line_item, extended_type: Oro\Bundle\OrderBundle\Form\Type\OrderLineItemType }
+
+    oro_tax.form.extension.order_line_items_collection:
+        class: 'Oro\Bundle\TaxBundle\Form\Extension\OrderLineItemsCollectionTypeExtension'
+        arguments:
+            - '@oro_tax.provider.taxation_settings_provider'
+            - '@oro_tax.manager.tax_value_manager'
+        tags:
+            - { name: form.type_extension, alias: oro_order_line_items_collection, extended_type: Oro\Bundle\OrderBundle\Form\Type\OrderLineItemsCollectionType }
+
+    oro_tax.form.type.tax:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxType'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\Tax']]
+        tags:
+            - { name: form.type, alias: oro_tax_type }
+
+    oro_tax.form.type.tax_select:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxSelectType'
+        tags:
+            - { name: form.type, alias: oro_tax_select }
+
+    oro_tax.form.type.tax_rule:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxRuleType'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\TaxRule']]
+        tags:
+            - { name: form.type, alias: oro_tax_rule_type }
+
+    oro_tax.form.type.tax_jurisdiction:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxJurisdictionType'
+        arguments:
+            - '@oro_address.form.listener.address'
+            - '@oro_tax.provider.taxation_settings_provider'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\TaxJurisdiction']]
+        tags:
+            - { name: form.type, alias: oro_tax_jurisdiction_type }
+
+    oro_tax.form.type.tax_jurisdiction_select:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxJurisdictionSelectType'
+        tags:
+            - { name: form.type, alias: oro_tax_jurisdiction_select }
+
+    oro_tax.form.type.zip_code_collection:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\ZipCodeCollectionType'
+        tags:
+            - { name: form.type, alias: oro_tax_zip_code_collection_type }
+
+    oro_tax.form.type.zip_code:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\ZipCodeType'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Entity\ZipCode']]
+        tags:
+            - { name: form.type, alias: oro_tax_zip_code_type }
+
+    oro_tax.form.type.tax_provider_type:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxProviderType'
+        arguments:
+            - '@oro_tax.provider.tax_provider_registry'
+        tags:
+            - { name: form.type, alias: oro_tax_provider_type }
+
+    oro_tax.form.type.tax_base_exclusion:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxBaseExclusionType'
+        arguments:
+            - '@oro_address.form.listener.address'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Model\TaxBaseExclusion']]
+        tags:
+            - { name: form.type, alias: oro_tax_base_exclusion }
+
+    oro_tax.form.type.tax_base_exclusion_collection:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\TaxBaseExclusionCollectionType'
+        tags:
+            - { name: form.type, alias: oro_tax_base_exclusion_collection }
+
+    oro_tax.form.type.origin_address:
+        class: 'Oro\Bundle\TaxBundle\Form\Type\OriginAddressType'
+        arguments:
+            - '@oro_address.form.listener.address'
+        calls:
+            - [setDataClass, ['Oro\Bundle\TaxBundle\Model\Address']]
+        tags:
+            - { name: form.type, alias: oro_tax_origin_address }
+
+    oro_tax.form.data_transformer.tax_base_exclusion_transformer:
+        class: 'Oro\Bundle\TaxBundle\Form\DataTransformer\TaxBaseExclusionTransformer'
+        public: true
+        arguments:
+            - "@oro_tax.factory.tax_base_exclusion"

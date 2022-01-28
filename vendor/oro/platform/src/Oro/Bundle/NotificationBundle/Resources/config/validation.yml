@@ -1,0 +1,15 @@
+Oro\Bundle\NotificationBundle\Entity\EmailNotification:
+    properties:
+        eventName:
+            - NotBlank: ~
+        template:
+            - NotBlank: ~
+        entityName:
+            - NotBlank: ~
+
+Oro\Bundle\NotificationBundle\Entity\RecipientList:
+    properties:
+        email:
+            - Email: ~
+    constraints:
+        - Callback: isValid

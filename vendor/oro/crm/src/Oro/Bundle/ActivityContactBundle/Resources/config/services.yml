@@ -1,0 +1,56 @@
+services:
+    oro_activiy_contact.listener.activity_contact_migration:
+        class: Oro\Bundle\ActivityContactBundle\EventListener\ActivityContactMigrationListener
+        arguments:
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - "@oro_activity_contact.provider"
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -100 }
+
+    oro_activity_contact.entity_config_dumper.extension:
+        class: Oro\Bundle\ActivityContactBundle\Tools\ActivityContactConfigDumperExtension
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_activity_contact.provider"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_activity_contact.provider:
+        class: Oro\Bundle\ActivityContactBundle\Provider\ActivityContactProvider
+        arguments:
+            - [] # supported classes
+            - ~ # service locator for direction providers
+
+    oro_activity_contact.listener.activity_listener:
+        class: Oro\Bundle\ActivityContactBundle\EventListener\ActivityListener
+        arguments:
+            - "@oro_activity_contact.provider"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: kernel.event_listener, event: oro_activity.add_activity, method: onAddActivity }
+            - { name: kernel.event_listener, event: oro_activity.remove_activity, method: onRemoveActivity }
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    oro_activity_contact.email_activity_direction.provider:
+        class: Oro\Bundle\ActivityContactBundle\Provider\EmailDirectionProvider
+        arguments:
+            - "@oro_entity_config.provider.entity"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_email.email_holder_helper"
+            - '@Doctrine\Inflector\Inflector'
+        tags:
+            - { name: oro_activity_direction.provider, class: Oro\Bundle\EmailBundle\Entity\Email }
+
+
+    oro_activity_contact.entity_activity_contact_data_provider:
+        public: true
+        class: Oro\Bundle\ActivityContactBundle\Provider\EntityActivityContactDataProvider
+        arguments:
+            - "@oro_entity_config.config_manager"
+
+    oro_activity_contact.placeholder.filter:
+        class: Oro\Bundle\ActivityContactBundle\Placeholder\PlaceholderFilter
+        public: true
+        parent: oro_activity_list.placeholder.filter

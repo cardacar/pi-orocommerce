@@ -1,0 +1,123 @@
+{% block root_widget %}
+    {% if not oro_is_hash_navigation() %}
+        <!DOCTYPE {{ doctype|default('html') }}>
+        <html lang="{{ languageCode|slice(0,2) }}"{% if dir is not empty %} dir="{{ dir }}"{% endif %}>
+        {{ block_widget(block) }}
+        </html>
+    {% else %}
+        {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig' with {
+            'data': {
+                'content': block_widget(blocks.wrapper),
+            }
+        } %}
+    {% endif %}
+{% endblock %}
+
+{% block _scripts_before_widget %}
+    {{ block_widget(block) }}
+    {% block scripts_before %}
+        {% placeholder scripts_before %}
+    {% endblock %}
+{% endblock %}
+
+{% block _layout_js_build_scripts_after_widget %}
+    {% placeholder scripts_after %}
+    {{ block_widget(block) }}
+{% endblock %}
+
+{% block _page_header_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' page-header'
+    }) %}
+
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block _page_title_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' page-title-wrapper' ~ (class_prefix ? ' {{ class_prefix }}-page-title-wrapper')
+    }) %}
+    {% set content = block_widget(block)|trim %}
+    {% if content|length %}
+        <div{{ block('block_attributes') }}>{{ content|raw }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block _page_title_widget %}
+    {% set additionalClasses = {
+        classPrefix: class_prefix ? ' {{ class_prefix }}-page-title',
+        hasActions: hasActions is defined ? ' page-title--has-actions'
+    } %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' page-title' ~ additionalClasses.classPrefix ~ additionalClasses.hasActions
+    }) %}
+    {% set content = block_widget(block)|trim %}
+    {% if content|length %}
+        <h1{{ block('block_attributes') }}>
+            {% if titleIcon is defined %}
+            <span class="badge">
+                <i class="{{ titleIcon }}"></i>
+            </span>
+            {% endif %}
+            <span class="page-title__text">{{ content|raw }}</span>
+        </h1>
+    {% endif %}
+{% endblock %}
+
+{% block _notification_widget %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set attr = layout_attr_defaults(attr, {
+        'id': 'flash-messages',
+        '~class': ' notification-flash-container',
+        'data-sticky-target': 'top-sticky-panel',
+        'data-sticky': {
+            isSticky: true,
+            placeholderId: 'sticky-element-notification'
+        }
+    }) %}
+
+    {% set flashMessages = [] %}
+
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                {% set flashMessages = flashMessages|merge([{ type: type, message: message|trans}]) %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% set flashMessageViewOptions = {
+        view: 'oroui/js/app/views/page/messages-view',
+        options: {
+            autoRender: true,
+            initializeMessenger: true,
+            messages: flashMessages
+        }
+    } %}
+
+    <div{{ block('block_attributes') }} {{ UI.renderPageComponentAttributes(flashMessageViewOptions) }}></div>
+{% endblock %}
+
+{% block _sticky_element_notification_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+    'id': 'sticky-element-notification'
+    }) %}
+    <div {{ block('block_attributes') }}>{{ block_widget(block) }}</div>
+{% endblock %}
+
+{% block _sticky_header_row_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+    'id': 'sticky-header-row'
+    }) %}
+    <div {{ block('block_attributes') }}>{{ block_widget(block) }}</div>
+{% endblock %}
+
+{% block _page_footer_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " page-area-container"
+    }) %}
+    {{ parent_block_widget(block) }}
+{% endblock %}

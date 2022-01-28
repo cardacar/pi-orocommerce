@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="es" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Gráficos vectoriales escalables - Wikipedia, la enciclopedia libre</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":[",\t."," \t,"],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],"wgRequestId":"8a8e3e75-afef-4e96-8fc5-ada3e761312a","wgCSPNonce":false,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Gráficos_vectoriales_escalables","wgTitle":"Gráficos vectoriales escalables","wgCurRevisionId":137140980,"wgRevisionId":137140980,"wgArticleId":4921,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Wikipedia:Artículos con datos por trasladar a Wikidata","Wikipedia:Artículos buenos en la Wikipedia en alemán","Wikipedia:Artículos con identificadores BNF","Wikipedia:Artículos con identificadores GND",
+"Wikipedia:Artículos con identificadores LCCN","Acrónimos de informática","Formatos abiertos","Gráficos vectoriales","XML","Lenguajes de marcado para gráficos vectoriales","Estándares del World Wide Web Consortium"],"wgPageContentLanguage":"es","wgPageContentModel":"wikitext","wgRelevantPageName":"Gráficos_vectoriales_escalables","wgRelevantArticleId":4921,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"skin":"vector","wgVisualEditor":{"pageLanguageCode":"es","pageLanguageDir":"ltr","pageVariantFallbacks":"es"},"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":20000,"wgNoticeProject":"wikipedia","wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsFlags":10,"wgULSCurrentAutonym":"español","wgEditSubmitButtonLabelPublish":true,"wgCentralAuthMobileDomain":false,"wgULSPosition":
+"interlanguage","wgULSisCompactLinksEnabled":true,"wgWikibaseItemId":"Q2078","wgGENewcomerTasksGuidanceEnabled":true,"wgGEAskQuestionEnabled":false,"wgGELinkRecommendationsFrontendEnabled":true};RLSTATE={"ext.gadget.imagenesinfobox":"ready","ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.cite.styles":"ready","ext.pygments":"ready","ext.math.styles":"ready","mediawiki.page.gallery.styles":"ready","skins.vector.styles.legacy":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.wikimediaBadges":"ready","ext.uls.interlanguage":"ready","wikibase.client.init":"ready"};RLPAGEMODULES=["ext.cite.ux-enhancements","ext.math.scripts","site","mediawiki.page.ready","mediawiki.toc","skins.vector.legacy.js","ext.gadget.a-commons-directo","ext.gadget.ReferenceTooltips","ext.gadget.refToolbar","ext.gadget.switcher","mmv.head","mmv.bootstrap.autostart",
+"ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.cx.eventlogging.campaigns","ext.quicksurveys.init","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.centralauth.centralautologin","ext.popups","ext.uls.compactlinks","ext.uls.interface","ext.growthExperiments.SuggestedEditSession"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1i9g4",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=es&amp;modules=ext.cite.styles%7Cext.math.styles%7Cext.pygments%2CwikimediaBadges%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cmediawiki.page.gallery.styles%7Cskins.vector.styles.legacy%7Cwikibase.client.init&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/w/load.php?lang=es&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?lang=es&amp;modules=ext.gadget.imagenesinfobox&amp;only=styles&amp;skin=vector"/>
+<link rel="stylesheet" href="/w/load.php?lang=es&amp;modules=site.styles&amp;only=styles&amp;skin=vector"/>
+<noscript><link rel="stylesheet" href="/w/load.php?lang=es&amp;modules=noscript&amp;only=styles&amp;skin=vector"/></noscript>
+<meta name="generator" content="MediaWiki 1.38.0-wmf.18"/>
+<meta name="referrer" content="origin"/>
+<meta name="referrer" content="origin-when-crossorigin"/>
+<meta name="referrer" content="origin-when-cross-origin"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/1200px-SVG_logo.svg.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="1200"/>
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/800px-SVG_logo.svg.png"/>
+<meta property="og:image:width" content="800"/>
+<meta property="og:image:height" content="800"/>
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/640px-SVG_logo.svg.png"/>
+<meta property="og:image:width" content="640"/>
+<meta property="og:image:height" content="640"/>
+<meta property="og:title" content="Gráficos vectoriales escalables - Wikipedia, la enciclopedia libre"/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="//upload.wikimedia.org"/>
+<link rel="alternate" media="only screen and (max-width: 720px)" href="//es.m.wikipedia.org/wiki/Gr%C3%A1ficos_vectoriales_escalables"/>
+<link rel="alternate" type="application/x-wiki" title="Editar" href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit"/>
+<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png"/>
+<link rel="shortcut icon" href="/static/favicon/wikipedia.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikipedia (es)"/>
+<link rel="EditURI" type="application/rsd+xml" href="//es.wikipedia.org/w/api.php?action=rsd"/>
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/"/>
+<link rel="canonical" href="https://es.wikipedia.org/wiki/Gr%C3%A1ficos_vectoriales_escalables"/>
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<link rel="dns-prefetch" href="//login.wikimedia.org"/>
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject mw-editable page-Gráficos_vectoriales_escalables rootpage-Gráficos_vectoriales_escalables skin-vector action-view skin-vector-legacy"><div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body" role="main">
+	<a id="top"></a>
+	<div id="siteNotice"><!-- CentralNotice --></div>
+	<div class="mw-indicators">
+	</div>
+	<h1 id="firstHeading" class="firstHeading mw-first-heading">Gráficos vectoriales escalables</h1>
+	<div id="bodyContent" class="vector-body">
+		<div id="siteSub" class="noprint">De Wikipedia, la enciclopedia libre</div>
+		<div id="contentSub"></div>
+		<div id="contentSub2"></div>
+		
+		<div id="jump-to-nav"></div>
+		<a class="mw-jump-link" href="#mw-head">Ir a la navegación</a>
+		<a class="mw-jump-link" href="#searchInput">Ir a la búsqueda</a>
+		<div id="mw-content-text" class="mw-body-content mw-content-ltr" lang="es" dir="ltr"><div class="mw-parser-output"><div class="rellink noprint hatnote">«SVG» redirige aquí. Para otras acepciones, véase <a href="/wiki/SVG_(desambiguaci%C3%B3n)" class="mw-disambig" title="SVG (desambiguación)">SVG (desambiguación)</a>.
+</div>
+<table class="infobox" style="width:22.7em; line-height: 1.4em; text-align:left; padding:.23em;"><tbody><tr><th colspan="3" class="cabecera informática" style="text-align:center;background-color:#DCEAEC;color:black;">Gráficos vectoriales escalables</th></tr><tr><td colspan="3" style="text-align:center;">
+<a href="/wiki/Archivo:SVG_logo.svg" class="image"><img alt="SVG logo.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/250px-SVG_logo.svg.png" decoding="async" width="250" height="250" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/375px-SVG_logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/02/SVG_logo.svg/500px-SVG_logo.svg.png 2x" data-file-width="512" data-file-height="512" /></a></td></tr><tr><th colspan="3" style="text-align:center;background-color:#DCEAEC;">Desarrollador</th></tr><tr><td colspan="3" style="text-align:center;">
+<b><a href="/wiki/World_Wide_Web_Consortium" title="World Wide Web Consortium">World Wide Web Consortium</a></b></td></tr><tr><td colspan="3" style="text-align:center;">
+<i><a rel="nofollow" class="external text" href="http://www.w3.org/Graphics/SVG/">w3.org/Graphics/SVG/</a></i></td></tr><tr><th colspan="3" style="text-align:center;background-color:#DCEAEC;">Información general</th></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Extensi%C3%B3n_de_archivo" title="Extensión de archivo">Extensión de archivo</a></th><td colspan="2">
+<code><tt>.svg</tt>, <tt>.svgz</tt></code></td></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Multipurpose_Internet_Mail_Extensions" title="Multipurpose Internet Mail Extensions">Tipo de MIME</a></th><td colspan="2">
+<code>image/svg+xml<sup id="cite_ref-1" class="reference separada"><a href="#cite_note-1"><span class="corchete-llamada">[</span>1<span class="corchete-llamada">]</span></a></sup>&#8203;</code></td></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Uniform_Type_Identifier" title="Uniform Type Identifier">Uniform Type Identifier</a></th><td colspan="2">
+public.svg-image</td></tr><tr><th scope="row" style="text-align:left;">Lanzamiento inicial</th><td colspan="2">
+4 de septiembre de 2001</td></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Fases_del_desarrollo_de_software" class="mw-redirect" title="Fases del desarrollo de software">Última versión</a></th><td colspan="2">
+1.1 (segunda edición) <br /><small>16 de agosto de 2011 (10 años,&#160;5 meses&#160;y&#160;10 días)</small></td></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Anexo:Formatos_de_archivo" title="Anexo:Formatos de archivo">Tipo de formato</a></th><td colspan="2">
+<a href="/wiki/Gr%C3%A1fico_vectorial" title="Gráfico vectorial">Gráfico vectorial</a></td></tr><tr><th scope="row" style="text-align:left;">Extendido de</th><td colspan="2">
+<a href="/wiki/XML" class="mw-redirect" title="XML">XML</a></td></tr><tr><th scope="row" style="text-align:left;"><a href="/wiki/Formato_abierto" title="Formato abierto">Formato abierto</a></th><td colspan="2">
+<img alt="Sí" src="//upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Yes_check.svg/15px-Yes_check.svg.png" decoding="async" title="Sí" width="15" height="15" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Yes_check.svg/23px-Yes_check.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Yes_check.svg/30px-Yes_check.svg.png 2x" data-file-width="600" data-file-height="600" />&#160;<span style="font-weight: bold;"></span></td></tr><tr><td class="noprint" colspan="3" style="text-align:left;"><div class="plainlinks wikidata-link" style="font-size: 0.85em">&#x5b;<a href="https://www.wikidata.org/wiki/Q2078" class="extiw" title="d:Q2078">editar datos en Wikidata</a>&#x5d;</div></td></tr></tbody></table>
+<div class="thumb tright"><div class="thumbinner" style="width:152px;"><a href="/wiki/Archivo:Svg.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/1/15/Svg.svg/150px-Svg.svg.png" decoding="async" width="150" height="77" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/1/15/Svg.svg/225px-Svg.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/1/15/Svg.svg/300px-Svg.svg.png 2x" data-file-width="617" data-file-height="316" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:Svg.svg" class="internal" title="Aumentar"></a></div>Imagen estática generada desde un ejemplo SVG. El <a href="//upload.wikimedia.org/wikipedia/commons/1/15/Svg.svg" class="internal" title="Svg.svg">fichero</a> original requiere un navegador con soporte nativo o mediante <i><a href="/wiki/Plugin" class="mw-redirect" title="Plugin">plugin</a></i>.</div></div></div>
+<p>Los <b>gráficos vectoriales escalables</b> o <b>gráficos vectoriales redimensionables</b> (del inglés: <i><b>Scalable Vector Graphics</b></i> (<b>SVG</b>)) es un formato de <a href="/wiki/Gr%C3%A1ficos_vectoriales" class="mw-redirect" title="Gráficos vectoriales">gráficos vectoriales</a> bidimensionales, tanto estáticos como animados, en formato de lenguaje de marcado extensible <a href="/wiki/XML" class="mw-redirect" title="XML">XML</a> (Extensible Markup Language), es decir que se compone por código y cuya especificación es un estándar abierto desarrollado por el <a href="/wiki/World_Wide_Web_Consortium" title="World Wide Web Consortium">W3C</a> desde <a href="/wiki/1999" title="1999">1999</a>.
+</p><p>Las imágenes SVG y sus comportamientos se definen en archivos de texto XML. Esto significa que se pueden buscar, indexar, codificar y comprimir. Como archivos XML, las imágenes SVG se pueden crear y editar con cualquier editor de texto o comúnmente editor de código, así como con software de dibujo.
+</p><p>El SVG es un lenguaje usado para dibujar y representar gráficos, imágenes y logotipos, o sea que son gráficos que pueden manipularse con <a href="/wiki/Css" class="mw-redirect" title="Css">CSS</a> y <a href="/wiki/JavaScript" title="JavaScript">JavaScript</a>. Estos gráficos fueron creados para que se puedan representar o renderizar en la web y en los navegadores. Además, este lenguaje de marcado se convirtió en una recomendación del W3C en septiembre de <a href="/wiki/2001" title="2001">2001</a>, por lo que ya ha sido incluido de forma nativa en el <a href="/wiki/Navegador_web" title="Navegador web">navegador web</a> del W3C <a href="/wiki/Amaya_(navegador)" title="Amaya (navegador)">Amaya</a>. Las versiones 1.5 y posteriores de <a href="/wiki/Mozilla_Firefox" title="Mozilla Firefox">Mozilla Firefox</a> soportan gráficos hechos con SVG, así como el navegador <a href="/wiki/Opera_(navegador)" title="Opera (navegador)">Opera</a>, que desde su versión 8 ha implementado SVG 1.1 Tiny en su núcleo. Navegadores como <a href="/wiki/Google_Chrome" title="Google Chrome">Google Chrome</a>, <a href="/wiki/Safari_(navegador)" title="Safari (navegador)">Safari</a> e <a href="/wiki/Internet_Explorer_9" title="Internet Explorer 9">Internet Explorer 9</a> también son capaces de mostrar imágenes en formato SVG sin necesidad de complementos externos. Otros navegadores web como versiones anteriores a la 9 de <a href="/wiki/Internet_Explorer" title="Internet Explorer">Internet Explorer</a> necesitan un <a href="/wiki/Plug-in" class="mw-redirect" title="Plug-in">conector o <i>plug-in</i></a>.
+</p><p>Los dibujos, imágenes o gráficos SVG, a diferencia de los dibujos en otros formatos como los Webp, JPG, PNG, TIFF (Rasters) entre otros, pueden ser interactivos y dinámicos y esto se debe a que no se componen por mapa de bits, sino que están compuestos por vectores, que son instrucciones matemáticas que se le dan al navegador o programas de ediciones de estos gráficos vectoriales, para escalarlos de manera infinita y no perder resolución o calidad en la imagen, dibujo, etcétera.
+</p>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="es" dir="ltr"><h2 id="mw-toc-heading">Índice</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Orígenes"><span class="tocnumber">1</span> <span class="toctext">Orígenes</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Contenido_general"><span class="tocnumber">2</span> <span class="toctext">Contenido general</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Ventajas_de_SVG[3]​"><span class="tocnumber">2.1</span> <span class="toctext">Ventajas de SVG<sup><span>[</span>3<span>]</span></sup>&#8203;</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#SVG_usa_formato_XML"><span class="tocnumber">2.2</span> <span class="toctext">SVG usa formato XML</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Estructura_básica_de_un_SVG"><span class="tocnumber">2.3</span> <span class="toctext">Estructura básica de un SVG</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#Tipos_de_objetos_gráficos"><span class="tocnumber">2.4</span> <span class="toctext">Tipos de objetos gráficos</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Elementos_geométricos_SVG"><span class="tocnumber">2.5</span> <span class="toctext">Elementos geométricos SVG</span></a>
+<ul>
+<li class="toclevel-3 tocsection-8"><a href="#Atributos"><span class="tocnumber">2.5.1</span> <span class="toctext">Atributos</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#Líneas"><span class="tocnumber">2.5.2</span> <span class="toctext">Líneas</span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="#Rectángulos"><span class="tocnumber">2.5.3</span> <span class="toctext">Rectángulos</span></a></li>
+<li class="toclevel-3 tocsection-11"><a href="#Círculo"><span class="tocnumber">2.5.4</span> <span class="toctext">Círculo</span></a></li>
+<li class="toclevel-3 tocsection-12"><a href="#Elipse"><span class="tocnumber">2.5.5</span> <span class="toctext">Elipse</span></a></li>
+<li class="toclevel-3 tocsection-13"><a href="#Mixtilínea"><span class="tocnumber">2.5.6</span> <span class="toctext">Mixtilínea</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="#Texto"><span class="tocnumber">2.5.7</span> <span class="toctext">Texto</span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="#Agrupaciones"><span class="tocnumber">2.5.8</span> <span class="toctext">Agrupaciones</span></a></li>
+<li class="toclevel-3 tocsection-16"><a href="#Duplicados"><span class="tocnumber">2.5.9</span> <span class="toctext">Duplicados</span></a>
+<ul>
+<li class="toclevel-4 tocsection-17"><a href="#Duplicado_de_objetos_svg"><span class="tocnumber">2.5.9.1</span> <span class="toctext">Duplicado de objetos svg</span></a></li>
+<li class="toclevel-4 tocsection-18"><a href="#Enlazado_de_imágenes"><span class="tocnumber">2.5.9.2</span> <span class="toctext">Enlazado de imágenes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-19"><a href="#Recortes"><span class="tocnumber">2.5.10</span> <span class="toctext">Recortes</span></a></li>
+<li class="toclevel-3 tocsection-20"><a href="#Transformaciones"><span class="tocnumber">2.5.11</span> <span class="toctext">Transformaciones</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-21"><a href="#Animaciones"><span class="tocnumber">2.6</span> <span class="toctext">Animaciones</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-22"><a href="#Navegadores_que_soportan_SVG"><span class="tocnumber">3</span> <span class="toctext">Navegadores que soportan SVG</span></a></li>
+<li class="toclevel-1 tocsection-23"><a href="#Software_de_edición"><span class="tocnumber">4</span> <span class="toctext">Software de edición</span></a></li>
+<li class="toclevel-1 tocsection-24"><a href="#Véase_también"><span class="tocnumber">5</span> <span class="toctext">Véase también</span></a></li>
+<li class="toclevel-1 tocsection-25"><a href="#Referencias"><span class="tocnumber">6</span> <span class="toctext">Referencias</span></a></li>
+<li class="toclevel-1 tocsection-26"><a href="#Enlaces_externos"><span class="tocnumber">7</span> <span class="toctext">Enlaces externos</span></a>
+<ul>
+<li class="toclevel-2 tocsection-27"><a href="#Ejemplos_y_manuales"><span class="tocnumber">7.1</span> <span class="toctext">Ejemplos y manuales</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span id="Or.C3.ADgenes"></span><span class="mw-headline" id="Orígenes">Orígenes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=1" title="Editar sección: Orígenes">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>En 1996, Chris Liley redactó para el W3C un documento con directrices sobre los posibles requerimientos para integrar un formato estándar de archivo para describir elementos gráficos vectoriales. Para 1998 varias empresas habían turnado propuestas a este organismo, de las cuales dos principalmente sirvieron como base para los borradores que constituirían el SVG: el <a href="/wiki/VML" class="mw-redirect" title="VML">VML</a> desarrollado por <a href="/wiki/Microsoft" title="Microsoft">Microsoft</a> para su formato de documentos <a href="/wiki/RTF" class="mw-redirect" title="RTF">RTF</a> y el <a href="/w/index.php?title=PGML&amp;action=edit&amp;redlink=1" class="new" title="PGML (aún no redactado)">PGML</a> desarrollado entonces por <a href="/wiki/Adobe" title="Adobe">Adobe</a> en coordinación con <a href="/wiki/IBM" title="IBM">IBM</a>, <a href="/wiki/Netscape_Navigator" title="Netscape Navigator">Netscape</a> y <a href="/wiki/SUN" title="SUN">SUN</a>. Tras la publicación del estándar SVG, Microsoft disoció el <a href="/wiki/VML" class="mw-redirect" title="VML">VML</a> arguyendo que era un producto ya en el mercado, mientras que <a href="/wiki/Adobe" title="Adobe">Adobe</a> celebró abiertamente estandarización del <a href="/w/index.php?title=PGML&amp;action=edit&amp;redlink=1" class="new" title="PGML (aún no redactado)">PGML</a>; el soporte para SVG fue integrado a distintos productos de <i>software</i> de esta última compañía como <a href="/wiki/Adobe_Illustrator" title="Adobe Illustrator">Adobe Illustrator</a> y el visualizador de archivos <a href="/w/index.php?title=ASV_(software)&amp;action=edit&amp;redlink=1" class="new" title="ASV (software) (aún no redactado)">ASV</a>.<sup id="cite_ref-2" class="reference separada"><a href="#cite_note-2"><span class="corchete-llamada">[</span>2<span class="corchete-llamada">]</span></a></sup>&#8203;
+</p>
+<h2><span class="mw-headline" id="Contenido_general">Contenido general</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=2" title="Editar sección: Contenido general">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="thumb tright"><div class="thumbinner" style="width:302px;"><a href="/wiki/Archivo:Bitmap_VS_SVG.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bitmap_VS_SVG.svg/300px-Bitmap_VS_SVG.svg.png" decoding="async" width="300" height="192" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bitmap_VS_SVG.svg/450px-Bitmap_VS_SVG.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bitmap_VS_SVG.svg/600px-Bitmap_VS_SVG.svg.png 2x" data-file-width="512" data-file-height="327" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:Bitmap_VS_SVG.svg" class="internal" title="Aumentar"></a></div>La imagen ilustra una diferencia entre mapas de bits e imágenes vectoriales. La imagen vectorial puede ser redimensionada, tanto como se requiera, sin pérdida de calidad de imagen. Esto no es así con un mapa de bits.</div></div></div>
+<h4><span id="Ventajas_de_SVG.5B3.5D.E2.80.8B"></span><span class="mw-headline" id="Ventajas_de_SVG[3]​">Ventajas de SVG<sup id="cite_ref-3" class="reference separada"><a href="#cite_note-3"><span class="corchete-llamada">[</span>3<span class="corchete-llamada">]</span></a></sup>&#8203;</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=3" title="Editar sección: Ventajas de SVG[3]​">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Las ventajas de usar SVG sobre otros formatos de imagen son que estas se pueden:
+</p>
+<ul><li>Crear y editar con cualquier editor de texto</li>
+<li>Buscar, indexar, codificar y comprimir</li>
+<li>imprimir con alta calidad en cualquier resolución</li>
+<li>ampliar sin perder calidad de imagen o gráfico,</li>
+<li>Los gráficos SVG NO pierden calidad si se amplían o cambian de tamaño</li>
+<li>Las imágenes SVG son escalables</li>
+<li>SVG es un estándar abierto</li>
+<li>Los archivos SVG son XML puro</li></ul>
+<h4><span class="mw-headline" id="SVG_usa_formato_XML">SVG usa formato XML</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=4" title="Editar sección: SVG usa formato XML">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Para poder entender un poco SVG desde el código se debe tener un conocimiento básico de HTML y XML básico.
+</p><p>Por lo tanto debe llevar
+</p>
+<ul><li>Etiquetas de apertura y cierre (<i>Al igual que <a href="/wiki/HTML5" title="HTML5">HTML</a></i>)</li>
+<li>Atributos.</li>
+<li>Como dialecto XML, requiere que se defina el namespace, de lo contrario el navegador no lo interpretará correctamente.</li></ul>
+<h4><span id="Estructura_b.C3.A1sica_de_un_SVG"></span><span class="mw-headline" id="Estructura_básica_de_un_SVG">Estructura básica de un SVG</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=5" title="Editar sección: Estructura básica de un SVG">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>El código SVG debe llevar:
+</p>
+<ul><li>viewBox.</li>
+<li>xmlns.</li></ul>
+<div class="mw-highlight mw-highlight-lang-xml mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="nt">&lt;svg</span> <span class="na">viewBox=</span><span class="s">&quot;0 0 20 20&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="nt">&gt;</span>
+<span class="linenos" data-line="2"></span>    <span class="nt">&lt;title&gt;</span>Estructura basica del SVG<span class="nt">&lt;/title&gt;</span>
+<span class="linenos" data-line="3"></span>    <span class="nt">&lt;style&gt;</span>
+<span class="linenos" data-line="4"></span>        .circle {fill: blue}
+<span class="linenos" data-line="5"></span>    <span class="nt">&lt;/style&gt;</span>
+<span class="linenos" data-line="6"></span>    <span class="nt">&lt;circle</span> <span class="na">class=</span><span class="s">&quot;circle&quot;</span> <span class="na">cx=</span><span class="s">&quot;5&quot;</span> <span class="na">cy=</span><span class="s">&quot;5&quot;</span> <span class="na">r=</span><span class="s">&quot;5&quot;</span> <span class="nt">/&gt;</span>
+<span class="linenos" data-line="7"></span><span class="nt">&lt;/svg&gt;</span>
+</pre></div>
+<h4><span id="Tipos_de_objetos_gr.C3.A1ficos"></span><span class="mw-headline" id="Tipos_de_objetos_gráficos">Tipos de objetos gráficos</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=6" title="Editar sección: Tipos de objetos gráficos">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>La especificación de SVG permite tres tipos de objetos gráficos:
+</p>
+<ul><li><a href="/wiki/Scalable_Vector_Graphics#Elementos_geométricos" class="mw-redirect" title="Scalable Vector Graphics">Elementos geométricos vectoriales</a>, como los caminos o trayectorias consistentes en <a href="/wiki/Recta" title="Recta">rectas</a> y <a href="/wiki/Curva" title="Curva">curvas</a>, y <a href="/wiki/%C3%81rea" title="Área">áreas</a> limitadas por ellos.</li>
+<li>Imágenes de <a href="/wiki/Mapa_de_bits" class="mw-redirect" title="Mapa de bits">mapa de bits</a>/<a href="/wiki/Sistema_digital" title="Sistema digital">digitales</a>.</li>
+<li>Texto.</li></ul>
+<p>Los objetos gráficos pueden ser agrupados, transformados y compuestos en objetos previamente <a href="/wiki/Renderizaci%C3%B3n" title="Renderización">renderizados</a>, y pueden recibir un estilo común. El texto puede estar en cualquier <a href="/wiki/Espacio_de_nombres" title="Espacio de nombres">espacio de nombres</a> XML admitido por la aplicación, lo que mejora la posibilidad de búsqueda y la <a href="/wiki/Accesibilidad" title="Accesibilidad">accesibilidad</a> de los gráficos SVG. El conjunto de características incluye las <a href="/wiki/Transformaci%C3%B3n" class="mw-disambig" title="Transformación">transformaciones</a> anidadas, las trayectorias de recorte, las <a href="/wiki/Composici%C3%B3n_alfa" title="Composición alfa">máscaras alfa</a>, los <a href="/wiki/Filtro" class="mw-disambig" title="Filtro">filtros</a> de efectos, las <a href="/wiki/Plantilla" title="Plantilla">plantillas</a> de objetos y la <a href="/wiki/Extensibilidad" class="mw-redirect mw-disambig" title="Extensibilidad">extensibilidad</a>.
+</p><p>El dibujado de los SVG puede ser dinámico e interactivo. El modelo <a href="/wiki/Document_Object_Model" title="Document Object Model">Document Object Model</a> (DOM) para SVG, que incluye el <a href="/wiki/Document_Object_Model" title="Document Object Model">DOM</a> XML completo, permite animaciones de gráficos vectoriales sencillas y eficientes mediante <a href="/wiki/ECMAScript" title="ECMAScript">ECMAScript</a> o <a href="/wiki/SMIL" title="SMIL">SMIL</a>. Un conjunto amplio de manejadores de eventos, como "onMouseOver" y "onClick", puede ser asignado a cualquier objeto SVG. Debido a su compatibilidad y relación con otros estándares de Web, características como el <a href="/wiki/Scripting" class="mw-redirect" title="Scripting">scripting</a> pueden ser aplicadas a elementos SVG y a otros elementos XML desde distintos espacios de nombre XML simultáneamente y dentro de la misma página web. Un ejemplo extremo de esto es un juego completo de <a href="/wiki/Tetris" title="Tetris">Tetris</a> realizado como un objeto SVG.<sup id="cite_ref-4" class="reference separada"><a href="#cite_note-4"><span class="corchete-llamada">[</span>4<span class="corchete-llamada">]</span></a></sup>&#8203; 
+</p><p>Si el espacio de almacenamiento es un problema, las imágenes SVG pueden ser guardadas como archivos comprimidos con <a href="/wiki/Gzip" title="Gzip">gzip</a>, en cuyo caso pasan a ser imágenes SVGZ. Debido a la verbosidad del XML, este tiende a <a href="/wiki/Compresi%C3%B3n_de_datos" title="Compresión de datos">comprimirse</a> muy bien, y estos ficheros pueden ser mucho más pequeños.
+</p><p>El fichero o archivo vectorizado original (SVG) es más pequeño que la versión de mapa de bits exceptuando cualquier programa que fuerza a una vectorialización ya que vectorializa detalles en general de poca utilidad, aproximables por otros métodos o invisibles, a los cuales inserta información oculta y firmas de todo tipo.
+</p><p><b>Complejidad</b>
+</p>
+<div class="thumb tright"><div class="thumbinner" style="width:202px;"><a href="/wiki/Archivo:Tomate.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tomate.svg/200px-Tomate.svg.png" decoding="async" width="200" height="154" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tomate.svg/300px-Tomate.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tomate.svg/400px-Tomate.svg.png 2x" data-file-width="267" data-file-height="205" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:Tomate.svg" class="internal" title="Aumentar"></a></div>Tomate en SVG</div></div></div>
+<p>Por ser un lenguaje vectorial, SVG permite crear imágenes complejas.
+</p>
+<h3><span id="Elementos_geom.C3.A9tricos_SVG"></span><span class="mw-headline" id="Elementos_geométricos_SVG">Elementos geométricos SVG</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=7" title="Editar sección: Elementos geométricos SVG">editar</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Los <b>elementos geométricos</b> son <a href="/wiki/Programaci%C3%B3n_orientada_a_objetos" title="Programación orientada a objetos">objetos</a> provistos de atributos genéricos básicos y optativos o por defecto.
+</p><p>Todos los objetos se encuentran enmarcados en una ventana, con un ancho (width) y un alto (height) determinados con <a href="/wiki/N%C3%BAmero_entero" title="Número entero">números enteros</a>. Esta ventana posee un sistema de coordenadas cuyo origen está situado en la parte superior izquierda y en el cual los valores positivos de <b>x</b> y <b>y</b> se orientan a la derecha y hacia abajo respectivamente. Cada valor está determinado con números enteros o con un porcentaje respecto del área de trabajo.
+</p><p>Un sistema de referencia coordenado o un objeto determinado en el estándar se puede modificar mediante transformaciones. El ejemplo que sigue muestra dos transformaciones: una de posición (traslado) del origen de coordenadas, mediante la orden "translate" y otra de escala, usando la orden "scale".
+</p>
+<div class="thumb tright"><div class="thumbinner" style="width:222px;"><a href="/wiki/Archivo:Base_Ideal.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/d/db/Base_Ideal.svg/220px-Base_Ideal.svg.png" decoding="async" width="220" height="220" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/d/db/Base_Ideal.svg/330px-Base_Ideal.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/d/db/Base_Ideal.svg/440px-Base_Ideal.svg.png 2x" data-file-width="200" data-file-height="200" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:Base_Ideal.svg" class="internal" title="Aumentar"></a></div>Orientación corregida usada habitualmente para representación gráfica</div></div></div>
+<div class="mw-highlight mw-highlight-lang-xml mw-content-ltr" dir="ltr"><pre><span></span><span class="nt">&lt;svg</span> <span class="na">width=</span><span class="s">&quot;200&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="na">xmlns:xlink=</span><span class="s">&quot;http://www.w3.org/1999/xlink&quot;</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;g</span> <span class="na">transform=</span><span class="s">&quot;translate(50,150)&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;g</span> <span class="na">transform=</span><span class="s">&quot;scale(1,-1)&quot;</span><span class="nt">&gt;</span>
+   ...
+  <span class="nt">&lt;/g&gt;</span>
+ <span class="nt">&lt;/g&gt;</span>
+<span class="nt">&lt;/svg&gt;</span>
+</pre></div>
+<h4><span class="mw-headline" id="Atributos">Atributos</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=8" title="Editar sección: Atributos">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Todos los objetos comparten algunos atributos genéricos:
+</p>
+<ul><li>Todo elemento visual de una figura tiene un color con 4 posibles expresiones con el color negro por defecto:</li></ul>
+<dl><dd><ul><li><a href="/wiki/Colores_HTML" class="mw-redirect" title="Colores HTML">Nominalmente</a>: <b>red</b>, <b>yellow</b>, <b>blue</b>, <b>aqua</b>, <b>salmon</b>, <b>tomato</b>, <b>orange</b>, <b>lightgreen,</b> etc.<sup id="cite_ref-5" class="reference separada"><a href="#cite_note-5"><span class="corchete-llamada">[</span>5<span class="corchete-llamada">]</span></a></sup>&#8203;</li>
+<li>Con valores hexadecimales: <code>#ff0000</code>, <code>#ffff00</code>, etc.</li>
+<li>Con valores hexadecimales resumidos <code>#abc</code>=<code>#aabbcc</code>: <code>#f00</code>, <code>#ff0</code>, etc.</li>
+<li>Funcionales: enteros como <code>rgb(255,32,50)</code> o porcentuales como <code>rgb(100%,10%,0%)</code>.</li></ul></dd></dl>
+<ul><li>Toda figura tiene un contorno cuyo grosor y color pueden ser modificados, respectivamente, usando los parámetros <code>stroke-width</code> y <code>stroke</code>.</li></ul>
+<dl><dd><ul><li>Hay tres tipos de uniones de líneas: <code>stroke-linejoin="miter"</code> (para ángulos menores de 30 grados se aumenta el valor entero del corrector, stroke-miterlimit="4", en caso contrario se transforma en "bevel"), <code>stroke-linejoin="round"</code> y <code>stroke-linejoin="bevel"</code> en la imagen respectivamente.</li></ul></dd></dl>
+<p><a href="/wiki/Archivo:Stroke-linejoin.svg" class="image"><img alt="Stroke-linejoin.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Stroke-linejoin.svg/250px-Stroke-linejoin.svg.png" decoding="async" width="250" height="100" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Stroke-linejoin.svg/375px-Stroke-linejoin.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Stroke-linejoin.svg/500px-Stroke-linejoin.svg.png 2x" data-file-width="500" data-file-height="200" /></a>
+</p>
+<dl><dd><ul><li>Hay tres tipos de extremos de líneas: <code>stroke-linecap="butt"</code>, <code>stroke-linecap="round"</code> y <code>stroke-linecap="square"</code> en la imagen respectivamente.</li></ul></dd></dl>
+<p><a href="/wiki/Archivo:Stroke-linecap.svg" class="image"><img alt="Stroke-linecap.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Stroke-linecap.svg/250px-Stroke-linecap.svg.png" decoding="async" width="250" height="40" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Stroke-linecap.svg/375px-Stroke-linecap.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Stroke-linecap.svg/500px-Stroke-linecap.svg.png 2x" data-file-width="500" data-file-height="80" /></a>
+</p>
+<dl><dd><ul><li>Se puede añadir bordes intermitentes siguiendo el patrón marcado por sucesiones de enteros con <b>stroke-dasharray</b> como por ejemplo stroke-dasharray="2,3,5,7,11,13".</li></ul></dd></dl>
+<ul><li>Casi todas las figuras tienen un relleno que puede ser modificado en color, <b>fill</b>, difuminado o filtrado de distintas formas.</li></ul>
+<ul><li>Toda figura tiene una opacidad, <b>opacity</b>, su valor varía entre 0(transparente) y 1(opaco por defecto).</li></ul>
+<h4><span id="L.C3.ADneas"></span><span class="mw-headline" id="Líneas">Líneas</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=9" title="Editar sección: Líneas">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>El objeto <b>línea</b> consta básicamente de dos puntos, <b>(x1, y1</b>) y <b>(x2, y2)</b>,  entre los cuales se dibuja un segmento recto:
+</p><p><code>&lt;line x1="..." y1="..." x2="..." y2="..." ... /&gt;</code>
+</p>
+<h4><span id="Rect.C3.A1ngulos"></span><span class="mw-headline" id="Rectángulos">Rectángulos</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=10" title="Editar sección: Rectángulos">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>El objeto <b>rectángulo</b> consta básicamente de un punto cuya esquina superior izquierda u origen es (<b>x, y)</b>, y sus dimensiones están representadas por los parámetros <b>height</b> y <b>width</b>:
+</p><p><code>&lt;rect x="..." y="..." height="..." width="..." ... /&gt;</code>
+</p>
+<h4><span id="C.C3.ADrculo"></span><span class="mw-headline" id="Círculo">Círculo</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=11" title="Editar sección: Círculo">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>El objeto <b>círculo</b> consta de un punto cuyo centro tiene las coordenadas (<b>cx, cy</b>), y su radio es <b>r</b>:
+</p><p><code>&lt;circle r="..." cx="..." cy="..." ... /&gt;</code>
+</p>
+<h4><span class="mw-headline" id="Elipse">Elipse</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=12" title="Editar sección: Elipse">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>El objeto <b>elipse</b> consta de un punto cuyo centro tiene las coordenadas (<b>cx, cy)</b>, un radio horizontal, <b>rx</b>, y un radio vertical, <b>ry</b>:
+</p><p><code>&lt;ellipse cx="..." cy="..." rx="..." ry="..." ... /&gt;</code>
+</p>
+<h4><span id="Mixtil.C3.ADnea"></span><span class="mw-headline" id="Mixtilínea">Mixtilínea</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=13" title="Editar sección: Mixtilínea">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="thumb tright"><div class="thumbinner" style="width:302px;"><a href="/wiki/Archivo:MuestreoDePath.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/2/2f/MuestreoDePath.svg/300px-MuestreoDePath.svg.png" decoding="async" width="300" height="180" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/2/2f/MuestreoDePath.svg/450px-MuestreoDePath.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/2/2f/MuestreoDePath.svg/600px-MuestreoDePath.svg.png 2x" data-file-width="500" data-file-height="300" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:MuestreoDePath.svg" class="internal" title="Aumentar"></a></div>Muestra de diferentes órdenes de orientación para una misma cadena <b>d</b></div></div></div>
+<p>El objeto <b>mixtilínea</b> consta básicamente de puntos unidos por líneas que pueden cerrar o no un espacio. Estos puntos forman cadenas iniciadas con <b>M</b> o <b>m</b> que pueden unirse con otras para formar un todo. El uso de mayúsculas se refiere a valores absolutos de coordenadas y de minúsculas para los valores relativos, es decir, considera el último punto dado como el origen de coordenadas.
+</p>
+<dl><dd><code>&lt;path d="M ... m ... M ... " /&gt;</code></dd></dl>
+<p><b>Enlaces entre puntos</b>:
+</p>
+<ul><li>Si después de un punto es usada la orden <b>L</b> o <b>l</b>, los puntos siguientes se unen con segmentos rectos.</li>
+<li>Si después de indicar un punto aparece la orden <b>H</b> o <b>V</b> (para coordenadas absolutas) u <b>h</b> o <b>v</b> (para coordenadas relativas), ambos puntos se unen con una línea horizontal o vertical manteniendo fija la otra coordenada.</li></ul>
+<ul><li>Si después de un punto es usada la orden <b>Q</b> o <b>q</b>, se genera una <a href="/wiki/Curva_de_B%C3%A9zier" title="Curva de Bézier">curva de Bézier</a> cuadrática, entre el primer punto y el último mediante un <b>punto de control</b> cuyas coordenadas aparecen después de la orden.</li>
+<li><b>T</b> o <b>t</b> enlaza curvas de Bézier cuadráticas previamente trazadas, sucesivamente calculando cada vez de manera automática un punto de control.</li></ul>
+<ul><li>Si después de un punto aparece la orden <b>C</b> o <b>c</b>, la terna de puntos siguientes genera una <b>curva de Bézier cúbica</b> siendo los dos primeros, los puntos de control de ambos extremos de la curva y el último es el punto final de la curva que se une con el primero. <b>S</b> o <b>s</b> enlaza curvas cúbicas sucesivamente, calculándose de manera automática los puntos de control.</li></ul>
+<ul><li>Si después de un punto aparece <b>A</b> o <b>a</b>, se unirán los puntos extremos, P y Q con una <b>curva elíptica o circular</b> según los valores de los radios Rx y Ry respecto de los ejes de la elipse. El valor de U y V cambia la dirección y parte visible que presentan respectivamente relativos a P y Q, según sean <b>1</b> o <b>0</b>. El valor de G es una rotación de los ejes de la elipse.</li></ul>
+<dl><dd><dl><dd><code>&lt;path d="MPx,PxaRx,Ry G V U Qx,Qy" /&gt;</code></dd></dl></dd></dl>
+<ul><li>Para cerrar curvas y trayectorias, se cerrará la cadena de puntos con <b>Z</b> o <b>z</b> independientemente si la orden está en mayúscula o no.</li></ul>
+<p><b>Aberturas</b>:
+</p><p>Para generar una <b>abertura</b> en un recinto con interior(<b>fill</b> distinto de "none") se usa una cadena con orientación contraria al borde del recinto (hay dos posibles órdenes: el horario y el antihorario), esto generará un recinto cuyo interior tendrá una sola orientación, en caso contrario no hay abertura.
+</p>
+<h4><span class="mw-headline" id="Texto">Texto</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=14" title="Editar sección: Texto">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="thumb tright"><div class="thumbinner" style="width:202px;"><a href="/wiki/Archivo:TextTipo1.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/9/98/TextTipo1.svg/200px-TextTipo1.svg.png" decoding="async" width="200" height="175" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/98/TextTipo1.svg/300px-TextTipo1.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/98/TextTipo1.svg/400px-TextTipo1.svg.png 2x" data-file-width="800" data-file-height="700" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Archivo:TextTipo1.svg" class="internal" title="Aumentar"></a></div>Muestra de Font-family (estado actual de Commons)</div></div></div>
+<p>Se puede añadir <b>texto</b>, a partir de: un punto base <b>x</b> e <b>y</b> y se configuran las características de la cadena de texto con los parámetros: <b><a href="/wiki/Familias_de_tipos_de_letra_(HTML)" title="Familias de tipos de letra (HTML)">font-family</a></b> (tipo de letra), <b>font-size</b> (tamaño de letras ) y estilo de letra por <b>font-style</b> (con uno de cuatro valores posibles: normal, inherit, oblique o italic):
+</p><p><code>&lt;text x="..." y="..." font-size="..." font-style="..." &gt; ... &lt;/text&gt;</code>
+</p>
+<h4><span class="mw-headline" id="Agrupaciones">Agrupaciones</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=15" title="Editar sección: Agrupaciones">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Se pueden agrupar objetos para que compartan atributos por defecto y una disposición fija en el espacio para poder duplicarlos cómodamente:
+</p><p><code>&lt;g ... &gt;...&lt;/g&gt;</code>
+</p>
+<h4><span class="mw-headline" id="Duplicados">Duplicados</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=16" title="Editar sección: Duplicados">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Para duplicar objetos tanto internos como externos se tiene que incluir en la etiqueta &lt;svg&gt; el siguiente fragmento:
+</p><p><code>&lt;svg xmlns:xlink="http://www.w3.org/1999/xlink" ... &gt; ... &lt;/svg&gt;</code>
+</p>
+<h5><span class="mw-headline" id="Duplicado_de_objetos_svg">Duplicado de objetos svg</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=17" title="Editar sección: Duplicado de objetos svg">editar</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>Se puede duplicar objetos identificados previamente con <b>id="..."</b>, donde el espacio de puntos indica el nombre.
+</p><p><code>&lt;use xlink:href="#..."/&gt;</code>
+</p>
+<h5><span id="Enlazado_de_im.C3.A1genes"></span><span class="mw-headline" id="Enlazado_de_imágenes">Enlazado de imágenes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=18" title="Editar sección: Enlazado de imágenes">editar</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>Se pueden añadir o incrustar enlaces a imágenes del tipo *.png, *.jpg o *.svg dentro de un rectángulo de parámetros <b>x</b>, <b>y</b>, <b>width</b> y <b>height</b>:
+</p><p><code>&lt;image xlink:href=" ... *.jpg" x="..." y="..." width="..." height="..." /&gt;</code>
+</p><p>Esta opción no es soportada por <a href="/wiki/Wikimedia_Commons" title="Wikimedia Commons">Wikimedia Commons</a>.
+</p>
+<h4><span class="mw-headline" id="Recortes">Recortes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=19" title="Editar sección: Recortes">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Se pueden recortar objetos mediante rellenos de otros objetos, por ejemplo, un círculo mediante un recinto triangular. En el ejemplo que sigue, la orden <b>clipPath</b> con el parámetro "id" identifica el nombre del área a recortar. La orden <b>path</b> siguiente con el parámetro <b>clip-rule</b> indica si un punto queda dentro del área de relleno (<b>nonzero</b>) o fuera (<b>evenodd</b>, como en el caso presentado). Luego de cerrar la orden con &lt;/clipPath&gt;, la orden siguiente traza un círculo al cual se aplica el área recortada con el parámetro <b>clip-path="url(#nombre del área)"</b>.
+</p>
+<div class="mw-highlight mw-highlight-lang-xml mw-content-ltr" dir="ltr"><pre><span></span><span class="nt">&lt;clipPath</span> <span class="na">id=</span><span class="s">&quot;cortador&quot;</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;path</span> <span class="na">fill=</span><span class="s">&quot;#0ff&quot;</span> <span class="na">d=</span><span class="s">&quot;m119,71l-103,60l120,0&quot;</span> <span class="na">clip-rule=</span><span class="s">&quot;evenodd&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/clipPath&gt;</span>
+<span class="nt">&lt;circle</span> <span class="na">r=</span><span class="s">&quot;80&quot;</span> <span class="na">cx=</span><span class="s">&quot;12&quot;</span> <span class="na">cy=</span><span class="s">&quot;130&quot;</span> <span class="na">stroke=</span><span class="s">&quot;#000&quot;</span> <span class="na">fill=</span><span class="s">&quot;#999&quot;</span> <span class="na">clip-path=</span><span class="s">&quot;url(#cortador)&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+<h4><span class="mw-headline" id="Transformaciones">Transformaciones</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=20" title="Editar sección: Transformaciones">editar</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Las <b>transformaciones</b> permiten efectuar <a href="/wiki/Isometr%C3%ADa_af%C3%ADn" title="Isometría afín">semejanzas</a> sobre imágenes mediante la matriz:
+</p><p><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML"  alttext="{\displaystyle Imagen\,\,final={\begin{pmatrix}a&amp;c&amp;e\\b&amp;d&amp;f\\0&amp;0&amp;1\end{pmatrix}}*\,\,Imagen\,\,inicial.}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>I</mi>
+        <mi>m</mi>
+        <mi>a</mi>
+        <mi>g</mi>
+        <mi>e</mi>
+        <mi>n</mi>
+        <mspace width="thinmathspace" />
+        <mspace width="thinmathspace" />
+        <mi>f</mi>
+        <mi>i</mi>
+        <mi>n</mi>
+        <mi>a</mi>
+        <mi>l</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow>
+            <mo>(</mo>
+            <mtable rowspacing="4pt" columnspacing="1em">
+              <mtr>
+                <mtd>
+                  <mi>a</mi>
+                </mtd>
+                <mtd>
+                  <mi>c</mi>
+                </mtd>
+                <mtd>
+                  <mi>e</mi>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mi>b</mi>
+                </mtd>
+                <mtd>
+                  <mi>d</mi>
+                </mtd>
+                <mtd>
+                  <mi>f</mi>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo>)</mo>
+          </mrow>
+        </mrow>
+        <mo>&#x2217;<!-- ∗ --></mo>
+        <mspace width="thinmathspace" />
+        <mspace width="thinmathspace" />
+        <mi>I</mi>
+        <mi>m</mi>
+        <mi>a</mi>
+        <mi>g</mi>
+        <mi>e</mi>
+        <mi>n</mi>
+        <mspace width="thinmathspace" />
+        <mspace width="thinmathspace" />
+        <mi>i</mi>
+        <mi>n</mi>
+        <mi>i</mi>
+        <mi>c</mi>
+        <mi>i</mi>
+        <mi>a</mi>
+        <mi>l</mi>
+        <mo>.</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle Imagen\,\,final={\begin{pmatrix}a&amp;c&amp;e\\b&amp;d&amp;f\\0&amp;0&amp;1\end{pmatrix}}*\,\,Imagen\,\,inicial.}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/aec4ac7cee7508f9b6809dc2db7502b6b0e35b67" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -4.171ex; width:49.654ex; height:9.509ex;" alt="Imagen\,\,final={\begin{pmatrix}a&amp;c&amp;e\\b&amp;d&amp;f\\0&amp;0&amp;1\end{pmatrix}}*\,\,Imagen\,\,inicial."/></span>
+</p><p><code>&lt;g transform="matrix(a,b,c,d,e,f)"&gt; ... &lt;/g&gt;</code>
+</p>
+<ul><li>Traslaciones.</li></ul>
+<p><code>&lt;g transform="translate(e,f)"&gt; ... &lt;/g&gt;</code>
+</p>
+<ul><li>Rotaciones.</li></ul>
+<p><code>&lt;g transform="rotate(g)"&gt; ... &lt;/g&gt;</code>
+</p>
+<ul><li>Simetrías.</li></ul>
+<p><code>&lt;g transform="scale(1,-1),rotate(g)"&gt; ... &lt;/g&gt;</code>
+</p>
+<ul><li>Homotecias.</li></ul>
+<p><code>&lt;g transform="scale(k,k)"&gt; ... &lt;/g&gt;</code>
+</p>
+<dl><dd><ul><li>Homotecias seguidas de simetrías.</li></ul></dd></dl>
+<dl><dd><ul><li>Homotecias seguidas de rotaciones.</li></ul></dd></dl>
+<ul class="gallery mw-gallery-traditional">
+		<li class="gallerybox" style="width: 155px"><div style="width: 155px">
+			<div class="thumb" style="width: 150px;"><div style="margin:48.5px auto;"><a href="/wiki/Archivo:Homotecia_iterada.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/9/97/Homotecia_iterada.svg/120px-Homotecia_iterada.svg.png" decoding="async" width="120" height="53" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/97/Homotecia_iterada.svg/180px-Homotecia_iterada.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/97/Homotecia_iterada.svg/240px-Homotecia_iterada.svg.png 2x" data-file-width="450" data-file-height="200" /></a></div></div>
+			<div class="gallerytext">
+<p>Iteración de una homotecia.
+</p>
+			</div>
+		</div></li>
+		<li class="gallerybox" style="width: 155px"><div style="width: 155px">
+			<div class="thumb" style="width: 150px;"><div style="margin:28.5px auto;"><a href="/wiki/Archivo:Homotecia_y_simetria_iterada.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Homotecia_y_simetria_iterada.svg/120px-Homotecia_y_simetria_iterada.svg.png" decoding="async" width="120" height="93" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Homotecia_y_simetria_iterada.svg/180px-Homotecia_y_simetria_iterada.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Homotecia_y_simetria_iterada.svg/240px-Homotecia_y_simetria_iterada.svg.png 2x" data-file-width="450" data-file-height="350" /></a></div></div>
+			<div class="gallerytext">
+<p>Iteración de una homotecia seguida de una simetría
+</p>
+			</div>
+		</div></li>
+		<li class="gallerybox" style="width: 155px"><div style="width: 155px">
+			<div class="thumb" style="width: 150px;"><div style="margin:23.5px auto;"><a href="/wiki/Archivo:Homotecia_y_rotacion_iterada.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/7/78/Homotecia_y_rotacion_iterada.svg/120px-Homotecia_y_rotacion_iterada.svg.png" decoding="async" width="120" height="103" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/7/78/Homotecia_y_rotacion_iterada.svg/180px-Homotecia_y_rotacion_iterada.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/7/78/Homotecia_y_rotacion_iterada.svg/240px-Homotecia_y_rotacion_iterada.svg.png 2x" data-file-width="350" data-file-height="300" /></a></div></div>
+			<div class="gallerytext">
+<p>Iteración de una homotecia seguida de una rotación
+</p>
+			</div>
+		</div></li>
+		<li class="gallerybox" style="width: 155px"><div style="width: 155px">
+			<div class="thumb" style="width: 150px;"><div style="margin:15px auto;"><a href="/wiki/Archivo:Transformaciones_dicotomica.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Transformaciones_dicotomica.svg/90px-Transformaciones_dicotomica.svg.png" decoding="async" width="90" height="120" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Transformaciones_dicotomica.svg/135px-Transformaciones_dicotomica.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/4/48/Transformaciones_dicotomica.svg/180px-Transformaciones_dicotomica.svg.png 2x" data-file-width="300" data-file-height="400" /></a></div></div>
+			<div class="gallerytext">
+<p>Jugando con la alternancia de dos transformaciones
+</p>
+			</div>
+		</div></li>
+</ul>
+<h3><span class="mw-headline" id="Animaciones">Animaciones</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=21" title="Editar sección: Animaciones">editar</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Las animaciones se pueden crear incorporando programación con algún lenguaje que soporte el navegador, como Python o JavaScript
+</p>
+<h2><span class="mw-headline" id="Navegadores_que_soportan_SVG">Navegadores que soportan SVG</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=22" title="Editar sección: Navegadores que soportan SVG">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li><a href="/wiki/Mozilla_Firefox" title="Mozilla Firefox">Mozilla Firefox</a>: Implementa SVG en forma nativa desde su versión 1.5. Con el tiempo, fue mejorando el cumplimiento del estándar, pero con alto consumo de tiempo de procesador. A partir de la versión 3.5, en Firefox se ha modificado y mejorado el procesamiento de archivos SVG.</li>
+<li><a href="/wiki/Opera_(navegador)" title="Opera (navegador)">Opera</a>: Al igual que Firefox, también posee una implementación de SVG en forma nativa, pero con poco consumo de tiempo de proceso. La versión 9.5 Beta, incorpora la posibilidad de llamar en forma externa a una imagen en formato svg, usando la orden &lt;image&gt; o &lt;use&gt;.</li>
+<li><a href="/wiki/Internet_Explorer" title="Internet Explorer">Internet Explorer</a>: Aunque tardíamente, Microsoft empezó a dar soporte a este estándar en el navegador Internet Explorer desde su novena versión.</li>
+<li><a href="/wiki/Safari_(navegador)" title="Safari (navegador)">Apple Safari</a>: Su versión 3.1 (para computadores con sistema operativo Windows o Mac OS X) posee implementación de soporte para archivos SVG tanto para imágenes como para texto avanzado.</li>
+<li><a href="/wiki/Chrome_(navegador)" class="mw-redirect" title="Chrome (navegador)">Google Chrome</a>: Desde su primera versión, Google incorporó implementación de SVG de forma nativa (ya que utiliza <a href="/wiki/WebKit" title="WebKit">WebKit</a>).</li>
+<li><a href="/wiki/Microsoft_Edge" title="Microsoft Edge">Microsoft Edge</a>: Soporta el estándar SVG desde la primera versión incluida en la versión Build 10049 de <a href="/wiki/Windows_10" title="Windows 10">Windows 10</a>.</li></ul>
+<h2><span id="Software_de_edici.C3.B3n"></span><span class="mw-headline" id="Software_de_edición">Software de edición</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=23" title="Editar sección: Software de edición">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Actualmente hay muchos programas de diseño gráfico que lo soportan. Entre los que son <a href="/wiki/Software_libre" title="Software libre">software libre</a> está <a href="/wiki/Inkscape" title="Inkscape">Inkscape</a>. La <a href="/wiki/Suite_ofim%C3%A1tica" class="mw-redirect" title="Suite ofimática">suite ofimática</a> libre <a href="/wiki/LibreOffice" title="LibreOffice">LibreOffice</a> incorpora <a href="/wiki/LibreOffice_Draw" title="LibreOffice Draw">Draw</a>, programa exclusivo para trabajar con SVG y otros archivos gráficos vectoriales. También hay editores en línea que permiten abrir archivos o crearlos, como Method Draw, Vector Paint, Draw SVG y svgreal.<sup id="cite_ref-6" class="reference separada"><a href="#cite_note-6"><span class="corchete-llamada">[</span>6<span class="corchete-llamada">]</span></a></sup>&#8203;
+</p>
+<h2><span id="V.C3.A9ase_tambi.C3.A9n"></span><span class="mw-headline" id="Véase_también">Véase también</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=24" title="Editar sección: Véase también">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li><a href="/wiki/VML" class="mw-redirect" title="VML">VML</a></li>
+<li><a href="/wiki/Web_sem%C3%A1ntica" title="Web semántica">Web semántica</a></li>
+<li><a href="/wiki/Lista_de_dialectos_XML" class="mw-redirect" title="Lista de dialectos XML">Lista de dialectos XML</a></li>
+<li><a href="/wiki/PNG" class="mw-redirect" title="PNG">PNG</a></li></ul>
+<h2><span class="mw-headline" id="Referencias">Referencias</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=25" title="Editar sección: Referencias">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="listaref" style="list-style-type: decimal;"><ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.w3.org/TR/SVGMobile12/mimereg.html">M Media Type registration for image/svg+xml</a></span>
+</li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2">↑</a></span> <span class="reference-text"><span class="citation web"><a rel="nofollow" class="external text" href="http://www.w3.org/Graphics/SVG/WG/wiki/Secret_Origin_of_SVG">«Secret Origin of SVG»</a>. <a href="/wiki/World_Wide_Web_Consortium" title="World Wide Web Consortium">World Wide Web Consortium</a>. 21 de diciembre de 2007<span class="reference-accessdate">. Consultado el 13 de enero de 2014</span>.</span><span title="ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fes.wikipedia.org%3AGr%C3%A1ficos+vectoriales+escalables&amp;rft.btitle=Secret+Origin+of+SVG&amp;rft.date=21+de+diciembre+de+2007&amp;rft.genre=book&amp;rft.pub=World+Wide+Web+Consortium&amp;rft_id=http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2FWG%2Fwiki%2FSecret_Origin_of_SVG&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook" class="Z3988"><span style="display:none;">&#160;</span></span></span>
+</li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3">↑</a></span> <span class="reference-text"><span class="citation web"><a rel="nofollow" class="external text" href="https://www.w3schools.com/graphics/svg_intro.asp">«SVG Tutorial»</a>. <i>www.w3schools.com</i><span class="reference-accessdate">. Consultado el 7 de enero de 2021</span>.</span><span title="ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fes.wikipedia.org%3AGr%C3%A1ficos+vectoriales+escalables&amp;rft.atitle=SVG+Tutorial&amp;rft.genre=article&amp;rft.jtitle=www.w3schools.com&amp;rft_id=https%3A%2F%2Fwww.w3schools.com%2Fgraphics%2Fsvg_intro.asp&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal" class="Z3988"><span style="display:none;">&#160;</span></span></span>
+</li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external autonumber" href="https://web.archive.org/web/20090831070549/http://www.croczilla.com/bits_and_pieces/svg/samples/svgtetris/svgtetris.svg">[1]</a></span>
+</li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5">↑</a></span> <span class="reference-text"><span class="citation web"><a rel="nofollow" class="external text" href="https://www.w3.org/TR/SVG11/REC-SVG11-20110816.pdf">«Scalable Vector Graphics (SVG) 1.1 (Second Edition)»</a> <span style="color:#555;">(en inglés)</span>. World Wide Web Consortium (W3C). 16 de agosto de 2016. pp.&#160;90-92<span class="reference-accessdate">. Consultado el 14 de noviembre de 2016</span>.</span><span title="ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fes.wikipedia.org%3AGr%C3%A1ficos+vectoriales+escalables&amp;rft.btitle=Scalable+Vector+Graphics+%28SVG%29+1.1+%28Second+Edition%29&amp;rft.date=16+de+agosto+de+2016&amp;rft.genre=book&amp;rft.pages=90-92&amp;rft.pub=World+Wide+Web+Consortium+%28W3C%29&amp;rft_id=https%3A%2F%2Fwww.w3.org%2FTR%2FSVG11%2FREC-SVG11-20110816.pdf&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook" class="Z3988"><span style="display:none;">&#160;</span></span></span>
+</li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external autonumber" href="https://code.google.com/p/svgreal/">[2]</a></span>
+</li>
+</ol></div>
+<h2><span class="mw-headline" id="Enlaces_externos">Enlaces externos</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=26" title="Editar sección: Enlaces externos">editar</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li><a rel="nofollow" class="external text" href="http://www.w3.org/Graphics/SVG">W3C Scalable Vector Graphics (SVG)</a> (en <a href="/wiki/Idioma_ingl%C3%A9s" title="Idioma inglés">inglés</a>)</li>
+<li><a rel="nofollow" class="external text" href="https://web.archive.org/web/20061012050739/http://www.adobe.com/svg/">Adobe SVG</a> (en <a href="/wiki/Idioma_ingl%C3%A9s" title="Idioma inglés">inglés</a>)</li>
+<li><a rel="nofollow" class="external text" href="http://www.mozilla.org/projects/svg/">Mozilla SVG</a> y <a rel="nofollow" class="external text" href="https://web.archive.org/web/20030210062036/http://www.croczilla.com/svg/">Ejemplos</a> (en <a href="/wiki/Idioma_ingl%C3%A9s" title="Idioma inglés">inglés</a>)</li>
+<li><a rel="nofollow" class="external text" href="https://web.archive.org/web/20030207141104/http://www.carto.net/projects/">Cartografía y planos SVG</a> (en <a href="/wiki/Idioma_ingl%C3%A9s" title="Idioma inglés">inglés</a>)</li>
+<li><a rel="nofollow" class="external text" href="http://www.inkscape.org/">Inkscape</a>, editor <a href="/wiki/Software_libre" title="Software libre">libre</a> de SVG</li>
+<li><a rel="nofollow" class="external text" href="http://developer.mozilla.org/es/docs/SVG">MDC Mozilla Developer Center SVG</a></li></ul>
+<h3><span class="mw-headline" id="Ejemplos_y_manuales">Ejemplos y manuales</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit&amp;section=27" title="Editar sección: Ejemplos y manuales">editar</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li><a rel="nofollow" class="external text" href="https://www.w3schools.com/graphics/svg_intro.asp">Tutorial de SVG</a></li></ul>
+<ul><li><a rel="nofollow" class="external text" href="http://alt-soft.com/tutorial/svg_tutorial/introduction.html">SVG Tutorial by Altsoft</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html">1º borrador del manual (1-9-2010)</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">2º borrador del manual (16-8-2011)</a></li>
+<li><a rel="nofollow" class="external text" href="https://svgwg.org/svg2-draft/">Manual (14-8-2018)</a></li></ul>
+<style data-mw-deduplicate="TemplateStyles:r118746331">.mw-parser-output .mw-authority-control{margin-top:1.5em}.mw-parser-output .mw-authority-control .navbox hr:last-child{display:none}.mw-parser-output .mw-authority-control .navbox+.mw-mf-linked-projects{display:none}.mw-parser-output .mw-authority-control .mw-mf-linked-projects{display:flex;padding:0.5em;border:1px solid #c8ccd1;background-color:#eaecf0;color:#222222}.mw-parser-output .mw-authority-control .mw-mf-linked-projects ul li{margin-bottom:0}</style><div class="mw-authority-control"><div role="navigation" class="navbox" aria-label="Navbox" style="width: inherit;padding:3px"><table class="hlist navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th scope="row" class="navbox-group" style="width: 12%; text-align:center;"><a href="/wiki/Control_de_autoridades" title="Control de autoridades">Control de autoridades</a></th><td class="navbox-list navbox-odd" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><b>Proyectos Wikimedia</b></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Wikidata" title="Wikidata"><img alt="Wd" src="//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/20px-Wikidata-logo.svg.png" decoding="async" width="20" height="11" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/30px-Wikidata-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/40px-Wikidata-logo.svg.png 2x" data-file-width="1050" data-file-height="590" /></a> Datos:</span> <span class="uid"><a href="https://www.wikidata.org/wiki/Q2078" class="extiw" title="wikidata:Q2078">Q2078</a></span></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Wikimedia_Commons" title="Commonscat"><img alt="Commonscat" src="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/15px-Commons-logo.svg.png" decoding="async" width="15" height="20" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/23px-Commons-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/30px-Commons-logo.svg.png 2x" data-file-width="1024" data-file-height="1376" /></a> Multimedia:</span> <span class="uid"><span class="plainlinks"><a class="external text" href="https://commons.wikimedia.org/wiki/Category:Scalable_Vector_Graphics">Scalable Vector Graphics</a></span></span></li></ul>
+<hr />
+<ul><li><b>Identificadores</b></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Biblioteca_Nacional_de_Francia" title="Biblioteca Nacional de Francia">BNF</a>:</span> <span class="uid"><a rel="nofollow" class="external text" href="https://catalogue.bnf.fr/ark:/12148/cb14487634q">14487634q</a> <a rel="nofollow" class="external text" href="http://data.bnf.fr/ark:/12148/cb14487634q">(data)</a></span></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Gemeinsame_Normdatei" title="Gemeinsame Normdatei">GND</a>:</span> <span class="uid"><a rel="nofollow" class="external text" href="https://d-nb.info/gnd/4658480-8">4658480-8</a></span></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Library_of_Congress_Control_Number" title="Library of Congress Control Number">LCCN</a>:</span> <span class="uid"><a rel="nofollow" class="external text" href="https://id.loc.gov/authorities/sh2002004644">sh2002004644</a></span></li>
+<li><b>Diccionarios y enciclopedias</b></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Enciclopedia_Brit%C3%A1nica" title="Enciclopedia Británica">Britannica</a>:</span> <span class="uid"><a rel="nofollow" class="external text" href="https://www.britannica.com/topic/scalable-vector-graphics">url</a></span></li></ul>
+</div></td></tr></tbody></table></div><div class="mw-mf-linked-projects hlist">
+<ul><li><span style="white-space:nowrap;"><a href="/wiki/Wikidata" title="Wikidata"><img alt="Wd" src="//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/20px-Wikidata-logo.svg.png" decoding="async" width="20" height="11" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/30px-Wikidata-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/40px-Wikidata-logo.svg.png 2x" data-file-width="1050" data-file-height="590" /></a> Datos:</span> <span class="uid"><a href="https://www.wikidata.org/wiki/Q2078" class="extiw" title="wikidata:Q2078">Q2078</a></span></li>
+<li><span style="white-space:nowrap;"><a href="/wiki/Wikimedia_Commons" title="Commonscat"><img alt="Commonscat" src="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/15px-Commons-logo.svg.png" decoding="async" width="15" height="20" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/23px-Commons-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/30px-Commons-logo.svg.png 2x" data-file-width="1024" data-file-height="1376" /></a> Multimedia:</span> <span class="uid"><span class="plainlinks"><a class="external text" href="https://commons.wikimedia.org/wiki/Category:Scalable_Vector_Graphics">Scalable Vector Graphics</a></span></span></li></ul>
+</div></div>
+<!-- 
+NewPP limit report
+Parsed by mw1320
+Cached time: 20220126182947
+Cache expiry: 3600
+Reduced expiry: true
+Complications: []
+CPU time usage: 0.549 seconds
+Real time usage: 0.672 seconds
+Preprocessor visited node count: 2638/1000000
+Post‐expand include size: 20577/2097152 bytes
+Template argument size: 1104/2097152 bytes
+Highest expansion depth: 19/40
+Expensive parser function count: 6/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 12626/5000000 bytes
+Lua time usage: 0.323/10.000 seconds
+Lua memory usage: 4511187/52428800 bytes
+Number of Wikibase entities loaded: 6/400
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%  510.208      1 -total
+ 43.47%  221.798      1 Plantilla:Control_de_autoridades
+ 38.45%  196.181      1 Plantilla:Ficha_de_formato_de_archivo
+ 36.86%  188.080      1 Plantilla:Ficha
+ 27.52%  140.387     13 Plantilla:Propiedad
+ 10.04%   51.249      1 Plantilla:Listaref
+  8.36%   42.636      3 Plantilla:Cita_web
+  5.01%   25.558      1 Plantilla:Redirige_aquí
+  2.44%   12.442      1 Plantilla:Fecha_de_lanzamiento
+  2.21%   11.294      1 Plantilla:Fecha_de_inicio
+-->
+
+<!-- Saved in parser cache with key eswiki:pcache:idhash:4921-0!canonical and timestamp 20220126182946 and revision id 137140980. Serialized with JSON.
+ -->
+</div><noscript><img src="//es.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript>
+<div class="printfooter">Obtenido de «<a dir="ltr" href="https://es.wikipedia.org/w/index.php?title=Gráficos_vectoriales_escalables&amp;oldid=137140980">https://es.wikipedia.org/w/index.php?title=Gráficos_vectoriales_escalables&amp;oldid=137140980</a>»</div></div>
+		<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Especial:Categor%C3%ADas" title="Especial:Categorías">Categorías</a>: <ul><li><a href="/wiki/Categor%C3%ADa:Acr%C3%B3nimos_de_inform%C3%A1tica" title="Categoría:Acrónimos de informática">Acrónimos de informática</a></li><li><a href="/wiki/Categor%C3%ADa:Formatos_abiertos" title="Categoría:Formatos abiertos">Formatos abiertos</a></li><li><a href="/wiki/Categor%C3%ADa:Gr%C3%A1ficos_vectoriales" title="Categoría:Gráficos vectoriales">Gráficos vectoriales</a></li><li><a href="/wiki/Categor%C3%ADa:XML" title="Categoría:XML">XML</a></li><li><a href="/wiki/Categor%C3%ADa:Lenguajes_de_marcado_para_gr%C3%A1ficos_vectoriales" title="Categoría:Lenguajes de marcado para gráficos vectoriales">Lenguajes de marcado para gráficos vectoriales</a></li><li><a href="/wiki/Categor%C3%ADa:Est%C3%A1ndares_del_World_Wide_Web_Consortium" title="Categoría:Estándares del World Wide Web Consortium">Estándares del World Wide Web Consortium</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">Categorías ocultas: <ul><li><a href="/wiki/Categor%C3%ADa:Wikipedia:Art%C3%ADculos_con_datos_por_trasladar_a_Wikidata" title="Categoría:Wikipedia:Artículos con datos por trasladar a Wikidata">Wikipedia:Artículos con datos por trasladar a Wikidata</a></li><li><a href="/wiki/Categor%C3%ADa:Wikipedia:Art%C3%ADculos_buenos_en_la_Wikipedia_en_alem%C3%A1n" title="Categoría:Wikipedia:Artículos buenos en la Wikipedia en alemán">Wikipedia:Artículos buenos en la Wikipedia en alemán</a></li><li><a href="/wiki/Categor%C3%ADa:Wikipedia:Art%C3%ADculos_con_identificadores_BNF" title="Categoría:Wikipedia:Artículos con identificadores BNF">Wikipedia:Artículos con identificadores BNF</a></li><li><a href="/wiki/Categor%C3%ADa:Wikipedia:Art%C3%ADculos_con_identificadores_GND" title="Categoría:Wikipedia:Artículos con identificadores GND">Wikipedia:Artículos con identificadores GND</a></li><li><a href="/wiki/Categor%C3%ADa:Wikipedia:Art%C3%ADculos_con_identificadores_LCCN" title="Categoría:Wikipedia:Artículos con identificadores LCCN">Wikipedia:Artículos con identificadores LCCN</a></li></ul></div></div>
+	</div>
+</div>
+<div id='mw-data-after-content'>
+	<div class="read-more-container"></div>
+</div>
+
+<div id="mw-navigation">
+	<h2>Menú de navegación</h2>
+	<div id="mw-head">
+		<nav id="p-personal" class="mw-portlet mw-portlet-personal vector-user-menu-legacy vector-menu" aria-labelledby="p-personal-label" role="navigation" 
+	 >
+	<h3 id="p-personal-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Herramientas personales</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="pt-anonuserpage" class="mw-list-item"><span>No has accedido</span></li><li id="pt-anontalk" class="mw-list-item"><a href="/wiki/Especial:MiDiscusi%C3%B3n" title="Discusión sobre ediciones hechas desde esta dirección IP [n]" accesskey="n"><span>Discusión</span></a></li><li id="pt-anoncontribs" class="mw-list-item"><a href="/wiki/Especial:MisContribuciones" title="Una lista de modificaciones hechas desde esta dirección IP [y]" accesskey="y"><span>Contribuciones</span></a></li><li id="pt-createaccount" class="mw-list-item"><a href="/w/index.php?title=Especial:Crear_una_cuenta&amp;returnto=Gr%C3%A1ficos+vectoriales+escalables" title="Te recomendamos crear una cuenta e iniciar sesión; sin embargo, no es obligatorio"><span>Crear una cuenta</span></a></li><li id="pt-login" class="mw-list-item"><a href="/w/index.php?title=Especial:Entrar&amp;returnto=Gr%C3%A1ficos+vectoriales+escalables" title="Te recomendamos iniciar sesión, aunque no es obligatorio [o]" accesskey="o"><span>Acceder</span></a></li></ul>
+		
+	</div>
+</nav>
+
+		<div id="left-navigation">
+			<nav id="p-namespaces" class="mw-portlet mw-portlet-namespaces vector-menu vector-menu-tabs" aria-labelledby="p-namespaces-label" role="navigation" 
+	 >
+	<h3 id="p-namespaces-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Espacios de nombres</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-nstab-main" class="selected mw-list-item"><a href="/wiki/Gr%C3%A1ficos_vectoriales_escalables" title="Ver la página de contenido [c]" accesskey="c"><span>Artículo</span></a></li><li id="ca-talk" class="mw-list-item"><a href="/wiki/Discusi%C3%B3n:Gr%C3%A1ficos_vectoriales_escalables" rel="discussion" title="Discusión acerca de la página [t]" accesskey="t"><span>Discusión</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			<nav id="p-variants" class="mw-portlet mw-portlet-variants emptyPortlet vector-menu-dropdown-noicon vector-menu vector-menu-dropdown" aria-labelledby="p-variants-label" role="navigation" 
+	 >
+	<input type="checkbox"
+		id="p-variants-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-variants"
+		class="vector-menu-checkbox" aria-labelledby="p-variants-label" />
+	<h3 id="p-variants-label" aria-label="Cambiar variante de idioma" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Variantes</span>
+			<span class="vector-menu-checkbox-expanded">expandido</span>
+			<span class="vector-menu-checkbox-collapsed">contraído</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+		</div>
+		<div id="right-navigation">
+			<nav id="p-views" class="mw-portlet mw-portlet-views vector-menu vector-menu-tabs" aria-labelledby="p-views-label" role="navigation" 
+	 >
+	<h3 id="p-views-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Vistas</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-view" class="selected mw-list-item"><a href="/wiki/Gr%C3%A1ficos_vectoriales_escalables"><span>Leer</span></a></li><li id="ca-edit" class="mw-list-item"><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=edit" title="Editar esta página [e]" accesskey="e"><span>Editar</span></a></li><li id="ca-history" class="mw-list-item"><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=history" title="Versiones anteriores de esta página [h]" accesskey="h"><span>Ver historial</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			<nav id="p-cactions" class="mw-portlet mw-portlet-cactions emptyPortlet vector-menu-dropdown-noicon vector-menu vector-menu-dropdown" aria-labelledby="p-cactions-label" role="navigation"  title="Más opciones"
+	 >
+	<input type="checkbox"
+		id="p-cactions-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-cactions"
+		class="vector-menu-checkbox" aria-labelledby="p-cactions-label" />
+	<h3 id="p-cactions-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Más</span>
+			<span class="vector-menu-checkbox-expanded">expandido</span>
+			<span class="vector-menu-checkbox-collapsed">contraído</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+			<div id="p-search" role="search" class=" vector-search-box">
+	<div>
+			<h3 >
+				<label for="searchInput">Buscar</label>
+			</h3>
+		<form action="/w/index.php" id="searchform"
+			class="vector-search-box-form">
+			<div id="simpleSearch"
+				class="vector-search-box-inner"
+				 data-search-loc="header-navigation">
+				<input class="vector-search-box-input"
+					 type="search" name="search" placeholder="Buscar en Wikipedia" aria-label="Buscar en Wikipedia" autocapitalize="sentences" title="Buscar en este wiki [f]" accesskey="f" id="searchInput"
+				/>
+				<input type="hidden" name="title" value="Especial:Buscar"/>
+				<input id="mw-searchButton"
+					 class="searchButton mw-fallbackSearchButton" type="submit" name="fulltext" title="Busca páginas con este texto." value="Buscar" />
+				<input id="searchButton"
+					 class="searchButton" type="submit" name="go" title="Ir a la página con este nombre exacto si existe" value="Ir" />
+			</div>
+		</form>
+	</div>
+</div>
+
+		</div>
+	</div>
+	
+<div id="mw-panel">
+	<div id="p-logo" role="banner">
+		<a class="mw-wiki-logo" href="/wiki/Wikipedia:Portada"
+			title="Visitar la página principal"></a>
+	</div>
+	<nav id="p-navigation" class="mw-portlet mw-portlet-navigation vector-menu vector-menu-portal portal" aria-labelledby="p-navigation-label" role="navigation" 
+	 >
+	<h3 id="p-navigation-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Navegación</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="n-mainpage-description" class="mw-list-item"><a href="/wiki/Wikipedia:Portada" title="Visitar la página principal [z]" accesskey="z"><span>Portada</span></a></li><li id="n-portal" class="mw-list-item"><a href="/wiki/Portal:Comunidad" title="Acerca del proyecto, lo que puedes hacer, dónde encontrar información"><span>Portal de la comunidad</span></a></li><li id="n-currentevents" class="mw-list-item"><a href="/wiki/Portal:Actualidad" title="Encuentra información de contexto sobre acontecimientos actuales"><span>Actualidad</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="/wiki/Especial:CambiosRecientes" title="Lista de cambios recientes en la wiki [r]" accesskey="r"><span>Cambios recientes</span></a></li><li id="n-newpages" class="mw-list-item"><a href="/wiki/Especial:P%C3%A1ginasNuevas"><span>Páginas nuevas</span></a></li><li id="n-randompage" class="mw-list-item"><a href="/wiki/Especial:Aleatoria" title="Cargar una página al azar [x]" accesskey="x"><span>Página aleatoria</span></a></li><li id="n-help" class="mw-list-item"><a href="/wiki/Ayuda:Contenidos" title="El lugar para aprender"><span>Ayuda</span></a></li><li id="n-sitesupport" class="mw-list-item"><a href="//donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_es.wikipedia.org&amp;uselang=es" title="Apóyanos"><span>Donaciones</span></a></li><li id="n-bug_in_article" class="mw-list-item"><a href="/wiki/Wikipedia:Informes_de_error"><span>Notificar un error</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	<nav id="p-tb" class="mw-portlet mw-portlet-tb vector-menu vector-menu-portal portal" aria-labelledby="p-tb-label" role="navigation" 
+	 >
+	<h3 id="p-tb-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Herramientas</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="t-whatlinkshere" class="mw-list-item"><a href="/wiki/Especial:LoQueEnlazaAqu%C3%AD/Gr%C3%A1ficos_vectoriales_escalables" title="Lista de todas las páginas de la wiki que enlazan aquí [j]" accesskey="j"><span>Lo que enlaza aquí</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/wiki/Especial:CambiosEnEnlazadas/Gr%C3%A1ficos_vectoriales_escalables" rel="nofollow" title="Cambios recientes en las páginas que enlazan con esta [k]" accesskey="k"><span>Cambios en enlazadas</span></a></li><li id="t-upload" class="mw-list-item"><a href="//commons.wikimedia.org/wiki/Special:UploadWizard?uselang=es" title="Subir archivos [u]" accesskey="u"><span>Subir archivo</span></a></li><li id="t-specialpages" class="mw-list-item"><a href="/wiki/Especial:P%C3%A1ginasEspeciales" title="Lista de todas las páginas especiales [q]" accesskey="q"><span>Páginas especiales</span></a></li><li id="t-permalink" class="mw-list-item"><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;oldid=137140980" title="Enlace permanente a esta versión de la página"><span>Enlace permanente</span></a></li><li id="t-info" class="mw-list-item"><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;action=info" title="Más información sobre esta página"><span>Información de la página</span></a></li><li id="t-cite" class="mw-list-item"><a href="/w/index.php?title=Especial:Citar&amp;page=Gr%C3%A1ficos_vectoriales_escalables&amp;id=137140980&amp;wpFormIdentifier=titleform" title="Información sobre cómo citar esta página"><span>Citar esta página</span></a></li><li id="t-wikibase" class="mw-list-item"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q2078" title="Enlace al elemento conectado del repositorio de datos [g]" accesskey="g"><span>Elemento de Wikidata</span></a></li></ul>
+		
+	</div>
+</nav>
+<nav id="p-coll-print_export" class="mw-portlet mw-portlet-coll-print_export vector-menu vector-menu-portal portal" aria-labelledby="p-coll-print_export-label" role="navigation" 
+	 >
+	<h3 id="p-coll-print_export-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Imprimir/exportar</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="coll-create_a_book" class="mw-list-item"><a href="/w/index.php?title=Especial:Libro&amp;bookcmd=book_creator&amp;referer=Gr%C3%A1ficos+vectoriales+escalables"><span>Crear un libro</span></a></li><li id="coll-download-as-rl" class="mw-list-item"><a href="/w/index.php?title=Especial:DownloadAsPdf&amp;page=Gr%C3%A1ficos_vectoriales_escalables&amp;action=show-download-screen"><span>Descargar como PDF</span></a></li><li id="t-print" class="mw-list-item"><a href="/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;printable=yes" title="Versión imprimible de esta página [p]" accesskey="p"><span>Versión para imprimir</span></a></li></ul>
+		
+	</div>
+</nav>
+<nav id="p-wikibase-otherprojects" class="mw-portlet mw-portlet-wikibase-otherprojects vector-menu vector-menu-portal portal" aria-labelledby="p-wikibase-otherprojects-label" role="navigation" 
+	 >
+	<h3 id="p-wikibase-otherprojects-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">En otros proyectos</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li class="wb-otherproject-link wb-otherproject-commons mw-list-item"><a href="https://commons.wikimedia.org/wiki/Category:Scalable_Vector_Graphics" hreflang="en"><span>Wikimedia Commons</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	<nav id="p-lang" class="mw-portlet mw-portlet-lang vector-menu vector-menu-portal portal" aria-labelledby="p-lang-label" role="navigation" 
+	 >
+	<h3 id="p-lang-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">En otros idiomas</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li class="interlanguage-link interwiki-als mw-list-item"><a href="https://als.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (Alemannisch)" lang="gsw" hreflang="gsw" class="interlanguage-link-target"><span>Alemannisch</span></a></li><li class="interlanguage-link interwiki-ar mw-list-item"><a href="https://ar.wikipedia.org/wiki/%D8%B1%D8%B3%D9%88%D9%85%D9%8A%D8%A7%D8%AA_%D8%B4%D8%B9%D8%A7%D8%B9%D9%8A%D8%A9_%D9%82%D8%A7%D8%A8%D9%84%D8%A9_%D9%84%D9%84%D8%AA%D9%85%D8%AF%D9%8A%D8%AF" title="رسوميات شعاعية قابلة للتمديد (árabe)" lang="ar" hreflang="ar" class="interlanguage-link-target"><span>العربية</span></a></li><li class="interlanguage-link interwiki-az mw-list-item"><a href="https://az.wikipedia.org/wiki/SVG" title="SVG (azerbaiyano)" lang="az" hreflang="az" class="interlanguage-link-target"><span>Azərbaycanca</span></a></li><li class="interlanguage-link interwiki-bat-smg mw-list-item"><a href="https://bat-smg.wikipedia.org/wiki/SVG" title="SVG (Samogitian)" lang="sgs" hreflang="sgs" class="interlanguage-link-target"><span>Žemaitėška</span></a></li><li class="interlanguage-link interwiki-be mw-list-item"><a href="https://be.wikipedia.org/wiki/SVG" title="SVG (bielorruso)" lang="be" hreflang="be" class="interlanguage-link-target"><span>Беларуская</span></a></li><li class="interlanguage-link interwiki-bg mw-list-item"><a href="https://bg.wikipedia.org/wiki/SVG" title="SVG (búlgaro)" lang="bg" hreflang="bg" class="interlanguage-link-target"><span>Български</span></a></li><li class="interlanguage-link interwiki-bn mw-list-item"><a href="https://bn.wikipedia.org/wiki/%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A7%87%E0%A6%B2%E0%A7%87%E0%A6%AC%E0%A6%B2_%E0%A6%AD%E0%A7%87%E0%A6%95%E0%A7%8D%E0%A6%9F%E0%A6%B0_%E0%A6%97%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%AB%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B8" title="স্কেলেবল ভেক্টর গ্রাফিক্স (bengalí)" lang="bn" hreflang="bn" class="interlanguage-link-target"><span>বাংলা</span></a></li><li class="interlanguage-link interwiki-bs mw-list-item"><a href="https://bs.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (bosnio)" lang="bs" hreflang="bs" class="interlanguage-link-target"><span>Bosanski</span></a></li><li class="interlanguage-link interwiki-ca mw-list-item"><a href="https://ca.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (catalán)" lang="ca" hreflang="ca" class="interlanguage-link-target"><span>Català</span></a></li><li class="interlanguage-link interwiki-cs mw-list-item"><a href="https://cs.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (checo)" lang="cs" hreflang="cs" class="interlanguage-link-target"><span>Čeština</span></a></li><li class="interlanguage-link interwiki-cy mw-list-item"><a href="https://cy.wikipedia.org/wiki/SVG" title="SVG (galés)" lang="cy" hreflang="cy" class="interlanguage-link-target"><span>Cymraeg</span></a></li><li class="interlanguage-link interwiki-da mw-list-item"><a href="https://da.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (danés)" lang="da" hreflang="da" class="interlanguage-link-target"><span>Dansk</span></a></li><li class="interlanguage-link interwiki-de badge-Q17437798 badge-goodarticle mw-list-item" title="artículo bueno"><a href="https://de.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (alemán)" lang="de" hreflang="de" class="interlanguage-link-target"><span>Deutsch</span></a></li><li class="interlanguage-link interwiki-en mw-list-item"><a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (inglés)" lang="en" hreflang="en" class="interlanguage-link-target"><span>English</span></a></li><li class="interlanguage-link interwiki-eo mw-list-item"><a href="https://eo.wikipedia.org/wiki/Streka_vari-skala_grafika%C4%B5o" title="Streka vari-skala grafikaĵo (esperanto)" lang="eo" hreflang="eo" class="interlanguage-link-target"><span>Esperanto</span></a></li><li class="interlanguage-link interwiki-et mw-list-item"><a href="https://et.wikipedia.org/wiki/SVG" title="SVG (estonio)" lang="et" hreflang="et" class="interlanguage-link-target"><span>Eesti</span></a></li><li class="interlanguage-link interwiki-eu mw-list-item"><a href="https://eu.wikipedia.org/wiki/SVG" title="SVG (euskera)" lang="eu" hreflang="eu" class="interlanguage-link-target"><span>Euskara</span></a></li><li class="interlanguage-link interwiki-fa mw-list-item"><a href="https://fa.wikipedia.org/wiki/%D9%86%DA%AF%D8%A7%D8%B1%D9%87%E2%80%8C%D8%B3%D8%A7%D8%B2%DB%8C_%D8%A8%D8%B1%D8%AF%D8%A7%D8%B1%DB%8C_%D9%85%D9%82%DB%8C%D8%A7%D8%B3%E2%80%8C%D9%BE%D8%B0%DB%8C%D8%B1" title="نگاره‌سازی برداری مقیاس‌پذیر (persa)" lang="fa" hreflang="fa" class="interlanguage-link-target"><span>فارسی</span></a></li><li class="interlanguage-link interwiki-fi mw-list-item"><a href="https://fi.wikipedia.org/wiki/SVG" title="SVG (finés)" lang="fi" hreflang="fi" class="interlanguage-link-target"><span>Suomi</span></a></li><li class="interlanguage-link interwiki-fr mw-list-item"><a href="https://fr.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (francés)" lang="fr" hreflang="fr" class="interlanguage-link-target"><span>Français</span></a></li><li class="interlanguage-link interwiki-ga mw-list-item"><a href="https://ga.wikipedia.org/wiki/SVG" title="SVG (irlandés)" lang="ga" hreflang="ga" class="interlanguage-link-target"><span>Gaeilge</span></a></li><li class="interlanguage-link interwiki-gl mw-list-item"><a href="https://gl.wikipedia.org/wiki/SVG" title="SVG (gallego)" lang="gl" hreflang="gl" class="interlanguage-link-target"><span>Galego</span></a></li><li class="interlanguage-link interwiki-he mw-list-item"><a href="https://he.wikipedia.org/wiki/SVG" title="SVG (hebreo)" lang="he" hreflang="he" class="interlanguage-link-target"><span>עברית</span></a></li><li class="interlanguage-link interwiki-hi mw-list-item"><a href="https://hi.wikipedia.org/wiki/%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A5%87%E0%A4%B2%E0%A5%87%E0%A4%AC%E0%A5%81%E0%A4%B2_%E0%A4%B5%E0%A5%87%E0%A4%95%E0%A5%8D%E0%A4%9F%E0%A4%B0_%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%AB%E0%A4%BF%E0%A4%95%E0%A5%8D%E0%A4%B8" title="स्केलेबुल वेक्टर ग्राफिक्स (hindi)" lang="hi" hreflang="hi" class="interlanguage-link-target"><span>हिन्दी</span></a></li><li class="interlanguage-link interwiki-hr mw-list-item"><a href="https://hr.wikipedia.org/wiki/SVG" title="SVG (croata)" lang="hr" hreflang="hr" class="interlanguage-link-target"><span>Hrvatski</span></a></li><li class="interlanguage-link interwiki-hu mw-list-item"><a href="https://hu.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (húngaro)" lang="hu" hreflang="hu" class="interlanguage-link-target"><span>Magyar</span></a></li><li class="interlanguage-link interwiki-hy mw-list-item"><a href="https://hy.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (armenio)" lang="hy" hreflang="hy" class="interlanguage-link-target"><span>Հայերեն</span></a></li><li class="interlanguage-link interwiki-id mw-list-item"><a href="https://id.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (indonesio)" lang="id" hreflang="id" class="interlanguage-link-target"><span>Bahasa Indonesia</span></a></li><li class="interlanguage-link interwiki-is mw-list-item"><a href="https://is.wikipedia.org/wiki/SVG" title="SVG (islandés)" lang="is" hreflang="is" class="interlanguage-link-target"><span>Íslenska</span></a></li><li class="interlanguage-link interwiki-it mw-list-item"><a href="https://it.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (italiano)" lang="it" hreflang="it" class="interlanguage-link-target"><span>Italiano</span></a></li><li class="interlanguage-link interwiki-ja mw-list-item"><a href="https://ja.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (japonés)" lang="ja" hreflang="ja" class="interlanguage-link-target"><span>日本語</span></a></li><li class="interlanguage-link interwiki-ka mw-list-item"><a href="https://ka.wikipedia.org/wiki/%E1%83%9B%E1%83%90%E1%83%A1%E1%83%A8%E1%83%A2%E1%83%90%E1%83%91%E1%83%98%E1%83%A0%E1%83%94%E1%83%91%E1%83%90%E1%83%93%E1%83%98_%E1%83%95%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%A3%E1%83%9A%E1%83%98_%E1%83%92%E1%83%A0%E1%83%90%E1%83%A4%E1%83%98%E1%83%99%E1%83%90" title="მასშტაბირებადი ვექტორული გრაფიკა (georgiano)" lang="ka" hreflang="ka" class="interlanguage-link-target"><span>ქართული</span></a></li><li class="interlanguage-link interwiki-ko mw-list-item"><a href="https://ko.wikipedia.org/wiki/%EC%8A%A4%EC%BC%80%EC%9D%BC%EB%9F%AC%EB%B8%94_%EB%B2%A1%ED%84%B0_%EA%B7%B8%EB%9E%98%ED%94%BD%EC%8A%A4" title="스케일러블 벡터 그래픽스 (coreano)" lang="ko" hreflang="ko" class="interlanguage-link-target"><span>한국어</span></a></li><li class="interlanguage-link interwiki-ksh mw-list-item"><a href="https://ksh.wikipedia.org/wiki/Skal%C4%97erbaa_V%C3%ABkkto%C9%99r-Jraffikk" title="Skalėerbaa Vëkktoər-Jraffikk (kölsch)" lang="ksh" hreflang="ksh" class="interlanguage-link-target"><span>Ripoarisch</span></a></li><li class="interlanguage-link interwiki-lt mw-list-item"><a href="https://lt.wikipedia.org/wiki/SVG" title="SVG (lituano)" lang="lt" hreflang="lt" class="interlanguage-link-target"><span>Lietuvių</span></a></li><li class="interlanguage-link interwiki-lv mw-list-item"><a href="https://lv.wikipedia.org/wiki/M%C4%93rogojama_vektoru_grafika" title="Mērogojama vektoru grafika (letón)" lang="lv" hreflang="lv" class="interlanguage-link-target"><span>Latviešu</span></a></li><li class="interlanguage-link interwiki-mk mw-list-item"><a href="https://mk.wikipedia.org/wiki/SVG" title="SVG (macedonio)" lang="mk" hreflang="mk" class="interlanguage-link-target"><span>Македонски</span></a></li><li class="interlanguage-link interwiki-ml mw-list-item"><a href="https://ml.wikipedia.org/wiki/%E0%B4%B8%E0%B5%8D%E0%B4%95%E0%B5%87%E0%B4%B2%E0%B4%AC%E0%B4%BF%E0%B5%BE_%E0%B4%B5%E0%B5%86%E0%B4%95%E0%B5%8D%E0%B4%9F%E0%B5%BC_%E0%B4%97%E0%B5%8D%E0%B4%B0%E0%B4%BE%E0%B4%AB%E0%B4%BF%E0%B4%95%E0%B5%8D%E0%B4%B8%E0%B5%8D" title="സ്കേലബിൾ വെക്ടർ ഗ്രാഫിക്സ് (malayalam)" lang="ml" hreflang="ml" class="interlanguage-link-target"><span>മലയാളം</span></a></li><li class="interlanguage-link interwiki-ms mw-list-item"><a href="https://ms.wikipedia.org/wiki/SVG" title="SVG (malayo)" lang="ms" hreflang="ms" class="interlanguage-link-target"><span>Bahasa Melayu</span></a></li><li class="interlanguage-link interwiki-na mw-list-item"><a href="https://na.wikipedia.org/wiki/SVG" title="SVG (nauruano)" lang="na" hreflang="na" class="interlanguage-link-target"><span>Dorerin Naoero</span></a></li><li class="interlanguage-link interwiki-nl mw-list-item"><a href="https://nl.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (neerlandés)" lang="nl" hreflang="nl" class="interlanguage-link-target"><span>Nederlands</span></a></li><li class="interlanguage-link interwiki-no mw-list-item"><a href="https://no.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (noruego bokmal)" lang="nb" hreflang="nb" class="interlanguage-link-target"><span>Norsk bokmål</span></a></li><li class="interlanguage-link interwiki-pl mw-list-item"><a href="https://pl.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (polaco)" lang="pl" hreflang="pl" class="interlanguage-link-target"><span>Polski</span></a></li><li class="interlanguage-link interwiki-pt mw-list-item"><a href="https://pt.wikipedia.org/wiki/SVG" title="SVG (portugués)" lang="pt" hreflang="pt" class="interlanguage-link-target"><span>Português</span></a></li><li class="interlanguage-link interwiki-ro mw-list-item"><a href="https://ro.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (rumano)" lang="ro" hreflang="ro" class="interlanguage-link-target"><span>Română</span></a></li><li class="interlanguage-link interwiki-ru mw-list-item"><a href="https://ru.wikipedia.org/wiki/SVG" title="SVG (ruso)" lang="ru" hreflang="ru" class="interlanguage-link-target"><span>Русский</span></a></li><li class="interlanguage-link interwiki-sco mw-list-item"><a href="https://sco.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (escocés)" lang="sco" hreflang="sco" class="interlanguage-link-target"><span>Scots</span></a></li><li class="interlanguage-link interwiki-simple mw-list-item"><a href="https://simple.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (Simple English)" lang="en-simple" hreflang="en-simple" class="interlanguage-link-target"><span>Simple English</span></a></li><li class="interlanguage-link interwiki-sk mw-list-item"><a href="https://sk.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (eslovaco)" lang="sk" hreflang="sk" class="interlanguage-link-target"><span>Slovenčina</span></a></li><li class="interlanguage-link interwiki-sl mw-list-item"><a href="https://sl.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (esloveno)" lang="sl" hreflang="sl" class="interlanguage-link-target"><span>Slovenščina</span></a></li><li class="interlanguage-link interwiki-sr mw-list-item"><a href="https://sr.wikipedia.org/wiki/SVG" title="SVG (serbio)" lang="sr" hreflang="sr" class="interlanguage-link-target"><span>Српски / srpski</span></a></li><li class="interlanguage-link interwiki-sv mw-list-item"><a href="https://sv.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (sueco)" lang="sv" hreflang="sv" class="interlanguage-link-target"><span>Svenska</span></a></li><li class="interlanguage-link interwiki-ta mw-list-item"><a href="https://ta.wikipedia.org/wiki/%E0%AE%B5%E0%AE%BF%E0%AE%B0%E0%AE%BF%E0%AE%A4%E0%AF%8D%E0%AE%A4%E0%AE%BF%E0%AE%9A%E0%AF%88%E0%AE%AF%E0%AE%A9%E0%AF%8D_%E0%AE%B5%E0%AE%B0%E0%AF%88%E0%AE%95%E0%AE%B2%E0%AF%88" title="விரித்திசையன் வரைகலை (tamil)" lang="ta" hreflang="ta" class="interlanguage-link-target"><span>தமிழ்</span></a></li><li class="interlanguage-link interwiki-th mw-list-item"><a href="https://th.wikipedia.org/wiki/%E0%B9%80%E0%B8%AD%E0%B8%AA%E0%B8%A7%E0%B8%B5%E0%B8%88%E0%B8%B5" title="เอสวีจี (tailandés)" lang="th" hreflang="th" class="interlanguage-link-target"><span>ไทย</span></a></li><li class="interlanguage-link interwiki-tr mw-list-item"><a href="https://tr.wikipedia.org/wiki/%C3%96l%C3%A7eklenebilir_Vekt%C3%B6r_Grafikleri" title="Ölçeklenebilir Vektör Grafikleri (turco)" lang="tr" hreflang="tr" class="interlanguage-link-target"><span>Türkçe</span></a></li><li class="interlanguage-link interwiki-uk mw-list-item"><a href="https://uk.wikipedia.org/wiki/Scalable_Vector_Graphics" title="Scalable Vector Graphics (ucraniano)" lang="uk" hreflang="uk" class="interlanguage-link-target"><span>Українська</span></a></li><li class="interlanguage-link interwiki-ur mw-list-item"><a href="https://ur.wikipedia.org/wiki/%D8%A7%D8%B3%DA%A9%DB%8C%D9%84%DB%8C%D8%A8%D9%84_%D9%88%DB%8C%DA%A9%D9%B9%D8%B1_%DA%AF%D8%B1%D8%A7%D9%81%DA%A9%D8%B3" title="اسکیلیبل ویکٹر گرافکس (urdu)" lang="ur" hreflang="ur" class="interlanguage-link-target"><span>اردو</span></a></li><li class="interlanguage-link interwiki-vi mw-list-item"><a href="https://vi.wikipedia.org/wiki/SVG" title="SVG (vietnamita)" lang="vi" hreflang="vi" class="interlanguage-link-target"><span>Tiếng Việt</span></a></li><li class="interlanguage-link interwiki-wuu mw-list-item"><a href="https://wuu.wikipedia.org/wiki/%E5%8F%AF%E7%BC%A9%E6%94%BE%E7%9F%A2%E9%87%8F%E5%9B%BE%E5%BD%A2" title="可缩放矢量图形 (chino wu)" lang="wuu" hreflang="wuu" class="interlanguage-link-target"><span>吴语</span></a></li><li class="interlanguage-link interwiki-zh mw-list-item"><a href="https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%B8%AE%E6%94%BE%E5%90%91%E9%87%8F%E5%9C%96%E5%BD%A2" title="可縮放向量圖形 (chino)" lang="zh" hreflang="zh" class="interlanguage-link-target"><span>中文</span></a></li><li class="interlanguage-link interwiki-zh-classical mw-list-item"><a href="https://zh-classical.wikipedia.org/wiki/%E5%8F%AF%E7%B8%AE%E6%94%BE%E7%9F%A2%E9%87%8F%E5%9C%96%E5%BD%A2" title="可縮放矢量圖形 (Classical Chinese)" lang="lzh" hreflang="lzh" class="interlanguage-link-target"><span>文言</span></a></li><li class="interlanguage-link interwiki-zh-min-nan mw-list-item"><a href="https://zh-min-nan.wikipedia.org/wiki/SVG" title="SVG (Chinese (Min Nan))" lang="nan" hreflang="nan" class="interlanguage-link-target"><span>Bân-lâm-gú</span></a></li><li class="interlanguage-link interwiki-zh-yue mw-list-item"><a href="https://zh-yue.wikipedia.org/wiki/SVG" title="SVG (Cantonese)" lang="yue" hreflang="yue" class="interlanguage-link-target"><span>粵語</span></a></li></ul>
+		<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q2078#sitelinks-wikipedia" title="Editar enlaces interlingüísticos" class="wbc-editpage">Editar enlaces</a></span></div>
+	</div>
+</nav>
+
+</div>
+
+</div>
+<footer id="footer" class="mw-footer" role="contentinfo" >
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> Esta página se editó por última vez el 21 jul 2021 a las 01:25.</li>
+	<li id="footer-info-copyright">El texto está disponible bajo la <a rel="license" href="//es.wikipedia.org/wiki/Wikipedia:Texto_de_la_Licencia_Creative_Commons_Atribuci%C3%B3n-CompartirIgual_3.0_Unported">Licencia Creative Commons Atribución Compartir Igual 3.0</a><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" style="display:none;"></a>;
+pueden aplicarse cláusulas adicionales. Al usar este sitio, usted acepta nuestros <a href="//wikimediafoundation.org/wiki/Terms_of_Use">términos de uso</a> y nuestra <a href="//wikimediafoundation.org/wiki/Privacy_policy">política de privacidad</a>. <br/>Wikipedia&reg; es una marca registrada de la <a href="//www.wikimediafoundation.org/">Fundación Wikimedia, Inc.</a>, una organización sin ánimo de lucro.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="https://meta.wikimedia.org/wiki/Privacy_policy/es" class="extiw" title="m:Privacy policy/es">Política de privacidad</a></li>
+	<li id="footer-places-about"><a href="/wiki/Wikipedia:Acerca_de" title="Wikipedia:Acerca de">Acerca de Wikipedia</a></li>
+	<li id="footer-places-disclaimer"><a href="/wiki/Wikipedia:Limitaci%C3%B3n_general_de_responsabilidad" title="Wikipedia:Limitación general de responsabilidad">Limitación de responsabilidad</a></li>
+	<li id="footer-places-mobileview"><a href="//es.m.wikipedia.org/w/index.php?title=Gr%C3%A1ficos_vectoriales_escalables&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Versión para móviles</a></li>
+	<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Desarrolladores</a></li>
+	<li id="footer-places-statslink"><a href="https://stats.wikimedia.org/#/es.wikipedia.org">Estadísticas</a></li>
+	<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Cookie_statement/es">Declaración de cookies</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-copyrightico"><a href="https://wikimediafoundation.org/"><img src="/static/images/footer/wikimedia-button.png" srcset="/static/images/footer/wikimedia-button-1.5x.png 1.5x, /static/images/footer/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation" loading="lazy" /></a></li>
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/"><img src="/static/images/footer/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/footer/poweredby_mediawiki_132x47.png 1.5x, /static/images/footer/poweredby_mediawiki_176x62.png 2x" width="88" height="31" loading="lazy"/></a></li>
+</ul>
+
+</footer>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.549","walltime":"0.672","ppvisitednodes":{"value":2638,"limit":1000000},"postexpandincludesize":{"value":20577,"limit":2097152},"templateargumentsize":{"value":1104,"limit":2097152},"expansiondepth":{"value":19,"limit":40},"expensivefunctioncount":{"value":6,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":12626,"limit":5000000},"entityaccesscount":{"value":6,"limit":400},"timingprofile":["100.00%  510.208      1 -total"," 43.47%  221.798      1 Plantilla:Control_de_autoridades"," 38.45%  196.181      1 Plantilla:Ficha_de_formato_de_archivo"," 36.86%  188.080      1 Plantilla:Ficha"," 27.52%  140.387     13 Plantilla:Propiedad"," 10.04%   51.249      1 Plantilla:Listaref","  8.36%   42.636      3 Plantilla:Cita_web","  5.01%   25.558      1 Plantilla:Redirige_aquí","  2.44%   12.442      1 Plantilla:Fecha_de_lanzamiento","  2.21%   11.294      1 Plantilla:Fecha_de_inicio"]},"scribunto":{"limitreport-timeusage":{"value":"0.323","limit":"10.000"},"limitreport-memusage":{"value":4511187,"limit":52428800}},"cachereport":{"origin":"mw1320","timestamp":"20220126182947","ttl":3600,"transientcontent":true}}});});</script>
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"Gr\u00e1ficos vectoriales escalables","url":"https:\/\/es.wikipedia.org\/wiki\/Gr%C3%A1ficos_vectoriales_escalables","sameAs":"http:\/\/www.wikidata.org\/entity\/Q2078","mainEntity":"http:\/\/www.wikidata.org\/entity\/Q2078","author":{"@type":"Organization","name":"Colaboradores de los proyectos Wikimedia"},"publisher":{"@type":"Organization","name":"Wikimedia Foundation, Inc.","logo":{"@type":"ImageObject","url":"https:\/\/www.wikimedia.org\/static\/images\/wmf-hor-googpub.png"}},"datePublished":"2003-02-03T13:14:30Z","dateModified":"2021-07-21T01:25:41Z","image":"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/0\/02\/SVG_logo.svg","headline":"gr\u00e1ficos vectoriales bidimensionales en formato XML"}</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":164,"wgHostname":"mw1436"});});</script>
+</body>
+</html>

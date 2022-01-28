@@ -1,0 +1,33 @@
+services:
+    oro_workflow.prototype.step_manager:
+        class: Oro\Bundle\WorkflowBundle\Model\StepManager
+        shared: false
+
+    oro_workflow.prototype.attribute_manager:
+        class: Oro\Bundle\ActionBundle\Model\AttributeManager
+        shared: false
+
+    oro_workflow.prototype.transition_manager:
+        class: Oro\Bundle\WorkflowBundle\Model\TransitionManager
+        shared: false
+
+    oro_workflow.prototype.variable_manager:
+        class: Oro\Bundle\WorkflowBundle\Model\VariableManager
+        shared: false
+        calls:
+            - ['setVariableAssembler', ['@oro_workflow.variable_assembler']]
+
+    oro_workflow.prototype.workflow:
+        class: Oro\Bundle\WorkflowBundle\Model\Workflow
+        shared: false
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_workflow.security.acl.manager'
+            - '@oro_workflow.restriction.manager'
+            - '@oro_workflow.prototype.step_manager'
+            - '@oro_workflow.prototype.attribute_manager'
+            - '@oro_workflow.prototype.transition_manager'
+            - '@oro_workflow.prototype.variable_manager'
+
+    Oro\Bundle\WorkflowBundle\Model\Workflow:
+      alias: 'oro_workflow.prototype.workflow'

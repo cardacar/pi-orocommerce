@@ -1,0 +1,270 @@
+services:
+    oro_action.handler.delete:
+        class: 'Oro\Bundle\ActionBundle\Handler\DeleteHandler'
+        public: true
+        arguments:
+            - '@oro_entity.delete_handler_registry'
+
+    oro_action.helper.context:
+        class: 'Oro\Bundle\ActionBundle\Helper\ContextHelper'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@property_accessor'
+            - '@request_stack'
+
+    Oro\Bundle\ActionBundle\Helper\ContextHelper:
+        alias: 'oro_action.helper.context'
+
+    oro_action.helper.default_operation_request:
+        class: 'Oro\Bundle\ActionBundle\Helper\DefaultOperationRequestHelper'
+        public: true
+        arguments:
+            - '@request_stack'
+            - '@oro_action.provider.route'
+
+    oro_action.helper.destination_page:
+        class: 'Oro\Bundle\ActionBundle\Helper\DestinationPageHelper'
+        arguments:
+            - '@request_stack'
+            - '@oro_entity_config.helper.entity_config'
+            - '@router'
+
+    oro_action.provider.current_application:
+        class: 'Oro\Bundle\ActionBundle\Provider\CurrentApplicationProvider'
+        arguments:
+            - '@security.token_storage'
+
+    oro_action.provider.route:
+        class: 'Oro\Bundle\ActionBundle\Provider\RouteProvider'
+        arguments:
+            - 'oro_action_widget_form'
+            - 'oro_action_widget_form'
+            - 'oro_action_operation_execute'
+            - 'oro_action_widget_buttons'
+
+    oro_action.helper.restrict:
+        class: 'Oro\Bundle\ActionBundle\Helper\RestrictHelper'
+
+    oro_action.helper.options:
+        class: 'Oro\Bundle\ActionBundle\Helper\OptionsHelper'
+        arguments:
+            - '@router'
+            - '@translator'
+            - '@oro_action.operation.execution.form_provider'
+            - '@oro_ui.html_tag_helper'
+
+    oro_action.helper.applications_url:
+        class: 'Oro\Bundle\ActionBundle\Helper\ApplicationsUrlHelper'
+        arguments:
+            - '@oro_action.provider.route'
+            - '@router'
+
+    oro_action.resolver.destination_page_resolver:
+        class: 'Oro\Bundle\ActionBundle\Resolver\DestinationPageResolver'
+        arguments:
+            - '@oro_entity_config.helper.entity_config'
+            - '@router'
+
+    oro_action.resolver.options_resolver:
+        class: 'Oro\Bundle\ActionBundle\Resolver\OptionsResolver'
+        arguments:
+            - '@oro_action.options_assembler'
+            - '@oro_action.expression.context_accessor'
+
+    oro_action.operation_registry:
+        class: 'Oro\Bundle\ActionBundle\Model\OperationRegistry'
+        arguments:
+            - [] # filters
+            - '@oro_action.configuration.provider.operations'
+            - '@oro_action.assembler.operation'
+            - '@oro_action.provider.current_application'
+            - '@oro_entity.doctrine_helper'
+
+    Oro\Bundle\ActionBundle\Model\OperationRegistry:
+        alias: 'oro_action.operation_registry'
+
+    oro_action.action_group_registry:
+        class: 'Oro\Bundle\ActionBundle\Model\ActionGroupRegistry'
+        arguments:
+            - '@oro_action.configuration.provider.action_groups'
+            - '@oro_action.assembler.action_group'
+
+    Oro\Bundle\ActionBundle\Model\ActionGroupRegistry:
+        alias: 'oro_action.action_group_registry'
+
+    oro_action.abstract_guesser:
+        abstract: true
+        arguments:
+            - '@form.registry'
+            - '@doctrine'
+            - '@oro_entity_config.provider.entity'
+            - '@oro_entity_config.provider.form'
+        calls:
+            # mapping from doctrine type to attribute parameters
+            - [addDoctrineTypeMapping, ["string", "string"]]
+            - [addDoctrineTypeMapping, ["integer", "integer"]]
+            - [addDoctrineTypeMapping, ["smallint", "integer"]]
+            - [addDoctrineTypeMapping, ["bigint", "integer"]]
+            - [addDoctrineTypeMapping, ["boolean", "boolean"]]
+            - [addDoctrineTypeMapping, ["decimal", "float"]]
+            - [addDoctrineTypeMapping, ["date", "object", { class: "DateTime" }]]
+            - [addDoctrineTypeMapping, ["time", "object", { class: "DateTime" }]]
+            - [addDoctrineTypeMapping, ["datetime", "object", { class: "DateTime" }]]
+            - [addDoctrineTypeMapping, ["datetimetz", "object", { class: "DateTime" }]]
+            - [addDoctrineTypeMapping, ["text", "string"]]
+            - [addDoctrineTypeMapping, ["array", "array"]]
+            - [addDoctrineTypeMapping, ["simple_array", "array"]]
+            - [addDoctrineTypeMapping, ["json_array", "array"]]
+            - [addDoctrineTypeMapping, ["float", "float"]]
+            - [addDoctrineTypeMapping, ["guid", "string"]]
+            # custom types
+            - [addDoctrineTypeMapping, ["percent", "float"]]
+            - [addDoctrineTypeMapping, ["money", "float"]]
+            # set doctine typr mapping provider
+            - [setDoctrineTypeMappingProvider, ['@oro_action.provider.doctrine_type_mapping']]
+
+    oro_action.attribute_guesser:
+        class: 'Oro\Bundle\ActionBundle\Model\AttributeGuesser'
+        parent: oro_action.abstract_guesser
+        calls:
+            # mapping from attribute type to form parameters
+            - [addFormTypeMapping, ['string', 'Symfony\Component\Form\Extension\Core\Type\TextType']]
+            - [addFormTypeMapping, ['int', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', { precision: 0 }]]
+            - [addFormTypeMapping, ['integer', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', { precision: 0 }]]
+            - [addFormTypeMapping, ['bool', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType']]
+            - [addFormTypeMapping, ['boolean', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType']]
+            - [addFormTypeMapping, ['float', 'Symfony\Component\Form\Extension\Core\Type\NumberType']]
+
+    oro_action.options_assembler:
+        class: 'Oro\Bundle\ActionBundle\Model\OptionsAssembler'
+        calls:
+            - [addConfigurationPass, ['@oro_action.configuration_pass.replace_property_path']]
+
+    oro_action.provider.doctrine_type_mapping:
+        class: 'Oro\Bundle\ActionBundle\Provider\DoctrineTypeMappingProvider'
+        arguments:
+            - [] # extensions
+
+    oro_action.form.handler.operation_button:
+        class: 'Oro\Bundle\ActionBundle\Handler\OperationFormHandler'
+        public: true
+        arguments:
+            - '@form.factory'
+            - '@oro_action.helper.context'
+            - '@oro_action.operation_registry'
+            - '@translator'
+
+    oro_action.datagrid.action.button_provider:
+        class: 'Oro\Bundle\ActionBundle\Datagrid\Provider\DatagridActionButtonProvider'
+        arguments:
+            - '@oro_action.provider.button'
+            - '@oro_action.helper.context'
+            - '@oro_action.datagrid.mass_action_provider.registry'
+            - '@oro_action.helper.options'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@translator'
+        calls:
+            - [setGroups, [['', 'datagridRowAction']]]
+        tags:
+            - { name: oro_datagrid.extension.action.provider, priority: -250 }
+
+    oro_action.datagrid.extension.delete_mass_action:
+        class: 'Oro\Bundle\ActionBundle\Datagrid\Extension\DeleteMassActionExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_action.operation_registry'
+            - '@oro_action.helper.context'
+        calls:
+            - [setGroups, [['', 'datagridRowAction']]]
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_action.datagrid.action.button_widget_action:
+        class: 'Oro\Bundle\ActionBundle\Datagrid\Action\ButtonWidgetAction'
+        arguments:
+            - '@translator'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: button-widget }
+
+    oro_action.datagrid.mass_action_provider.registry:
+        class: 'Oro\Bundle\ActionBundle\Datagrid\Provider\MassActionProviderRegistry'
+        arguments:
+            - ~ # service locator for mass action providers
+
+    oro_action.layout.data_provider.button_provider:
+        class: 'Oro\Bundle\ActionBundle\Layout\DataProvider\LayoutButtonProvider'
+        arguments:
+            - '@oro_action.provider.button'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_action.provider.button_search_context'
+        tags:
+            - { name: layout.data_provider, alias: buttons }
+
+    oro_action.provider.button_search_context:
+        class: 'Oro\Bundle\ActionBundle\Provider\ButtonSearchContextProvider'
+        public: true
+        arguments:
+            - '@oro_action.helper.context'
+
+    Oro\Bundle\ActionBundle\Provider\ButtonSearchContextProvider:
+        alias: oro_action.provider.button_search_context
+
+    oro_action.provider.button:
+        class: 'Oro\Bundle\ActionBundle\Provider\ButtonProvider'
+        public: true
+        arguments:
+            - [] # extensions
+            - '@event_dispatcher'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: oro_action }
+
+    Oro\Bundle\ActionBundle\Provider\ButtonProvider:
+        alias: oro_action.provider.button
+
+    oro_action.provider.button.extension.operation:
+        class: 'Oro\Bundle\ActionBundle\Extension\OperationButtonProviderExtension'
+        arguments:
+            - '@oro_action.operation_registry'
+            - '@oro_action.helper.context'
+            - '@oro_action.provider.route'
+            - '@oro_action.resolver.options_resolver'
+        tags:
+            - { name: oro.action.extension.button_provider, priority: 100 }
+
+    oro_action.twig.extension.operation:
+        class: 'Oro\Bundle\ActionBundle\Twig\OperationExtension'
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_action.handler.execute_operation:
+        class: 'Oro\Bundle\ActionBundle\Handler\ExecuteOperationHandler'
+        arguments:
+            - '@request_stack'
+            - '@oro_action.operation.execution.form_provider'
+            - '@oro_action.helper.context'
+            - '@logger'
+
+    Oro\Bundle\ActionBundle\Handler\ExecuteOperationHandler:
+        alias: 'oro_action.handler.execute_operation'
+
+    oro_action.operation.execution.form_provider:
+        class: 'Oro\Bundle\ActionBundle\Operation\Execution\FormProvider'
+        arguments:
+            - '@form.factory'
+            - Oro\Bundle\ActionBundle\Form\Type\OperationExecutionType
+
+    oro_action.provider.original_url_provider:
+        class: 'Oro\Bundle\ActionBundle\Provider\OriginalUrlProvider'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@oro_datagrid.converter.url_converter'
+
+    Oro\Bundle\ActionBundle\Provider\OriginalUrlProvider:
+        alias: oro_action.provider.original_url_provider

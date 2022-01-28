@@ -1,0 +1,103 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set options = {
+    useDropdown: true,
+    verticalTabs: false,
+    subtitle: false,
+    subTabs: false
+}|merge(options|default({})) %}
+
+{% set containerAlias = 'tab' %}
+{% set activeTabAlias = null %}
+{% for tab in tabs %}
+    {% set containerAlias = containerAlias ~ '-' ~ tab.alias %}
+    {% if (options.activeTabAlias is defined and options.activeTabAlias == tab.alias) %}
+        {% set activeTabAlias = options.activeTabAlias %}
+    {% endif %}
+{% endfor %}
+
+<div class="oro-tabs{{ options.verticalTabs ? ' oro-tabs__vertical' }}"
+     data-page-component-responsive-tabs="{{ options|json_encode }}"
+>
+    <div class="oro-tabs__head">
+        {% if (options.subtitle) %}
+            <div class="tabs-subtitle">{{ options.subtitle }}</div>
+        {% endif %}
+
+        {% set extraClasses = '' %}
+
+        {% if (options.verticalTabs) %}
+            {% set extraClasses =  extraClasses ~ ' flex-column' %}
+        {% endif %}
+
+        {% if (options.useDropdown) %}
+            {% set extraClasses =  extraClasses ~ ' nav-tabs-dropdown' %}
+        {% endif %}
+
+        {% if (options.subTabs) %}
+            {% set extraClasses = extraClasses ~ ' sub-tabs' %}
+        {% endif %}
+
+        <ul class="nav nav-tabs {{ extraClasses }}" role="tablist">
+            {% for tab in tabs %}
+                {% set isActiveTab = activeTabAlias ? activeTabAlias == tab.alias : loop.index == 1 %}
+                <li class="nav-item">
+                    {% set widgetOptions = {
+                        'type': tab.widgetType|default('block'),
+                        'event': 'shown.bs.tab',
+                        'multiple': false,
+                        'options': {
+                            'container': '#' ~ tab.alias,
+                            'loadingElement': '#' ~ containerAlias,
+                            'alias': tab.alias,
+                        }
+                    } %}
+
+                    {% set dataAttributes = {
+                        'target': '#' ~ tab.alias,
+                        'toggle': 'tab',
+                        'url': tab.url
+                    } %}
+
+                    {% if tab.content|default('') or isActiveTab %}
+                        {% set widgetOptions = widgetOptions|merge({'initialized': true}) %}
+                    {% endif %}
+
+                    {% if isActiveTab %}
+                        {% set className = 'nav-link active' %}
+                        {% set ariaSelectted = 'true' %}
+                    {% else %}
+                        {% set className = 'nav-link' %}
+                        {% set ariaSelectted = 'false' %}
+                    {% endif %}
+
+                    {% set tabOptions = tab|merge({
+                        'id': tab.alias ~ '-tab',
+                        'widget': widgetOptions,
+                        'dataAttributes': dataAttributes,
+                        'label': tab.label,
+                        'class': className,
+                        'role': 'tab',
+                        'ariaSelected': ariaSelectted,
+                        'ariaControls': tab.alias
+                    }) %}
+                    {{ UI.clientLink(tabOptions) }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="oro-tabs__content">
+        <div class="tab-content" id="{{ containerAlias }}">
+            {% for tab in tabs %}
+                {% set isActiveTab = activeTabAlias ? activeTabAlias == tab.alias : loop.index == 1 %}
+                <div class="tab-pane{% if isActiveTab %} active{% endif %}" id="{{ tab.alias }}" role="tabpanel" aria-labelledby="{{ tab.alias ~ '-tab' }}">
+                    {% if tab.content|default('') %}
+                        {{ tab.content|raw }}
+                    {% elseif isActiveTab %}
+                        {{ oro_widget_render(tab) }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

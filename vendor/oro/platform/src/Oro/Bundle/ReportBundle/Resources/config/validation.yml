@@ -1,0 +1,30 @@
+Oro\Bundle\ReportBundle\Entity\Report:
+    group_sequence:
+        - PreQueryValidate
+        - Report
+    constraints:
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\NotEmptyColumns:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\NoColumnDuplicates:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\GroupingColumns:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\DateGrouping:
+            groups: [PreQueryValidate]
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\QueryDefinition: ~
+        - Oro\Bundle\QueryDesignerBundle\Validator\Constraints\Query: ~
+    properties:
+        name:
+            - NotBlank:     ~
+            - Length:
+                max: 255
+        type:
+            - NotBlank:     ~
+            - Length:
+                max: 32
+        entity:
+            - NotBlank:     ~
+            - Length:
+                max: 255
+        organization:
+            - NotBlank: ~

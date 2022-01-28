@@ -1,0 +1,26 @@
+parameters:
+  payment_term_type: 'payment_term'
+  payment_term60_label: 'Payment Term 60'
+
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    paymentTerm60Label:
+        string: '<{payment_term60_label}>'
+
+Oro\Bundle\PaymentTermBundle\Entity\PaymentTermSettings:
+    paymentTerm60Settings:
+        __calls:
+            - addLabel: ['@paymentTerm60Label']
+            - addShortLabel: ['@paymentTerm60Label']
+        channel: '@paymentTermIntegration'
+
+Oro\Bundle\PaymentTermBundle\Entity\PaymentTerm:
+    paymentTerm60:
+        label: net 60
+
+Oro\Bundle\IntegrationBundle\Entity\Channel:
+    paymentTerm60Integration:
+        type: '<{payment_term_type}>'
+        name: '<{payment_term60_label}>'
+        enabled: true
+        organization: '@organization'
+        transport: '@paymentTerm60Settings'

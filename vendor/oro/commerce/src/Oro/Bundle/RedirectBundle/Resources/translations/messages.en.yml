@@ -1,0 +1,63 @@
+oro:
+    redirect:
+        entity_label: Redirect
+        entity_plural_label: Redirects
+        entity_grid_all_view_label: All %entity_plural_label%
+        from.label: From URL
+        from_prototype.label: From Slug Prototype
+        from_hash.label: From URL Hash
+        id.label: ID
+        to.label: To URL
+        to_prototype.label: To Slug Prototype
+        type.label: Redirect Type
+        slug.label: Slug
+        scopes.label: Scopes
+        website.label: Website
+        prefix_change:
+            checkbox_label: Create 301 Redirect
+        confirm_slug_change:
+            checkbox_label: Create 301 Redirect from old to new URLs
+        slug_prototypes:
+            tooltip: This value is used to build human-readable URLs on the store frontend.
+
+        slug:
+            entity_label:           'Slug'
+            entity_plural_label:    'Slugs'
+            entity_grid_all_view_label: 'All %entity_plural_label%'
+            id.label:               'ID'
+            organization.label: Organization
+            url.label:              'Url'
+            route_name.label:       'Route name'
+            route_parameters.label: 'Route parameters'
+            url_hash.label: URL Hash
+            redirects.label: Redirects
+            scopes.label: Scopes
+            localization.label: Localization
+            slug_prototype.label: Slug Prototype
+            parameters_hash.label: Parameters Hash
+            scopes_hash.label: Scopes Hash
+
+        system_configuration:
+            groups:
+                direct_urls.label: 'Direct URLs'
+            fields:
+                enable_direct_url.label: 'Enable Direct URLs'
+                use_localized_canonical:
+                    label: 'Use localized canonical URLs'
+                    tooltip: 'When this option is enabled the system will generate canonical URLs using the localized version of URLs slugs if available.'
+                canonical_url_type:
+                    label: 'Canonical URL Type'
+                    choice:
+                        system.label: 'System URL'
+                        direct.label: 'Direct URL'
+                redirect_generation_strategy:
+                    label: 'Create Redirects'
+                    choice:
+                        ask.label: 'Ask'
+                        always.label: 'Always'
+                        never.label: 'Never'
+                canonical_url_security_type:
+                    label: 'Canonical URL Security Type'
+                    choice:
+                        insecure.label: 'Insecure'
+                        secure.label: 'Secure'

@@ -1,0 +1,11 @@
+<label class="custom-checkbox">
+    <input type="checkbox"
+           data-role="select-row-cell"
+           class="custom-checkbox__input"
+           <% if (checked) { %> checked="checked"<% } %>
+    >
+    <span class="custom-checkbox__icon" aria-hidden="true"></span>
+    <% if (!_.isUndefined(obj.text)) { %>
+        <span class="custom-checkbox__text"><%- text %></span>
+    <% } %>
+</label>

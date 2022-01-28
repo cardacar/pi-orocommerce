@@ -1,0 +1,134 @@
+Oro\Bundle\OrderBundle\Entity\Order:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: identifier
+    properties:
+        poNumber:
+            - Length:
+                max: 255
+        shipUntil:
+            - Date: ~
+        currency:
+            - Currency: ~
+        totalValue:
+            - Type:
+                type: numeric
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\NumericRange:
+                minMessage: 'oro.order.total.min.error.label'
+                maxMessage: 'oro.order.total.max.error.label'
+        subtotalValue:
+            - Type:
+                type: numeric
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\NumericRange:
+                minMessage: 'oro.order.subtotal.min.error.label'
+                maxMessage: 'oro.order.subtotal.max.error.label'
+        customer:
+            - NotBlank: ~
+        lineItems:
+            - Count:
+                min: 1
+                minMessage: 'oro.order.orderlineitem.count'
+            - Valid: ~
+        discounts:
+            - Valid: ~
+        billingAddress:
+            - Valid: ~
+        shippingAddress:
+            - Valid: ~
+
+Oro\Bundle\OrderBundle\Entity\OrderLineItem:
+    constraints:
+        - Oro\Bundle\OrderBundle\Validator\Constraints\LineItemProduct: ~
+        - Oro\Bundle\ProductBundle\Validator\Constraints\QuantityUnitPrecision:
+              path: quantity
+    properties:
+        order:
+            - NotBlank: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField:
+                message: oro.order.orderlineitem.order.changed
+                groups: [ api ]
+        productSku:
+            - NotBlank:
+                groups: [ Import ]
+            - Length:
+                max: 255
+                groups: [ Import ]
+        quantity:
+            - NotBlank: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Decimal: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\GreaterThanZero: ~
+        priceType:
+            - NotBlank: ~
+        productUnit:
+            - NotBlank:
+                message: 'oro.product.productunit.invalid'
+        productUnitCode:
+            - NotBlank:
+                groups: [ Import ]
+        price:
+            - NotBlank: ~
+            - Valid: ~
+        freeFormProduct:
+            - Length:
+                max: 255
+
+Oro\Bundle\OrderBundle\Entity\OrderAddress:
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\RegionText: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\RequiredRegion: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\NameOrOrganization: ~
+    properties:
+        street:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        postalCode:
+            - NotBlank: ~
+        country:
+            - NotBlank: ~
+        phone:
+            - Length:
+                max: 255
+
+Oro\Bundle\OrderBundle\Entity\OrderDiscount:
+    constraints:
+        - Oro\Bundle\OrderBundle\Validator\Constraints\DiscountType:
+            groups: [Default, OrderDiscountItemType]
+        - Oro\Bundle\OrderBundle\Validator\Constraints\NotBlankDiscountValue:
+            groups: [Default, OrderDiscountItemType]
+    properties:
+        percent:
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: numeric
+            - Oro\Bundle\FormBundle\Validator\Constraints\PercentRange:
+                groups: [Default, OrderDiscountItemType]
+                min: -100
+                max: 100
+                type: fractional_100
+        amount:
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: numeric
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\NumericRange:
+                groups: [Default, OrderDiscountItemType]
+                maxMessage: 'oro.order.discounts.item.error.label'
+        type:
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: string
+        order:
+            - Oro\Bundle\OrderBundle\Validator\Constraints\Discounts: ~
+            - Oro\Bundle\OrderBundle\Validator\Constraints\Discounts:
+                errorMessage: 'oro.order.discounts.sum.error.single_discount.label'
+                groups: [OrderDiscountItemType]
+            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField:
+                message: oro.order.discounts.order.changed
+                groups: [api]
+
+Oro\Bundle\OrderBundle\Entity\OrderShippingTracking:
+    properties:
+        method:
+            - NotBlank: ~
+        number:
+            - NotBlank: ~

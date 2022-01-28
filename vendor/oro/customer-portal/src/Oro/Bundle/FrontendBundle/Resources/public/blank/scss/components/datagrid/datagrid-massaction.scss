@@ -1,0 +1,57 @@
+/* @theme: blank; */
+
+.datagrid-massaction {
+    &__dots {
+        display: inline-block;
+        vertical-align: middle;
+        height: 12px;
+
+        font-size: 20px;
+        line-height: 0;
+    }
+
+    &__dropdown-menu {
+        min-width: 0;
+
+        &--stretch {
+            min-width: 100%;
+        }
+
+        .action,
+        .dropdown-item.action {
+            display: block;
+            padding: $datagrid-massaction-dropdown-menu-action-offset-inner;
+
+            text-decoration: none;
+
+            color: $datagrid-massaction-dropdown-menu-action-color;
+
+            white-space: nowrap;
+
+            @include element-state('hover') {
+                text-decoration: none;
+
+                background-color: $datagrid-massaction-dropdown-menu-action-hover-bg;
+                color: $datagrid-massaction-dropdown-menu-action-color;
+            }
+        }
+    }
+
+    &__action-trigger {
+        color: inherit;
+
+        @include hover-focus {
+            text-decoration: inherit;
+
+            color: inherit;
+        }
+    }
+
+    .dropdown-menu__placeholder {
+        display: none;
+    }
+
+    .dropdown-toggle {
+        margin: auto;
+    }
+}

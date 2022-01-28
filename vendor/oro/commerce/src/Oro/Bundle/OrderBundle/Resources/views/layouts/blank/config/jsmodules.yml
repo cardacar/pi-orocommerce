@@ -1,0 +1,3 @@
+dynamic-imports:
+    orocheckout:
+        - oroorder/js/app/components/totals-component

@@ -1,0 +1,193 @@
+services:
+    oro_entity_merge.doctrine_helper:
+        class: Oro\Bundle\EntityMergeBundle\Doctrine\DoctrineHelper
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.orm.mapping.additional_metadata_provider'
+
+    Oro\Bundle\EntityMergeBundle\Doctrine\DoctrineHelper:
+        alias: oro_entity_merge.doctrine_helper
+
+    oro_entity_merge.data.entity_data_factory:
+        class: Oro\Bundle\EntityMergeBundle\Data\EntityDataFactory
+        arguments:
+            - '@oro_entity_merge.metadata.registry'
+            - '@oro_entity_merge.doctrine_helper'
+            - '@event_dispatcher'
+
+    Oro\Bundle\EntityMergeBundle\Data\EntityDataFactory:
+        alias: oro_entity_merge.data.entity_data_factory
+
+    oro_entity_merge.metadata.builder:
+        class: Oro\Bundle\EntityMergeBundle\Metadata\MetadataBuilder
+        arguments:
+            - '@oro_entity_merge.metadata.factory'
+            - '@oro_entity_merge.doctrine_helper'
+            - '@event_dispatcher'
+            - '@oro_entity_config.provider.extend'
+
+    oro_entity_merge.metadata.factory:
+        class: Oro\Bundle\EntityMergeBundle\Metadata\MetadataFactory
+
+    oro_entity_merge.metadata.registry:
+        class: Oro\Bundle\EntityMergeBundle\Metadata\MetadataRegistry
+        arguments:
+            - '@oro_entity_merge.metadata.builder'
+
+    # Merger
+    oro_entity_merge.merger:
+        class: Oro\Bundle\EntityMergeBundle\Model\EntityMerger
+        arguments:
+            - []
+            - '@event_dispatcher'
+
+    Oro\Bundle\EntityMergeBundle\Model\EntityMergerInterface:
+        alias: oro_entity_merge.merger
+
+    # Steps
+    oro_entity_merge.step.validate:
+        class: Oro\Bundle\EntityMergeBundle\Model\Step\ValidateStep
+        arguments:
+            - '@validator'
+        tags:
+            - { name: oro_entity_merge.step }
+
+    oro_entity_merge.step.merge_fields:
+        class: Oro\Bundle\EntityMergeBundle\Model\Step\MergeFieldsStep
+        arguments:
+            - '@oro_entity_merge.strategy'
+            - '@event_dispatcher'
+        tags:
+            - { name: oro_entity_merge.step }
+
+    oro_entity_merge.step.remove_entities:
+        class: Oro\Bundle\EntityMergeBundle\Model\Step\RemoveEntitiesStep
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity_merge.doctrine_helper'
+        tags:
+            - { name: oro_entity_merge.step }
+
+    # Accessors
+    oro_entity_merge.accessor.delegate:
+        class: Oro\Bundle\EntityMergeBundle\Model\Accessor\DelegateAccessor
+        lazy: true
+
+    oro_entity_merge.accessor:
+        alias: oro_entity_merge.accessor.delegate
+
+    oro_entity_merge.accessor.default:
+        class: Oro\Bundle\EntityMergeBundle\Model\Accessor\DefaultAccessor
+        tags:
+            - { name: oro_entity_merge.accessor }
+
+    oro_entity_merge.accessor.inverse_association:
+        class: Oro\Bundle\EntityMergeBundle\Model\Accessor\InverseAssociationAccessor
+        arguments:
+            - '@oro_entity_merge.doctrine_helper'
+        tags:
+            - { name: oro_entity_merge.accessor }
+
+    # Strategies
+    oro_entity_merge.strategy.delegate:
+        class: Oro\Bundle\EntityMergeBundle\Model\Strategy\DelegateStrategy
+
+    oro_entity_merge.strategy:
+        alias: oro_entity_merge.strategy.delegate
+
+    oro_entity_merge.strategy.replace:
+        class: Oro\Bundle\EntityMergeBundle\Model\Strategy\ReplaceStrategy
+        arguments:
+            - '@oro_entity_merge.accessor.delegate'
+        tags:
+            - { name: oro_entity_merge.strategy }
+
+    oro_entity_merge.strategy.unite:
+        class: Oro\Bundle\EntityMergeBundle\Model\Strategy\UniteStrategy
+        arguments:
+            - '@oro_entity_merge.accessor.delegate'
+            - '@oro_entity_merge.doctrine_helper'
+        tags:
+            - { name: oro_entity_merge.strategy }
+
+    # Listeners
+    oro_entity_merge.listener.metadata.entity_config.helper:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\Metadata\EntityConfigHelper
+        arguments:
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity_config.provider.extend'
+
+    oro_entity_merge.listener.metadata.entity_config:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\Metadata\EntityConfigListener
+        arguments:
+            - '@oro_entity_merge.listener.metadata.entity_config.helper'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.build_metadata, method: onCreateMetadata, priority: 1000 }
+
+    oro_entity_merge.listener.metadata.default_label:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\Metadata\DefaultLabelListener
+        arguments:
+            - '@oro_entity_merge.listener.metadata.entity_config.helper'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.build_metadata, method: onCreateMetadata, priority: -1000 }
+
+    oro_entity_merge.listener.metadata.merge_modes:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\Metadata\MergeModesListener
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.build_metadata, method: onCreateMetadata, priority: -1000 }
+
+    oro_entity_merge.listener.merge_field.cascade_remove_association:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\MergeField\CascadeRemoveAssociationListener
+        arguments:
+            - '@oro_entity_merge.accessor'
+            - '@oro_entity_merge.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.after_merge_field, method: afterMergeField }
+
+    oro_entity_merge.listener.merge_field.stale_association:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\MergeField\StaleAssociationListener
+        arguments:
+            - '@oro_entity_merge.accessor'
+            - '@oro_entity_merge.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.after_merge_field, method: afterMergeField }
+
+    oro_entity_merge.listener.render.localized_value_render:
+        class: Oro\Bundle\EntityMergeBundle\EventListener\Render\LocalizedValueRenderListener
+        arguments:
+            - '@oro_locale.formatter.address'
+            - '@oro_locale.formatter.date_time'
+            - '@oro_entity.entity_name_resolver'
+            - '@oro_locale.formatter.number'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_merge.before_value_render, method: beforeValueRender }
+
+    # Validators
+    oro_entity_merge.validator.max_entities_validator:
+        class: Oro\Bundle\EntityMergeBundle\Validator\Constraints\MaxEntitiesCountValidator
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_merge_max_entities_validator }
+
+    oro_entity_merge.validator.doctrine_helper:
+        class: Oro\Bundle\EntityMergeBundle\Validator\Constraints\DoctrineHelperValidator
+        abstract:  true
+        arguments:
+          - '@oro_entity_merge.doctrine_helper'
+
+    oro_entity_merge.validator.master_entity:
+        class: Oro\Bundle\EntityMergeBundle\Validator\Constraints\MasterEntityValidator
+        parent: oro_entity_merge.validator.doctrine_helper
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_merge_master_entity_validator }
+
+    oro_entity_merge.validator.source_entity:
+        class: Oro\Bundle\EntityMergeBundle\Validator\Constraints\SourceEntityValidator
+        parent: oro_entity_merge.validator.doctrine_helper
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_merge_source_entity_validator }
+
+    oro_entity_merge.validator.unique_entity:
+        class: Oro\Bundle\EntityMergeBundle\Validator\Constraints\UniqueEntityValidator
+        parent: oro_entity_merge.validator.doctrine_helper
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_merge_unique_entity_validator }

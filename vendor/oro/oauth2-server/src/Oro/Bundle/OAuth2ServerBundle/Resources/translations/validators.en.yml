@@ -1,0 +1,11 @@
+oro:
+    oauth2server:
+        client:
+            name:
+                unique.message: The application with the given name already exists.
+            grants:
+                count.message: A grant should be specified.
+            owner:
+                not_null.message: This value should not be blank.
+            redirectUris:
+                not_empty.message: At least one redirect URL should be specified.

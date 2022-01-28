@@ -1,0 +1,32 @@
+Oro\Bundle\WebCatalogBundle\Entity\WebCatalog:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+
+Oro\Bundle\WebCatalogBundle\Entity\ContentNode:
+    constraints:
+        - Oro\Bundle\WebCatalogBundle\Validator\Constraint\NodeNotEmptyScopes: ~
+        - Oro\Bundle\WebCatalogBundle\Validator\Constraint\UniqueSlugPrototype: ~
+    properties:
+        contentVariants:
+            - Count:
+                min: 1
+                minMessage: 'oro.webcatalog.contentnode.content_variants.blank'
+            - Oro\Bundle\WebCatalogBundle\Validator\Constraint\UniqueScope: ~
+            - Oro\Bundle\WebCatalogBundle\Validator\Constraint\NotEmptyScopes: ~
+            - Valid: ~
+        scopes:
+            - Oro\Bundle\CustomerBundle\Validator\Constraints\ScopeWithCustomerGroupAndCustomer: ~
+        titles:
+            - Valid: ~
+        slugPrototypes:
+            - Valid: ~
+
+Oro\Bundle\WebCatalogBundle\Entity\ContentVariant:
+    constraints:
+        - Oro\Bundle\WebCatalogBundle\Validator\Constraint\SameOrganization: ~
+    properties:
+        scopes:
+            - Oro\Bundle\CustomerBundle\Validator\Constraints\ScopeWithCustomerGroupAndCustomer: ~

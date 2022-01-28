@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/ororeport/css/scss/main.scss'

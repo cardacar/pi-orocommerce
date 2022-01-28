@@ -1,0 +1,387 @@
+oro.pricing:
+    priceattributeproductprice:
+        entity_label: 'Price Attribute Product Price'
+        entity_plural_label: 'Price Attribute Product Prices'
+        entity_grid_all_view_label: 'All %entity_plural_label%'
+        id.label: 'Id'
+        currency:
+            label: 'Currency'
+            description: 'The currency of a product price attribute value'
+        product_sku.label: 'Product SKU'
+        quantity.label: 'Quantity'
+        value:
+            label: 'Value'
+            description: 'Product price attribute value'
+        price_list:
+            label: 'Price List'
+            description: 'Product price attribute related to a product price attribute value'
+        product:
+            label: 'Product'
+            description: 'Product related to a product price attribute value'
+        unit:
+            label: 'Unit'
+            description: 'Unit related to a product price attribute value'
+
+        export:
+            button.label: 'Export Price Attribute Data'
+        import:
+            entity.label: 'Price Attributes Data'
+            popup.title: 'Import Price Attributes Data'
+            strategy:
+                tooltip: '<b>Add and Replace</b> strategy overrides the existing price attribute data (e.g. MAP, MSRP, etc.) with the new one from the imported file. <br> <b>Reset and Add</b> strategy removes the existing price attribute values for all the products (regardless of the currency) if the price attribute is listed in the file. For example, if an MSRP value is provided for a Product A, all the MSRP values in all the currencies are removed for all the products. If MAP is not mentioned it the file, the MAP values remain intact.'
+                reset_and_add_confirmation: 'The selected <b>Reset and Add</b> strategy implies removing the attribute data which is not listed in the imported file. Are you sure you want to proceed with importing?'
+        import_validation:
+            button.label: 'Validate Price Attributes Data File'
+
+    priceAttribute:
+        unit.label: Unit
+        withoutPrice: N/A
+
+    pricelist:
+        entity_label: 'Price List'
+        entity_plural_label: 'Price Lists'
+        entity_grid_all_view_label: 'All %entity_plural_label%'
+        entity_description: 'A price list is a list of product quantities with their prices in the base or additional currencies. Price lists are used to determine prices for catalog products in the store front.'
+        id.label: 'Id'
+        actual:
+            label: 'Actual'
+            description: 'Defines whether all price list processes was finished'
+        name:
+            label: 'Name'
+            description: 'The name of the price list'
+        sortOrder.label: Sort Order
+        default:
+            label: 'Is Default'
+            description: 'Defines whether the price list is used by default'
+        active:
+            label: 'Active'
+            description: 'Defines whether the price list is active'
+        currencies.label: Currencies
+        schedule.label: Schedule
+        has_price_list.label: Has Price List
+        price_rules:
+            label: 'Price Rules'
+            description: 'Price rules to apply to the price list'
+        schedules:
+            label: 'Schedules'
+            description: 'Price list schedules'
+        product_assignment_rule:
+            label: 'Rule'
+            description: 'Defines on what products price list rules would apply'
+        set_default:
+            label: Set default
+            message: The "{{ priceListName }}" has been made default
+        customer_groups.label: Customer Groups
+        customers.label: Customers
+        websites.label: Websites
+        prices.label: Prices
+        merge_allowed.label: Merge Allowed
+        merge_allowed.yes.label: Yes
+        merge_allowed.no.label: No
+        contain_schedule:
+            label: 'Contain Schedules'
+            description: 'Defines whether the price list has schedules'
+        owner.label: 'Owner'
+        organization.label: 'Organization'
+        assigned_products.label: 'Assigned Products'
+        options.label: Options
+        form:
+            pricelist_required: Please select a price list first...
+        status:
+            label: Status
+            disable: Disable
+            enable: Enable
+            enabled: Enabled
+            disabled: Disabled
+            message:
+              enabled: Price List was enabled successfully
+              disabled: Price List was disabled successfully
+        recalculate:
+            label: Recalculate
+            message: Product Prices have been successfully recalculated
+        duplicate:
+            label: Duplicate Price List
+            message: Price List was Duplicated successfull
+        not_actual:
+            recalculation: This price list is currently being recalculated. You may make further edits, but please allow for additional time to see the updated prices on the store frontend.
+    priceattributepricelist:
+        entity_label: Price Attribute
+        entity_plural_label: Price Attributes
+        entity_grid_all_view_label: All %entity_plural_label%
+        entity_description: 'Price attributes are custom parameters where you can store the product price-related information (e.g. MRSP) that may be used in the rule-based price lists to calculate the price for the buyer.'
+        name:
+            label: 'Price Attribute'
+            description: 'Price attribute name'
+        field_name:
+            label: 'Field Name'
+            description: 'Price attribute expression field name'
+        enabled_in_export:
+            label: 'Enabled in Product Export'
+            description: 'If enabled this price attribute will be used in storefront product listing export.'
+        id.label: Id
+        organization:
+            label: Organization
+            description: The relationship on organization.
+        currencies.label: Currencies
+        prices:
+            label: 'Price Attribute Product Prices'
+            description: 'Product price attribute values'
+        no_data: 'No price attributes'
+
+    pricerule:
+        entity_label: Price Calculation Rule
+        entity_plural_label: Price Calculation Rules
+        entity_grid_all_view_label: All %entity_plural_label%
+        entity_description: Represents a price calculation rule and conditions when it is applicable.
+        currency:
+            label: Currency
+            description: The product price currency in a price list would be affected by the price rule.
+        currency_expression:
+            label: Currency Expression
+            description: An expression to calculate a product price currency value to which the price rule applies.
+        quantity:
+            label: Quantity
+            description: The product quantity to which the price rule applies.
+        quantity_expression:
+            label: Quantity Expression
+            description: An expression to calculate a product quantity value to which the price rule applies.
+        product_unit:
+            label: Product Unit
+            description: The product unit to which the price rule applies.
+        product_unit_expression:
+            label: Product Unit Expression
+            description: An expression to calculate a product unit code to which the price rule applies.
+        rule_condition:
+            label: Condition
+            description: A condition that should match for the price rule to apply.
+        rule:
+            label: Calculate As
+            description: An expression that is used for calculating product price.
+        price_list:
+            label: Price List
+            description: The price list to which the price rule applies.
+        priority:
+            label: Priority
+            description: The priority of the price rule in a price list.
+        price_for_quantity.label: Price for quantity
+        show_expression_fields.label: Enter expression
+        show_unit_fields.label: Select unit
+        show_currency_fields.label: Select currency
+        in_separator: in
+
+    quantity.label: Quantity
+    fallback:
+        label: Fallback
+        current_customer_only.label: Current customer only
+        customer_group.label: Customer group
+        current_customer_group_only.label: Current customer group only
+        website.label: Website
+        current_website_only.label: Current website only
+        config.label: Config
+    unit.label: Unit
+    price.label: Price
+    add_product_price: Add Product Price
+    add_price_list: Add Price List
+    no_price_lists: No price lists
+    view_all_prices: View All Prices
+    view_all_prices_extended: View All Prices for %product_attrs%
+
+    productprice:
+        entity_label: Product Price
+        entity_plural_label: Product Prices
+        entity_grid_all_view_label: All %entity_plural_label%
+        entity_description: Represents product price
+        id.label: ID
+        product.label: Product
+        product_sku.label: Product SKU
+        product_name.label: Product name
+        price_list.label: Price List
+        price_rule.label: Price Calculation Rule
+        currency.label: Currency
+        quantity.label: Quantity
+        value.label: Value
+        unit:
+            label: Unit
+            choose: Choose unit...
+        unit_code.label: Unit
+        price.label: Price
+        import:
+            strategy:
+                tooltip: '<b>Add and Replace</b> strategy overrides the existing price data with the new one from the imported file. <br> <b>Reset and Add</b> strategy removes all the prices for all the products and adds the prices from the file.'
+                reset_and_add_confirmation: 'The selected <b>Reset and Add</b> strategy implies replacing all prices with new price data. Are you sure you want to proceed with importing?'
+        show_tier_prices.label: Show Tier Prices
+        price_in_%currency%: 'Price (%currency%)'
+        price_%unit%_in_%currency%: 'Price (%currency%/%unit%)'
+        action:
+            save: Save
+            cancel: Cancel
+        save.success: Product Price has been added
+        applicable_from: 'Price is applicable starting from %amount%'
+        manual.label: Manual
+        generated.label: Generated
+        type.label: Type
+        version.label: Version
+        price_input.aria_label: 'Product Price'
+
+    priceattributeprice:
+        entity_label: Product Attribute Price
+        entity_plural_label: Product Attributes Prices
+        entity_grid_all_view_label: All %entity_plural_label%
+
+    price_type:
+        bundled: 'bundle'
+        unit: 'per unit'
+
+    pricelist_schedule:
+        active.label: Enabled
+        activity.label: Status
+        was_activated: Was activated on %date%.
+        was_deactivated: Was deactivated on %date%.
+        will_be_acitivated: Will become active on %date%.
+        will_be_deacitivated: Will be deactivated on %date%.
+        active_now: Is active now.
+        not_active_now: Is not active now.
+        active: Active
+        inactive: Inactive
+        disabled: Disabled
+
+    menu:
+        price_lists_tab.label: Price lists management
+        price_lists_list.description: List of existing price lists
+        price_attribute_price_lists_list.description: List of existing price attributes
+        shortcut_new_price_list.label: Create new price list
+        shortcut_new_price_list.description: Create new price list item
+        shortcut_price_lists.description: Show list of existing price lists
+        shortcut_price_attribute_price_lists.description: Show list of existing price attributes
+
+    sections:
+        general: General
+        additional: Additional
+        price_rules: Price Calculation Rules
+        product_assignment: Product Assignment
+
+    widgets:
+        pricing_information: Price List Information
+        price_attribute_information: Price Attribute Information
+
+    controller:
+        price_list.saved.message: Price List has been saved
+        product_price.saved.message: Product Price has been saved
+        price_attribute_price_list.saved.message: Price Attribute has been saved
+
+    form:
+        choose_price_list: Choose a Price List...
+        add_rule.label: Add
+        priceattributepricelist:
+            enabled_in_export:
+                yes: Yes
+                no: No
+
+    grid:
+        action:
+            view:
+                price_list: View Price List
+                product: View Product
+
+    system_configuration:
+        groups:
+            pricing_general.title: General
+            default_price_lists.title: Default Price Lists
+            price_rounding.title: Pricing Rounding
+            pricing.title: Pricing
+            price_lists_update.title: 'Price List Calculations'
+            price_strategies.title: Price Selection Strategy
+        fields:
+            allow_to_round_displayed_prices_and_amounts:
+                title: Allow to round displayed prices and amounts
+                tooltip: If this option is enabled, the prices and other monetary amounts may be rounded when displayed to the users while the actual value remains unchanged.
+            feature_enabled:
+                label: Enable Oro Pricing
+                tooltip: Enable the default OroCommerce pricing management system.
+            price_lists.title: Price Lists
+            precision:
+                label: Subtotals Calculation Precision in Sales Documents
+                tooltip: The number of digits allowed in the fractional part of the subtotals, totals and taxes calculated in shopping lists, checkout, orders, and RFQs.
+            price_calculation_precision:
+                label: Price Calculation Precision in Price Lists
+                tooltip: The number of digits allowed in the fractional part of the price calculation rule results. The results will be rounded using the "round half away from zero" rule (2.5 will be rounded to 3). If this value is empty, the system will not apply any rounding until the maximum supported price precision (4 digits) is reached.
+                notice: >
+                    The updated Price Calculation Precision in Price Lists settings will be used for the newly generated prices only.
+                    In order to update the existing prices please run the following command:
+            pricing_strategy.label: Pricing Strategy
+            strategy_type:
+                choises:
+                    merge_by_priority: Merge by priority
+                    minimal_prices: Minimal prices
+            rounding_type:
+                label: Pricing Rounding Type
+                tooltip: The rounding type that is used when calculated product price or subtotal has more digits in the fractional part than allowed by the respective price precision settings.
+                choices:
+                    ceil.label: Ceil
+                    floor.label: Floor
+                    down.label: Down
+                    up.label: Up
+                    half_even.label: Half Even
+                    half_down.label: Half Down
+                    half_up.label: Half Up
+            price_lists_update_mode:
+                label: 'Price List Calculation Mode'
+                tooltip: '"Deferred" is the recommended setting for the production environment.'
+                choices:
+                    scheduled.label: 'Deferred'
+                    real_time.label: 'Immediate'
+            offset_of_processing_cpl_prices:
+                label: "Offset of processing CPL prices"
+                tooltip: 'An offset (in hours) from the scheduled price change that determines how early the price list recalculation and reindex should happen to prepare the actual prices in the OroCommerce storefront for the scheduled launch.'
+            enabled_currencies.label: 'Enabled Currencies'
+
+    lineitem:
+        subtotal.label: 'Line items subtotal'
+
+    subtotals:
+        subtotal.label: Subtotal
+        not_priced_subtotal.label: Subtotal
+        total.label: Total
+        no_data.label: No data
+
+    frontend:
+        pricelist:
+            index:
+                your_price: 'Your Price:'
+                listed_price: 'Listed Price:'
+                msrp: 'MSRP:'
+        product_prices:
+            empty_prices: Price not available
+            price_not_found: Price for requested quantity is not available
+            price_not_found.short_label: N/A
+        product:
+            quantity:
+                short_label: 'Qty'
+                long_label: 'Quantity'
+            unit_price:
+                short_label: 'per unit'
+                long_label: 'Unit price'
+        summary: 'Summary'
+        summary_count: '{0} No Items|{1} %count% Item|]1,Inf[ %count% Items'
+    notification:
+        price_list:
+            error:
+                product_assignment_build: 'Error occurred during price list product assignments build'
+                price_rule_build: 'Error occurred during price rule build'
+
+    validators:
+        field_or_expression_is_required: Field "%fieldName%" is required
+
+    permission:
+        recalculate.label: "Recalculate"
+
+
+oro:
+    importexport:
+        import:
+            oro_pricing_product_price:
+                add_or_replace: Add and Replace
+                reset: Reset and Add
+            oro_pricing_product_price_attribute_price:
+                add_or_replace: Add and Replace
+                reset: Reset and Add

@@ -1,0 +1,67 @@
+oro_api:
+    api_firewalls:
+        frontend_api_wsse_secured:
+            feature_name: frontend_web_api
+            feature_firewall_listeners:
+                - Oro\Bundle\WsseAuthenticationBundle\Security\Http\Firewall\WsseAuthenticationListener
+        frontend_api_options:
+            feature_name: frontend_web_api
+        frontend_api_login:
+            feature_name: frontend_web_api
+
+security:
+    providers:
+        commerce_customer_user:
+            id: oro_customer.security.provider
+
+    encoders:
+        Oro\Bundle\CustomerBundle\Entity\CustomerUser: sha512
+
+    firewalls:
+        frontend_api_options:
+            pattern: '%oro_api.rest.pattern%'
+            methods: [OPTIONS]
+            security: false
+            stateless: true
+        frontend_api_login:
+            pattern: '^%oro_api.rest.prefix%login'
+            security: false
+            stateless: true
+        frontend_api_wsse_secured:
+            pattern:   '%oro_api.rest.pattern%'
+            provider:  commerce_customer_user
+            context:   customer_identity
+            stateless: true
+            wsse:
+                lifetime: 3600
+                realm:    'Secured Frontend API'
+                profile:  'UsernameToken'
+            anonymous_customer_user: true
+        frontend:
+            pattern:                        ^/
+            provider:                       commerce_customer_user
+            context:                        customer_identity
+            organization-form-login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 oro_customer_customer_user_security_check
+                login_path:                 oro_customer_customer_user_security_login
+                default_target_path:        oro_frontend_root
+            logout:
+                path:                       oro_customer_customer_user_security_logout
+                invalidate_session:         false
+            organization-remember-me:
+                token_provider:             oro_security.token.provider.rememberme
+                secret:                     '%secret%'
+                name:                       OROSFRM
+                lifetime:                   2592000   # stay logged for 30 days
+                httponly:                   true
+            anonymous_customer_user:        true
+
+doctrine:
+    orm:
+        resolve_target_entities:
+            Oro\Bundle\CustomerBundle\Entity\CustomerUserIdentity: Oro\Bundle\CustomerBundle\Entity\CustomerUser
+        filters:
+            soft_deleteable:
+                class:      Oro\Bundle\CustomerBundle\Doctrine\SoftDeleteableFilter
+                enabled:    false

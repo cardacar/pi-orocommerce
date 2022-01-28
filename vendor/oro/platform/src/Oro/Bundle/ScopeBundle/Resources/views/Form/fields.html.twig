@@ -1,0 +1,24 @@
+{% block oro_scope_widget %}
+    <div class="form-horizontal">
+        <div class="control-group-container">
+            {% for child in form.children %}
+                <div class="control-group">
+                    {% if child.vars.label is not empty %}
+                        <div class="control-label wrap">{{ form_label(child) }}</div>
+                    {% endif %}
+                    <div class="controls">{{ form_widget(child) }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block oro_scope_collection_widget %}
+    <div class="scope-collection">
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-options-collection' }) %}
+        {{ block('oro_collection_widget') }}
+    </div>
+{% endblock %}

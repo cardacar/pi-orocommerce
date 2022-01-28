@@ -1,0 +1,43 @@
+Oro\Bundle\CatalogBundle\Entity\Category:
+    categoryLightingProducts:
+        __calls:
+            - addTitle: ['@localValueLightingProducts']
+            - setParentCategory: ['@root_category']
+        organization: '@organization'
+
+    categoryRetailSupplies:
+        __calls:
+            - addTitle: ['@localValueRetailSupplies']
+            - setParentCategory: ['@root_category']
+        organization: '@organization'
+
+    categoryPrinters:
+        __calls:
+            - addTitle: ['@localValuePrinters']
+            - setParentCategory: ['@categoryRetailSupplies']
+        organization: '@organization'
+        slugPrototypes: [ '@categoryPrintersSlugPrototype' ]
+        slugs: [ '@categoryPrintersSlug' ]
+
+Oro\Bundle\RedirectBundle\Entity\Slug:
+    categoryPrintersSlug:
+        url: 'printers'
+        slugPrototype: '@categoryPrintersSlugPrototype'
+        routeName: 'oro_product_frontend_product_index'
+        routeParameters:
+            categoryId: '@categoryPrinters->id'
+            includeSubcategories: true
+
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    categoryPrintersSlugPrototype:
+        string: 'printers'
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    localValueRetailSupplies:
+        string: 'Retail Supplies'
+
+    localValuePrinters:
+        string: 'Printers'
+
+    localValueLightingProducts:
+        string: 'Lighting Products'

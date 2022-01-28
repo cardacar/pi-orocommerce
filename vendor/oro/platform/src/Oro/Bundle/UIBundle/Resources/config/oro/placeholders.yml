@@ -1,0 +1,71 @@
+placeholders:
+    placeholders:
+        header_logo:
+            items:
+                logo:
+                    order: 100
+        user_menu:
+            items:
+                user_dots_menu:
+                    order: 150
+                help:
+                    order: 100
+        form_buttons:
+            items:
+                add_update_delete:
+                    order: 100
+        head_style:
+            items:
+                assets_css:
+                    order: 100
+        head_script: ~
+        js_modules_config:
+            items:
+                ui_js_modules_config:
+                    order: 10
+                ui_js_modules_config_public_path:
+                    order: 20
+        application:
+            items:
+                assets_js:
+                    order: 10
+        view_navButtons_after:
+            items:
+                view_buttons:
+                    order: 200
+        update_navButtons_after:
+            items:
+                update_buttons:
+                    order: 200
+        url_actions:
+            items:
+                oro_ui_url_copy_action_button:
+                    order: 10
+
+    items:
+        logo:
+            template: OroUIBundle:Default:logo.html.twig
+        help:
+            template: OroUIBundle:Default:help.html.twig
+        user_dots_menu:
+            template: OroUIBundle:Default:user_dots_menu.html.twig
+        add_update_delete:
+            template: OroUIBundle:Form:buttons.html.twig
+        ui_js_modules_config:
+            template: OroUIBundle::js_modules_config.html.twig
+        ui_js_modules_config_public_path:
+            template: OroUIBundle::js_modules_config_public_path.html.twig
+        assets_js:
+            template: OroUIBundle:Assets:oro_js.html.twig
+        view_buttons:
+            template: OroUIBundle::buttons.html.twig
+            applicable: "@oro_ui.widget_provider.view_actions->supports($entity$)"
+            data: "@oro_ui.widget_provider.view_actions->getWidgets($entity$)"
+        update_buttons:
+            template: OroUIBundle::buttons.html.twig
+            applicable: "@oro_ui.widget_provider.update_actions->supports($entity$)"
+            data: "@oro_ui.widget_provider.update_actions->getWidgets($entity$)"
+        oro_ui_url_copy_action_button:
+            template: OroUIBundle::copy_button.html.twig
+        assets_css:
+            template: OroUIBundle:Assets:oro_css.html.twig

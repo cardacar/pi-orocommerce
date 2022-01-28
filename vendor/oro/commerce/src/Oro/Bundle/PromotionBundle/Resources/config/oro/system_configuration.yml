@@ -1,0 +1,45 @@
+system_configuration:
+    groups:
+        promotion:
+            title: oro.promotion.system_configuration.groups.promotion.title
+            icon: 'fa-bullhorn'
+        promotion_general:
+            title: oro.promotion.system_configuration.groups.promotion_general.title
+
+    fields:
+        oro_promotion.feature_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro.promotion.system_configuration.fields.feature_enabled.label
+
+        oro_promotion.discount_strategy:
+            data_type: string
+            type: Oro\Bundle\PromotionBundle\Form\Type\DiscountStrategySelectType
+            options:
+                label: oro.promotion.system_configuration.fields.discount_strategy.label
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_promotion.case_insensitive_coupon_search:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro.promotion.system_configuration.fields.case_insensitive_coupon_search.label
+                tooltip: oro.promotion.system_configuration.fields.case_insensitive_coupon_search.tooltip
+
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    sales:
+                        children:
+                            promotion:
+                                priority: 200
+                                children:
+                                    promotion_general:
+                                        children:
+                                            - oro_promotion.feature_enabled
+                                            - oro_promotion.case_insensitive_coupon_search
+                                            - oro_promotion.discount_strategy

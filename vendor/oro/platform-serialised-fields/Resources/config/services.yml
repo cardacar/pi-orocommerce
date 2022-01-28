@@ -1,0 +1,187 @@
+services:
+    oro_serialized_fields.migration.searilized_data.post_up.listener:
+          class: Oro\Bundle\EntitySerializedFieldsBundle\EventListener\SerializedDataPostUpMigrationListener
+          arguments:
+              - "@oro_entity_extend.migration.entity_metadata_helper"
+          tags:
+              - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -95 }
+
+    oro_serialized_fields.migration.extension.serialized_fields:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Migration\Extension\SerializedFieldsExtension
+        arguments:
+            - '@oro_entity_extend.migration.options_manager'
+        tags:
+            - { name: oro_migration.extension, extension_name: serialized_fields }
+
+    oro_serialized_fields.entity_generator.extension:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Tools\GeneratorExtensions\SerializedDataGeneratorExtension
+        arguments:
+            - '@Doctrine\Inflector\Inflector'
+        tags:
+            - { name: oro_entity_extend.entity_generator_extension }
+
+    oro_serialized_fields.entity_config_dumper.extension:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Tools\DumperExtensions\SerializedEntityConfigDumperExtension
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.extend.field_type_helper"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension, priority: -256 }
+
+    oro_serialized_fields.datagrid.column_options_guesser:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Grid\SerializedColumnOptionsGuesser
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: oro_datagrid.column_options_guesser }
+
+    oro_serialized_fields.datagrid.serialized_fields_extension:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Grid\SerializedFieldsExtension
+        parent: oro_entity_extend.datagrid.extension.dynamic_fields
+        decorates: oro_entity_extend.datagrid.extension.dynamic_fields
+
+    oro_serialized_fields.form.extension.field_extension:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Form\Extension\FieldTypeExtension
+        arguments:
+            - "@session"
+            - ['fieldName', 'is_serialized', 'type']
+        tags:
+            - { name: form.type_extension, alias: oro_entity_extend_field_type, extended_type: Oro\Bundle\EntityExtendBundle\Form\Type\FieldType }
+
+    oro_serialized_fields.validator.unique_extend_entity_field_validator:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Validator\Constraints\UniqueExtendEntityFieldValidator
+        tags:
+            - { name: validator.constraint_validator, alias: oro_serialized_fields.validator.unique_extend_entity_field }
+
+    oro_serialized_fields.validator.extend_entity_serialized_data:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Validator\Constraints\ExtendEntitySerializedDataValidator
+        arguments:
+            - '@oro_entity_config.provider.extend'
+            - '@oro_entity.helper.field_helper'
+        calls:
+            -
+                - setFieldConfigConstraintsFactory
+                -
+                    - "@oro_entity_config.validator.field_config_constraints_factory"
+            -
+                - addConstraints
+                -
+                    - integer
+                    -
+                        - Regex:
+                              pattern: '/^[\d+]*$/'
+                              message: "This value should contain only numbers."
+            -
+                - addConstraints
+                -
+                    - smallint
+                    -
+                        - Regex:
+                              pattern: '/^[\d+]*$/'
+                              message: "This value should contain only numbers."
+            -
+                - addConstraints
+                -
+                    - bigint
+                    -
+                        - Regex:
+                              pattern: '/^[\d+]*$/'
+                              message: "This value should contain only numbers."
+            - [addConstraints, ['float', [{ Type: {type: 'numeric'} }]]]
+            - [addConstraints, ['decimal', [{ Type: {type: 'numeric'} }]]]
+            - [addConstraints, ['money', [{ Type: {type: 'numeric'} }]]]
+            - [addConstraints, ['percent', [{ Type: {type: 'numeric'} }]]]
+            - [addConstraints, ['date', [{ Date: ~ }]]]
+            - [addConstraints, ['datetime', [{ DateTime: ~ }]]]
+        tags:
+            - { name: validator.constraint_validator, alias: oro_serialized_fields.validator.extend_entity_serialized_data }
+
+    oro_serialized_fields.form.extension.config_extension:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Form\Extension\ConfigTypeExtension
+        arguments:
+            - ['fieldName', 'is_serialized', 'type']
+        tags:
+            - { name: form.type_extension, alias: oro_entity_config_type, extended_type: Oro\Bundle\EntityConfigBundle\Form\Type\ConfigType }
+
+    oro_serialized_fields.form.type.is_serialized_field:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Form\Type\IsSerializedFieldType
+        arguments:
+            - '@oro_entity_config.provider.serialized_field_provider'
+        tags:
+            - { name: form.type, alias: oro_serialized_fields_is_serialized_type }
+
+    oro_serialized_fields.listener.entity_config:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\EventListener\EntityConfigListener
+        arguments:
+            - '@oro_entity_extend.entity_generator'
+            - '@session'
+        calls:
+            - [setEntityProxyUpdateConfigProvider, ['@oro_serialized_fields.entity_proxy_update_config_provider']]
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_config.field.create, method: createField, priority: -255 }
+            - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush, priority: -255 }
+            - { name: kernel.event_listener, event: oro.entity_config.post_flush, method: postFlush }
+            - { name: kernel.event_listener, event: oro.entity_config.pre_set_require_update, method: preSetRequireUpdate }
+
+    oro_serialized_fields.entity_proxy_update_config_provider:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\EntityProxyUpdateConfigProvider
+
+    oro_serialized_fields.exclusion_provider.serialized_field:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\ConfigSerializedFieldExclusionProvider
+        public: false
+        arguments:
+            - "@oro_entity_config.provider.extend"
+        tags:
+            - { name: oro_entity.exclusion_provider.default }
+
+    oro_serialized_fields.provider.deleted_attribute.decorator:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\DeletedAttributeProviderDecorator
+        decorates: oro_entity_config.provider.deleted_attribute
+        arguments:
+            - '@oro_serialized_fields.provider.deleted_attribute.decorator.inner'
+
+    oro_serialized_fields.provider.deleted_serialized_attribute:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\DeletedSerializedAttributeProvider
+        arguments:
+            - '@oro_entity_config.config_model_manager'
+            - '@oro_serialized_fields.provider.serialized_attribute_value'
+
+    oro_serialized_fields.provider.serialized_attribute_value:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\SerializedAttributeValueProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    oro_serialized_fields.event_listener.deleted_attribute_relation_serialized:
+      class: Oro\Bundle\EntityConfigBundle\EventListener\DeletedAttributeRelationListener
+      arguments:
+          - '@oro_message_queue.message_producer'
+          - '@oro_serialized_fields.provider.deleted_serialized_attribute'
+          - '@Doctrine\Inflector\Inflector'
+      calls:
+          - [setTopic, ['oro_serialized_fields.serialized_attribute_was_removed_from_family']]
+      tags:
+        - { name: doctrine.event_listener, event: onFlush }
+        - { name: doctrine.event_listener, event: postFlush }
+
+    oro_serialized_fields.async.deleted_attribute_relation:
+        class: Oro\Bundle\EntityConfigBundle\Async\DeletedAttributeRelationProcessor
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@logger'
+            - '@oro_serialized_fields.provider.deleted_serialized_attribute'
+        tags:
+            - { name: oro_message_queue.client.message_processor, topicName: 'oro_serialized_fields.serialized_attribute_was_removed_from_family' }
+
+    oro_serialized_fields.provider.serialized_fields:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Provider\SerializedFieldsProvider
+        arguments:
+            - '@oro_entity_config.config_manager'
+
+    oro_serialized_fields.tools.serialized_fields_sanitizer:
+        class: Oro\Bundle\EntitySerializedFieldsBundle\Tools\SerializedFieldsSanitizer
+        arguments:
+            - '@doctrine'
+            - '@oro_ui.html_tag_helper'
+            - '@oro_serialized_fields.provider.serialized_fields'
+        tags:
+            - { name: oro_security.fields_sanitizer }

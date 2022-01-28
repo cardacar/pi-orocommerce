@@ -1,0 +1,30 @@
+/* @theme: admin.oro; */
+
+.oro-translation-languages {
+    .translation-completeness {
+        min-width: 200px;
+    }
+
+    .translation-status {
+        .status-up-to-date {
+            color: $success-darken;
+        }
+
+        .status-install_available {
+            color: $warning-darken;
+        }
+
+        .status-update_available {
+            color: $success-darken;
+        }
+
+        .status-not_available {
+        }
+    }
+}
+
+.oro-translation-translations {
+    .grid-header-cell {
+        min-width: 100px;
+    }
+}

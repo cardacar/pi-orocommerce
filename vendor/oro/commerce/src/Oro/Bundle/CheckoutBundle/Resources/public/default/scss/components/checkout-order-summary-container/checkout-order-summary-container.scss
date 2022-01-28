@@ -1,0 +1,11 @@
+/* @theme: default; */
+
+.checkout-order-summary-container {
+    margin: $checkout-order-summary-container-margin;
+}
+
+@include breakpoint('tablet') {
+    .checkout-order-summary-container {
+        margin: $checkout-order-summary-container-margin-tablet;
+    }
+}

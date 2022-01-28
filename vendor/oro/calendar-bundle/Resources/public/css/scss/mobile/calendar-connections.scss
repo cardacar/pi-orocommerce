@@ -1,0 +1,38 @@
+/* @theme: admin.oro; */
+
+.calendar-connections {
+    margin-top: 0;
+
+    .context-menu-button {
+        visibility: visible;
+    }
+
+    .connection-menu-container .dropdown-menu {
+        max-width: none;
+    }
+}
+
+.connection-item {
+    align-items: center;
+}
+
+.calendar-connections-header {
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+
+    text-align: center;
+
+    border-bottom: 1px solid $primary-860;
+
+    .dropdown-menu {
+        padding: 12px;
+    }
+}
+
+@media only screen and (max-width: $small-devices-media-breakpoint) {
+    .calendars .entity-create-or-select-container .select2-container {
+        max-width: none;
+
+        flex-grow: 1;
+    }
+}

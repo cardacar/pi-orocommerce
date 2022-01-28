@@ -1,0 +1,3 @@
+css:
+    inputs:
+      - 'bundles/oroaddress/css/scss/main.scss'

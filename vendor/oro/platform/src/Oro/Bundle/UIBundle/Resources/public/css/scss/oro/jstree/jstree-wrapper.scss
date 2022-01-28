@@ -1,0 +1,80 @@
+/* @theme: admin.oro; */
+
+.jstree-wrapper {
+    position: $jstree-wrapper-position;
+
+    min-height: $jstree-wrapper-min-height;
+    padding: $jstree-wrapper-inner-offset;
+
+    width: $jstree-wrapper-width;
+
+    .controls & {
+        max-width: $field-width;
+        padding-top: 0;
+    }
+
+    &__inner {
+        height: $jstree-wrapper-inner-height;
+        display: $jstree-wrapper-inner-display;
+        flex-direction: $jstree-wrapper-inner-flex-direction;
+    }
+
+    &__title {
+        display: $jstree-wrapper-title-display;
+
+        align-items: $jstree-wrapper-title-align-items;
+        justify-content: $jstree-wrapper-title-justify-content;
+    }
+
+    &__label {
+        display: $jstree-wrapper-label-display;
+        margin-top: $jstree-wrapper-label-offset-top;
+        margin-bottom: $jstree-wrapper-label-offset-bottom;
+    }
+
+    &__content {
+        min-height: $jstree-wrapper-content-min-height;
+        display: $jstree-wrapper-content-display;
+        flex-direction: $jstree-wrapper-content-flex-direction;
+    }
+
+    &.expanded .jstree-actions {
+        display: $jstree-wrapper-label-expanded-jstree-actions-display;
+    }
+
+    &__text {
+        font-size: $jstree-wrapper-text-font-size;
+        font-weight: $jstree-wrapper-text-font-weight;
+
+        cursor: $jstree-wrapper-text-cursor;
+
+        color: $jstree-wrapper-text-color;
+    }
+
+    &__checkbox {
+        display: $jstree-wrapper-checkbox-display;
+    }
+
+    .jstree {
+        margin: $jstree-wrapper-jstree-offset;
+        outline: $jstree-wrapper-jstree-outline;
+    }
+}
+
+.content-with-sidebar--sidebar {
+    .jstree-wrapper {
+        height: $content-with-sidebar-jstree-wrapper-height;
+        padding: $content-with-sidebar-jstree-wrapper-inner-offset;
+    }
+}
+
+.sidebar-container {
+    .content-with-sidebar {
+        &--sidebar {
+            .jstree-container {
+                min-height: $sidebar-container-content-with-sidebar-jstree-wrapper-min-height;
+                overflow: $sidebar-container-content-with-sidebar-jstree-wrapper-overflow;
+            }
+        }
+    }
+}

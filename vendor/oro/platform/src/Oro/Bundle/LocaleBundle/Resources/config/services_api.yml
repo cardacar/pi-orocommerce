@@ -1,0 +1,9 @@
+services:
+    oro_locale.api.complete_localized_values:
+        class: Oro\Bundle\LocaleBundle\Api\Processor\CompleteLocalizedValues
+        arguments:
+            - '@oro_locale.helper.localization'
+            - '@oro_api.doctrine_helper'
+            - '@oro_api.form_property_accessor'
+        tags:
+            - { name: oro.api.processor, action: customize_form_data, event: post_validate, parentAction: create, priority: -200 }

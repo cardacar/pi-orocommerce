@@ -1,0 +1,29 @@
+operations:
+    test_action1:
+        replace:
+            - routes
+
+    test_action4:
+        label: Test Action4
+        datagrid_options:
+            data:
+                replace:
+                    - sub_config1
+                    - sub_config3
+                sub_config3: replaced data
+        button_options:
+            data:
+                'custom key with %%percent escaped string%% parameter': 'value'
+
+action_groups:
+    group2:
+        parameters:
+            $.date:
+                type: DateTime
+                message: No data specified!
+
+        conditions:
+            '@gt': [$updatedAt, $.date]
+
+        actions:
+            - '@assign_value': [$expired, true]

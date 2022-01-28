@@ -1,0 +1,7 @@
+{% block oro_product_product_variant_frontend_variant_field_widget %}
+    {%- if form.parent is empty -%}
+        {{ form_errors(form) }}
+    {%- endif -%}
+    {{- block('form_rows') -}}
+    {{- form_rest(form) -}}
+{% endblock %}

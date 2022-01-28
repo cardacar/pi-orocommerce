@@ -1,0 +1,22 @@
+{% if widgetAcl is defined and is_granted(widgetAcl) %}
+    <div class="widget-content launchpad-widget-content{% if widgetClass is defined and widgetClass %} {{ widgetClass }}-widget-content{% endif %}">
+        <div class="launchpad-widget-content__title"
+            {% if item is defined %} title="{{ item.label|trans }}" {% endif %}>
+            {% if widgetIcon is defined and widgetIcon %}
+                <span class="fa-{{ widgetIcon }} launchpad-widget-content__icon" aria-hidden="true"></span>
+            {% endif %}
+            <div class="launchpad-widget-content__label-wrapper">
+                <span class="launchpad-widget-content__label">{{ widgetLabel|trans }}</span>
+            </div>
+        </div>
+        <ul class="launchpad-widget-content__list">
+            {% for item in items %}
+                {% if is_granted(item.acl) %}
+                    <li class="launchpad-widget-content__list-item">
+                        <a href="{{ path(item.route, item.route_parameters|default({})) }}"  class="launchpad-widget-content__link">{{ item.label|trans }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

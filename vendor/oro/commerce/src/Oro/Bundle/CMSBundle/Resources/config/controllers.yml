@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        public: true
+
+    Oro\Bundle\CMSBundle\Controller\PageController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Oro\Bundle\CMSBundle\Controller\ContentWidgetController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Oro\Bundle\CMSBundle\Controller\WysiwygContentController:
+        calls:
+            - [ 'setContainer', [ '@Psr\Container\ContainerInterface' ] ]
+        tags:
+            - { name: container.service_subscriber }

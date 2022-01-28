@@ -1,0 +1,24 @@
+{% extends 'OroUserBundle::layout.html.twig' %}
+
+{% block bodyClass %}login-page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-wrapper">
+        <div class="form-wrapper__inner">
+            <form action="" class="form-signin">
+                <div class="title-box">
+                    <h2 class="title">{{ 'oro.user.password.reset_password.title'|trans }}</h2>
+                </div>
+                <fieldset>
+                    <div class="alert alert-success" role="alert">
+                        {{ 'oro.user.password.reset_password.message'|trans({ '%email%': email }) }}
+                    </div>
+                    <a href="{{ path('oro_user_security_login') }}">&laquo; {{ 'Return to Login'|trans }}</a>
+                </fieldset>
+            </form>
+        </div>
+        <div class="login-copyright">{{ 'oro.auth.copy'|trans({ '{{year}}': 'now'|date('Y') }) }}</div>
+    </div>
+</div>
+{% endblock %}

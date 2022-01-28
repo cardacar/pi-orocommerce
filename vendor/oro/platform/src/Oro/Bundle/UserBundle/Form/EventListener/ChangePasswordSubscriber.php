@@ -1,0 +1,62 @@
+<?php
+
+namespace Oro\Bundle\UserBundle\Form\EventListener;
+
+use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
+class ChangePasswordSubscriber extends UserSubscriber
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            FormEvents::POST_SUBMIT => 'onSubmit',
+            FormEvents::PRE_SUBMIT   => 'preSubmit'
+        );
+    }
+
+    /**
+     * Re-create current password field in case of user don't filled any password field
+     */
+    public function preSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        $isEmptyPassword = $data['currentPassword'] . $data['plainPassword']['first'];
+        $isEmptyPassword = empty($isEmptyPassword);
+
+        if ($isEmptyPassword) {
+            $form->remove('currentPassword');
+
+            $form->add(
+                $this->factory->createNamed(
+                    'currentPassword',
+                    PasswordType::class,
+                    null,
+                    array(
+                        'auto_initialize' => false,
+                        'mapped' => false,
+                    )
+                )
+            );
+        }
+    }
+
+    public function onSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        /** @var User $user */
+        $user = $form->getParent()->getData();
+        $plainPassword = $form->get('plainPassword');
+
+        if ($this->isCurrentUser($user)) {
+            $user->setPlainPassword($plainPassword->getData());
+        }
+    }
+}

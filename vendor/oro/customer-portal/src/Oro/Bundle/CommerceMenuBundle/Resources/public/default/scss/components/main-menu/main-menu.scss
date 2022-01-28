@@ -1,0 +1,133 @@
+/* @theme: default; */
+
+.main-menu {
+    &__link {
+        text-transform: $main-menu-link-text-transform;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+
+    &__list {
+        @include list-normalize();
+        @include clearfix();
+
+        &--nested {
+            display: block;
+
+            font-size: 0;
+        }
+    }
+
+    &__item {
+        &--nested {
+            position: relative;
+
+            display: inline-block;
+
+            font-size: $base-font-size;
+
+            vertical-align: middle;
+
+            background: get-color('additional', 'base');
+        }
+    }
+
+    &__sublist {
+        display: none;
+    }
+
+    &__button-arrow {
+        padding: $main-menu-button-arrow-d-inner-offset;
+
+        font-size: inherit;
+
+        cursor: pointer;
+    }
+}
+
+@include only-desktop() {
+    .main-menu {
+        &__item {
+            &.show,
+            &:hover {
+                background: get-color('additional', 'base');
+            }
+        }
+
+        &__link {
+            white-space: nowrap;
+
+            position: relative;
+            z-index: z('base');
+        }
+    }
+}
+
+@include breakpoint('desktop') {
+    .main-menu {
+        max-height: $main-menu-item-height;
+
+        display: flex;
+
+        &-column__title {
+            font-weight: $main-menu-column-title-desktop-font-weight;
+        }
+
+        > .main-menu__item {
+            > .main-menu__link {
+                font-weight: $main-menu-item-first-level-desktop-font-weight;
+            }
+        }
+
+        &__view-parent {
+            display: none;
+        }
+
+        &__item {
+            min-height: $main-menu-item-height;
+
+            &--nested {
+                padding: $main-menu-item--nested;
+            }
+        }
+
+        &__link {
+            min-height: $main-menu-item-height;
+
+            display: inline-block;
+        }
+
+
+        &__item--floated-dropdown,
+        &__item--centered-dropdown {
+            position: relative;
+        }
+
+        &__item--floated-dropdown .main-menu__sublist-container {
+            right: auto;
+        }
+
+        &__item--centered-dropdown .main-menu__sublist-container {
+            left: calc(-50% - 34px);
+            right: auto;
+        }
+
+        &__sublist-container {
+            display: none;
+
+            background: get-color('additional', 'ultra');
+            box-shadow: $main-menu-sublist-container-shadow;
+        }
+
+        .mobile-version & {
+            &__item {
+                &.show {
+                    background: get-color('additional', 'base');
+                }
+            }
+        }
+    }
+}

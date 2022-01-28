@@ -1,0 +1,37 @@
+{
+    "name": "oro/calendar-bundle",
+    "type": "symfony-bundle",
+    "description": "Calendar bundle for OroPlatform-based applications.\nSee https://doc.oroinc.com/user/back-office/activities/calendar-events/ for more information.",
+    "homepage": "https://github.com/oroinc/OroCalendarBundle.git",
+    "keywords": ["Oro","OroPlatform","OroCRM","Calendar"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "require": {
+        "oro/platform": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": { "Oro\\Bundle\\CalendarBundle\\": "" },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.oroinc.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "npm": {
+            "fullcalendar": "3.4.0"
+        },
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

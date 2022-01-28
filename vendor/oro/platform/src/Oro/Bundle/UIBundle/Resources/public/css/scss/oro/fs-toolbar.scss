@@ -1,0 +1,12 @@
+/* @theme: admin.oro; */
+
+body.desktop-version.dev-mode {
+    display: flex;
+    flex-direction: column;
+
+    &.loading {
+        .sf-toolbar {
+            display: none;
+        }
+    }
+}

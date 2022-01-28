@@ -1,0 +1,39 @@
+connector:
+    name: oro_importexport
+    jobs:
+        entity_fields_import_from_csv:
+            title: "Entity Fields Import from CSV"
+            type: import
+            steps:
+                import:
+                    title:     import
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.csv
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_entity_config.importexport.writer.entity_field
+                    parameters: ~
+        attribute_import_from_csv:
+            title: "Attribute Import from CSV"
+            type: import
+            steps:
+                import:
+                    title:     import
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.csv
+                        processor: oro_entity_config.importexport.processor.import.attribute
+                        writer:    oro_entity_config.importexport.writer.attribute
+                    parameters: ~
+        attribute_import_validation_from_csv:
+            title: "Attribute Import Validation from CSV"
+            type: import_validation
+            steps:
+                import_validation:
+                    title:     import_validation
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.csv
+                        processor: oro_entity_config.importexport.processor.import.attribute
+                        writer:    oro_importexport.writer.doctrine_clear
+                    parameters: ~

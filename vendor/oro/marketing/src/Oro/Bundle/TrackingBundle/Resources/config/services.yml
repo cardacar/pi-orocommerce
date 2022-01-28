@@ -1,0 +1,169 @@
+services:
+    oro_tracking.form.type.tracking_website:
+        class: Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
+        arguments:
+            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
+        tags:
+            - { name: form.type, alias: oro_tracking_website }
+
+    oro_tracking.form.handler.tracking_website:
+        class: Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler
+        public: true
+        arguments:
+            - '@oro_tracking.form.tracking_website'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    oro_tracking.form.tracking_website:
+        class: Symfony\Component\Form\Form
+        public: true
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - oro_tracking_website
+            - Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
+
+    oro_tracking.tracking_website.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        public: true
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
+            - '@doctrine.orm.entity_manager'
+
+    oro_tracking.importexport.reader.log:
+        class: Oro\Bundle\TrackingBundle\ImportExport\LogReader
+        arguments:
+            - '@oro_importexport.context_registry'
+
+    oro_tracking.importexport.reader.context:
+        class: Oro\Bundle\TrackingBundle\ImportExport\ContextReader
+        arguments:
+            - '@oro_importexport.context_registry'
+
+    oro_tracking.importexport.data_converter.data:
+        class: Oro\Bundle\TrackingBundle\ImportExport\DataConverter
+        arguments:
+            - '@oro_entity.helper.field_helper'
+
+    oro_tracking.importexport.strategy.data:
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    oro_tracking.importexport.normalizer.data:
+        class: Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer
+        parent: oro_importexport.serializer.configurable_entity_normalizer
+        calls:
+            - [setEntityName, ['Oro\Bundle\TrackingBundle\Entity\TrackingData']]
+        tags:
+            - { name: oro_importexport.normalizer, priority: 10 }
+
+    oro_tracking.importexport.processor.import.data:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter,  ['@oro_tracking.importexport.data_converter.data']]
+            - [setStrategy,  ['@oro_tracking.importexport.strategy.data']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Oro\Bundle\TrackingBundle\Entity\TrackingData', alias: oro_tracking.processor.data }
+
+    oro_tracking.config.listener:
+        class: Oro\Bundle\TrackingBundle\EventListener\ConfigListener
+        arguments:
+            - '@oro_config.global'
+            - '@router'
+            - '%kernel.logs_dir%'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onUpdateAfter }
+
+    oro_tracking.listener.config_precalculate_listener:
+        class: Oro\Bundle\TrackingBundle\EventListener\ConfigPrecalculateListener
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onUpdateAfter }
+
+    oro_tracking.tracking_event_entitylistener:
+        class: Oro\Bundle\TrackingBundle\EventListener\TrackingVisitEntityListener
+        arguments:
+            - '@oro_config.global'
+            - '@doctrine'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit', event: prePersist }
+
+    oro_tracking.migration.extension.tracking_identifier:
+        class: Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: tracking_identifier }
+
+    oro_tracking.migration.extension.visit_event_association:
+        class: Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: visit_event_association }
+
+    oro_tracking.entity_config_dumper.visit_identifier.extension:
+        class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitConfigDumperExtension
+        arguments:
+            - '@oro_tracking.provider.identifier_provider'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity_extend.association_builder'
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_tracking.entity_config_dumper.visit_event_association.extension:
+        class: Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationDumperExtension
+        arguments:
+            - '@oro_tracking.provider.identifier_provider'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity_extend.association_builder'
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_tracking.entity_generator.visit_identifie.extension:
+        class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension
+        tags:
+            - { name: oro_entity_extend.entity_generator_extension }
+
+    oro_tracking.entity_generator.visit_event_association.extension:
+        class: Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationGeneratorExtension
+        tags:
+            - { name: oro_entity_extend.entity_generator_extension }
+
+    oro_tracking.processor.tracking_processor:
+        class: Oro\Bundle\TrackingBundle\Processor\TrackingProcessor
+        arguments:
+            - '@doctrine'
+            - '@oro_tracking.provider.identifier_provider'
+
+    oro_tracking.exclusion_provider.identifier_event:
+        class: Oro\Bundle\TrackingBundle\Provider\IdentifierEventExclusionProvider
+        public: false
+        tags:
+            - { name: oro_entity.exclusion_provider.api }
+
+    oro_tracking.exclusion_provider.visit_event:
+        class: Oro\Bundle\TrackingBundle\Provider\VisitEventExclusionProvider
+        public: false
+        tags:
+            - { name: oro_entity.exclusion_provider.api }
+
+    oro_tracking.provider.identifier_provider:
+        class: Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider
+
+    oro_tracking.migration.fill_unique_tracking_visits_query:
+        class: Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery
+        public: false
+
+    oro_tracking.tools.unique_tracking_visit_dumper:
+        class: Oro\Bundle\TrackingBundle\Tools\UniqueTrackingVisitDumper
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@logger'
+            - '@oro_tracking.migration.fill_unique_tracking_visits_query'
+
+    oro_tracking.async.aggregate_tracking_visits_processor:
+        class: Oro\Bundle\TrackingBundle\Async\AggregateTrackingVisitsProcessor
+        arguments:
+            - '@oro_tracking.tools.unique_tracking_visit_dumper'
+            - '@oro_config.global'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

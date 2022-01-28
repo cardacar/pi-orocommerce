@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\EmailBundle\Command\UpdateAssociationsCommand:
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\EmailBundle\Command\Cron\EmailBodySyncCommand:
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_email.email_body_synchronizer'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\EmailBundle\Command\GenerateMd5ForEmailsCommand:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: console.command }

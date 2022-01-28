@@ -1,0 +1,72 @@
+services:
+    oro_importexport.writer.csv:
+        class: Oro\Bundle\ImportExportBundle\Writer\CsvFileWriter
+        arguments:
+            - '@oro_importexport.context_registry'
+        calls:
+            - [setClearWriter, ['@oro_importexport.writer.doctrine_clear']]
+        tags:
+            - { name: oro_importexport.writer, alias: csv }
+
+    oro_importexport.writer.xlsx:
+        class: Oro\Bundle\ImportExportBundle\Writer\XlsxFileWriter
+        arguments:
+            - '@oro_importexport.context_registry'
+        calls:
+            - [setClearWriter, ['@oro_importexport.writer.doctrine_clear']]
+        tags:
+            - { name: oro_importexport.writer, alias: xlsx }
+
+    oro_importexport.writer.entity:
+        class: Oro\Bundle\ImportExportBundle\Writer\EntityWriter
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_importexport.writer.entity_detach_fixer'
+            - '@oro_importexport.context_registry'
+        tags:
+            - { name: oro_importexport.writer, alias: entity }
+
+    oro_importexport.writer.cumulative:
+        class: 'Oro\Bundle\ImportExportBundle\Writer\CumulativeWriter'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        calls:
+            - [setLogger, ['@logger']]
+            - [addIgnoredChange, ['Oro\Bundle\EntityBundle\Entity\EntityFieldFallbackValue']]
+
+    oro_importexport.writer.entity_detach_fixer:
+        class: Oro\Bundle\ImportExportBundle\Writer\EntityDetachFixer
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity.helper.field_helper'
+            - '@property_accessor'
+
+    oro_importexport.writer.dummy:
+        class: Oro\Bundle\ImportExportBundle\Writer\DummyWriter
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_importexport.writer, alias: dummy }
+
+    oro_importexport.writer.doctrine_clear:
+        class: Oro\Bundle\ImportExportBundle\Writer\DoctrineClearWriter
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_importexport.writer, alias: doctrine_clear }
+
+    oro_importexport.writer.echo.csv:
+        class: Oro\Bundle\ImportExportBundle\Writer\CsvEchoWriter
+        tags:
+            - { name: oro_importexport.writer, alias: echo_csv }
+
+    oro_importexport.writer.echo.xlsx:
+        class: Oro\Bundle\ImportExportBundle\Writer\XlsxEchoWriter
+        tags:
+            - { name: oro_importexport.writer, alias: echo_xlsx }
+
+    oro_importexport.writer.insert_from_select_writer:
+        class: Oro\Bundle\ImportExportBundle\Writer\InsertFromSelectWriter
+        arguments:
+            - '@oro_entity.orm.insert_from_select_query_executor'
+        abstract: true

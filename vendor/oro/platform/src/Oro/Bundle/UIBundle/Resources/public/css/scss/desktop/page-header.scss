@@ -1,0 +1,105 @@
+/* @theme: admin.oro; */
+
+.container-fluid.page-title {
+    padding-right: 0;
+    padding-left: $content-padding;
+
+    .navbar-extra {
+        margin-bottom: 10px;
+    }
+
+    .navbar-extra > .row {
+        .title-buttons-container {
+            max-width: 100%;
+
+            // All children should have a own font-size
+            font-size: 0;
+            text-align: right;
+
+            > .pull-left,
+            > .btn-group {
+                text-align: left;
+                display: inline-block;
+                vertical-align: top;
+
+                .btn {
+                    margin-bottom: 4px;
+                }
+            }
+
+            > .pinned-dropdown > .btn-group {
+                text-align: left;
+            }
+
+            .separator-btn {
+                margin: 0 0 0 $content-padding-small;
+            }
+        }
+    }
+
+    .page-title-center {
+        position: relative;
+        min-width: 150px;
+        flex-grow: 100;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    .center-under-both {
+        .page-title-center {
+            flex-basis: 100%;
+            order: 3;
+            height: 31px;
+        }
+    }
+
+    .center-under-left {
+        .pull-left-extra {
+            flex-basis: 100%;
+        }
+    }
+
+    .navigation {
+        .row {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-end;
+
+            > div {
+                margin-bottom: 6px;
+            }
+
+            &.inline-info {
+                flex-wrap: wrap-reverse;
+                > div {
+                    margin-bottom: 0;
+                }
+            }
+
+            > .pull-left-extra {
+                flex-grow: 1;
+                margin-left: 0;
+                text-align: left;
+            }
+
+            > .pull-right {
+                flex-shrink: 0;
+                order: 2;
+            }
+        }
+    }
+}
+
+.page-title {
+    &__path {
+        .top-row {
+            .pull-left {
+                float: none;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
+}

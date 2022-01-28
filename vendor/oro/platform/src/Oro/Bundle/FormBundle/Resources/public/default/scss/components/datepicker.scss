@@ -1,0 +1,36 @@
+/* @theme: default; */
+
+.datepicker-box {
+    position: $datepicker-box-position;
+
+    &__icon {
+        position: $datepicker-box-icon-position;
+        left: $datepicker-box-icon-left;
+        top: $datepicker-box-icon-top;
+        z-index: $datepicker-box-icon-z-index;
+
+        font-size: $datepicker-box-icon-font-size;
+        line-height: $datepicker-box-icon-line-height;
+
+        color: $datepicker-box-icon-color;
+
+        pointer-events: $datepicker-box-icon-pointer-events;
+    }
+
+    .datepicker-input {
+        display: $datepicker-input-display;
+        max-width: $datepicker-input-max-width;
+        padding-left: $datepicker-input-padding-left;
+    }
+
+    &--form-mode {
+        .datepicker-input {
+            max-width: $datepicker-box-form-mode-datepicker-input-max-width;
+            width: $datepicker-box-form-mode-datepicker-input-width;
+        }
+
+        .datepicker-box__icon {
+            top: $datepicker-input-form-mode-icon-top;
+        }
+    }
+}

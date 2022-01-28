@@ -1,0 +1,16 @@
+liip_imagine:
+    filter_sets:
+        avatar_med:
+            quality:          95
+            filters:
+                thumbnail:    { size: [58, 58], mode: outbound }
+                strip:        ~
+        avatar_xsmall:
+            quality:          95
+            filters:
+                thumbnail:    { size: [16, 16], mode: outbound }
+                strip:        ~
+
+fos_rest:
+    exception:
+        exception_controller: 'Oro\Bundle\UIBundle\Controller\ExceptionController::showAction'

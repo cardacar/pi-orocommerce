@@ -1,0 +1,6 @@
+entity_extend:
+    underlying_types:
+        file:   manyToOne
+        image:  manyToOne
+        multiFile: oneToMany
+        multiImage: oneToMany

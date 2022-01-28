@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ oro_language()|slice(0,2) }}"{{ oro_is_rtl_mode() ? ' dir="rtl"' : ''}}
+      class="{% if isMobileVersion() %}mobile{% else %}desktop{% endif %}-version">
+<head>
+    {% block head %}
+    <title>{% block title %}{{ oro_title_render() }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    {% if oro_theme_icon() %}
+        <link rel="shortcut icon" href="{{ asset(oro_theme_icon()) }}" />
+    {% endif %}
+    {% placeholder head_style %}
+    {% placeholder head_script %}
+    {% endblock %}
+</head>
+<body class="{% if isMobileVersion() %}mobile{% else %}desktop{% endif %}-version {% block bodyClass %}{% endblock %}">
+    {% include 'OroUIBundle:Default:noscript.html.twig' %}
+    <div id="page" class="app-page">
+        <div id="central-panel" class="app-page__central-panel">
+            {% set messagesContent %}
+            {% if app.session.flashbag.peekAll|length > 0 %}
+                {% for type, messages in app.session.flashbag.all %}
+                    {% for message in messages %}
+                    <div class="alert{{ type ? ' alert-'~type : '' }}" role="alert">
+                    {{ message|trans|raw }}
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            {% endset %}
+
+            {% block messages %}
+                {{ messagesContent }}
+            {% endblock %}
+
+            {% block header %}
+            {% endblock header %}
+
+            {% block main %}
+                {% block content %}
+                {% endblock content %}
+            {% endblock main %}
+        </div>
+    </div>
+</body>
+</html>

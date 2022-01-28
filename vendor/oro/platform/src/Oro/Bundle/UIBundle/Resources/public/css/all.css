@@ -1,0 +1,72 @@
+/* @theme: admin.oro; */
+
+.footer,
+footer,
+#footer {
+    font-size: 13px;
+    display: block;
+    width: 100%;
+}
+
+#footer-frame {
+    display: table-row;
+    height: 1%;
+}
+
+/* other style */
+.checkbox {
+    margin: 0;
+}
+
+.form-signin .input-prepend {
+    margin-bottom: 13px;
+}
+
+.form-signin .input-prepend--last {
+    margin-bottom: 0;
+}
+
+.scroll-holder {
+    overflow: auto;
+    max-height: 575px;
+}
+
+#oro_user_group_form_roles {
+    height: 67px;
+}
+
+.version-container {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1em;
+}
+
+.dropdown-toggle:focus {
+    outline: 0;
+}
+
+.user-status-list {
+    list-style: none;
+    display: table;
+    table-layout: fixed;
+    margin: 0 0 10px;
+}
+
+.user-status-list li {
+    height: 25px;
+}
+
+.user-status-list .list-group-item {
+    width: 100%;
+    display: table-row;
+}
+
+.user-status-list .list-group-item-text {
+    display: table-cell;
+}
+
+.oro-multiselect-holder .float-holder span.validation-failed {
+    padding-top: 4px;
+}

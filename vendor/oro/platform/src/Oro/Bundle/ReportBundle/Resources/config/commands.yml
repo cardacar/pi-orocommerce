@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\ReportBundle\Command\CalendarDateCommand:
+        arguments:
+            - '@oro_report.calendar_date_manager'
+        tags:
+            - { name: console.command }

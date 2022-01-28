@@ -1,0 +1,15 @@
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    priceUsd2:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@each'
+        value: 23
+    priceEur2:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'EUR'
+        quantity: 1
+        unit: '@each'
+        value: 20

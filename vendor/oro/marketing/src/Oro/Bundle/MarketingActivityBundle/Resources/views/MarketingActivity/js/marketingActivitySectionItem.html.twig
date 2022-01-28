@@ -1,0 +1,59 @@
+<script type="text/html" id="{{ id|e('html_attr')|raw }}">
+    <% var labelId = _.uniqueId('label-') %>
+    <% var regionId = _.uniqueId('region-') %>
+    <div class="accordion-group">
+        <div class="accordion-heading clearfix">
+            <a href="#<%- regionId %>" data-toggle="collapse" aria-expanded="<%- collapsed ? 'false' : 'true' %>"
+               aria-controls="<%- regionId %>"
+               class="accordion-icon accordion-toggle<% if (collapsed) { %> collapsed<% } %>"
+               title="<%- _.__(collapsed ? 'Expand' : 'Collapse')%>"
+               data-collapsed-title="{{ 'Expand'|trans }}"
+               data-expanded-title="{{ 'Collapse'|trans }}"></a>
+            <div class="icon">
+                <span class="fa-volume-up" aria-hidden="true"></span>
+            </div>
+            <div class="campaign-name" id="<%- labelId %>">
+                <strong><%= campaignName %></strong>
+            </div>
+            <div class="actions">
+                {% set action %}
+                    <a href="<%= routing.generate('oro_campaign_view', {'id': id}) %>"
+                       title="{{ 'oro.marketingactivity.view_campaign.label'|trans }}"><i
+                                class="fa-eye hide-text">{{ 'oro.marketingactivity.view_campaign.label'|trans }}</i>
+                        {{ 'oro.marketingactivity.view_campaign.label'|trans }}
+                    </a>
+                {% endset %}
+                {% set actions = [action] %}
+
+                <% var togglerId = _.uniqueId('dropdown-') %>
+                <div class="vertical-actions activity-actions">
+                    <a href="#" role="button" id="<%- togglerId %>" data-placement="left-start" data-toggle="dropdown" class="btn btn-icon btn-lighter dropdown-toggle activity-item"
+                       aria-haspopup="true" aria-expanded="false" aria-label="{{ 'oro.marketingactivity.actions.label'|trans }}">...</a>
+                    <ul class="dropdown-menu activity-item" role="menu" aria-labelledby="<%- togglerId %>">
+                        {% for action in actions|default([]) %}
+                            <li class="activity-action">{{ action|raw }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="extra-info">
+                <div class="marketing-activity-type">
+                    {{ 'oro.marketingactivity.last_event_type.label'|trans }}: <%= eventType %>
+                </div>
+                <div class="marketing-activity-date">
+                    {{ 'oro.marketingactivity.last_activity_date.label'|trans }}: <%= dateFormatter.formatDateTime(eventDate) %>
+                </div>
+            </div>
+        </div>
+        <div id="<%- regionId %>" role="region" aria-labelledby="<%- labelId %>" class="accordion-body collapse<% if (!collapsed) { %> show<% } %>">
+            <div class="message">
+                {% block activityContent %}
+                    <div class="activity-item-content">
+                        {# Do NOT remove. Placeholder for activity view #}
+                        <div class="info responsive-cell"></div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</script>

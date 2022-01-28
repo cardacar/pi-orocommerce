@@ -1,0 +1,30 @@
+Oro\Bundle\SegmentBundle\Entity\Segment:
+    someSegment:
+        name: 'Some segment name'
+        type: '@segment_dynamic_type'
+        entity: 'Oro\\Bundle\\UserBundle\\Entity\\User'
+        definition: <('{"columns":[{"name":"id","label":"Id","sorting":"ASC","func":null},{"name":"username","label":"Username","sorting":null,"func":null}],"filters":[]}')>
+        organization: '@organization'
+        owner: '@business_unit'
+
+Oro\Bundle\UserBundle\Entity\User:
+    firstUser:
+        username: first-user
+        email: user1@example.com
+        firstName: First
+        lastName: User
+        password: password
+        salt: salt
+        organization: '@organization'
+        owner: '@business_unit'
+        roles: ['@adminRole']
+    seoncdUser:
+        username: second-user
+        email: user2@example.com
+        firstName: Second
+        lastName: User
+        password: password
+        salt: salt
+        organization: '@organization'
+        owner: '@business_unit'
+        roles: ['@adminRole']

@@ -1,0 +1,24 @@
+# common test case
+request:
+    supported_engines: [orm]
+    search: \"item9@mail.net\"
+    offset: ~
+    max_results: ~
+response:
+    records_count: 9
+    count: 9
+    rest:
+        data:
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                entity_label: oro.testframework.item.entity_label
+                record_string: "item9@mail.com 0123-456900"
+                record_url: http://localhost%oro_default_prefix%search/
+    soap:
+        item:
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                entityLabel: oro.testframework.item.entity_label
+                recordTitle: "item9@mail.com 0123-456900"
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []

@@ -1,0 +1,41 @@
+<?php
+
+namespace Oro\Bundle\ProductBundle\DependencyInjection\CompilerPass;
+
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
+
+/**
+ * Adds TWIG filters to the list of TWIG filters allowed for execution during email templates rendering.
+ */
+class TwigSandboxConfigurationPass implements CompilerPassInterface
+{
+    const EMAIL_TEMPLATE_SANDBOX_SECURITY_POLICY_SERVICE_KEY = 'oro_email.twig.email_security_policy';
+    const EMAIL_TEMPLATE_RENDERER_SERVICE_KEY = 'oro_email.email_renderer';
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if ($container->has(self::EMAIL_TEMPLATE_SANDBOX_SECURITY_POLICY_SERVICE_KEY) &&
+            $container->has(self::EMAIL_TEMPLATE_RENDERER_SERVICE_KEY)
+        ) {
+            $securityPolicyDef = $container->getDefinition(self::EMAIL_TEMPLATE_SANDBOX_SECURITY_POLICY_SERVICE_KEY);
+            $filters = $securityPolicyDef->getArgument(1);
+            $filters = array_merge(
+                $filters,
+                [
+                    'oro_format_short_product_unit_value',
+                    'oro_format_product_unit_label',
+                ]
+            );
+            $securityPolicyDef->replaceArgument(1, $filters);
+
+            $rendererDef = $container->getDefinition(self::EMAIL_TEMPLATE_RENDERER_SERVICE_KEY);
+            $rendererDef->addMethodCall('addExtension', [new Reference('oro_product.twig.product_unit_value')]);
+            $rendererDef->addMethodCall('addExtension', [new Reference('oro_product.twig.product_unit_label')]);
+        }
+    }
+}

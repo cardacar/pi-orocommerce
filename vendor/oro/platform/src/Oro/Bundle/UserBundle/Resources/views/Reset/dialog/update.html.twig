@@ -1,0 +1,50 @@
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% if saved %}
+    {% set widgetResponse = {
+        widget: {
+            message: 'oro.user.password.reset_password.flash.success'|trans,
+            messageAfterPageChange: true,
+            triggerSuccess: true,
+            trigger: [{
+                eventFunction: 'execute',
+                name: 'refreshPage',
+            }],
+            remove: true
+        }
+    } %}
+
+    {{ widgetResponse|json_encode|raw }}
+{% else %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div class="widget-content" {{ UI.renderPageComponentAttributes({
+        view: 'orouser/js/app/views/user-reset-password-view',
+        options: {
+            passwordInputSelector: '[data-ftid=oro_set_password_form_password]'
+        }
+    }) }}>
+        <div class="form-container">
+            <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ formAction }}" method="post" class="change-password-form">
+                <fieldset class="form form-horizontal">
+                    {% if not form.vars.valid and form.vars.errors|length %}
+                        <div class="alert alert-error" role="alert">
+                            <div class="message">
+                                {{ form_errors(form) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {{ form_row(form.password) }}
+                </fieldset>
+                <fieldset class="form-horizontal">
+                    {{ form_rest(form) }}
+                    <div class="widget-actions form-actions" style="display: none;">
+                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                    </div>
+                </fieldset>
+            </form>
+            {{ oro_form_js_validation(form) }}
+        </div>
+    </div>
+{% endif %}

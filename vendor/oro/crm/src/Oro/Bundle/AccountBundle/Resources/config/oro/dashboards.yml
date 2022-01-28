@@ -1,0 +1,25 @@
+dashboards:
+    widgets:
+        quick_launchpad:
+            items:
+                accounts:
+                    label:      oro.account.entity_plural_label
+                    icon:       suitcase
+                    route:      oro_account_index
+                    acl:        oro_account_view
+                    position:   10
+        my_accounts_activity:
+            label:       oro.dashboard.my_accounts_activity.title
+            route:       oro_dashboard_widget
+            route_parameters: { bundle: OroAccountBundle, name: myAccountsActivity }
+            acl:         oro_account_view
+            description: oro.dashboard.my_accounts_activity.description
+            icon:        bundles/oroaccount/img/recent_accessed_accounts.png
+            icon_class:  fa-users
+            configuration:
+                owners:
+                    type: Oro\Bundle\UserBundle\Form\Type\WidgetOwnersType
+                    show_on_widget: true
+                    options:
+                        label: oro.user.dashboard.owners
+                        required: false

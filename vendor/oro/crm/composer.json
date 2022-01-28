@@ -1,0 +1,83 @@
+{
+    "name": "oro/crm",
+    "description": "OroCRM",
+    "homepage": "https://github.com/oroinc/crm.git",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Oro\\Bridge\\CalendarCRM\\": "src/Oro/Bridge/CalendarCRM",
+            "Oro\\Bridge\\CallCRM\\": "src/Oro/Bridge/CallCRM",
+            "Oro\\Bridge\\CustomerPortalCRM\\": "src/Oro/Bridge/CustomerPortalCRM",
+            "Oro\\Bridge\\TaskCRM\\": "src/Oro/Bridge/TaskCRM",
+            "Oro\\Bundle\\AccountBundle\\": "src/Oro/Bundle/AccountBundle",
+            "Oro\\Bundle\\ActivityContactBundle\\": "src/Oro/Bundle/ActivityContactBundle",
+            "Oro\\Bundle\\AnalyticsBundle\\": "src/Oro/Bundle/AnalyticsBundle",
+            "Oro\\Bundle\\CaseBundle\\": "src/Oro/Bundle/CaseBundle",
+            "Oro\\Bundle\\ChannelBundle\\": "src/Oro/Bundle/ChannelBundle",
+            "Oro\\Bundle\\ContactBundle\\": "src/Oro/Bundle/ContactBundle",
+            "Oro\\Bundle\\ContactUsBundle\\": "src/Oro/Bundle/ContactUsBundle",
+            "Oro\\Bundle\\CRMBundle\\": "src/Oro/Bundle/CRMBundle",
+            "Oro\\Bundle\\DemoDataBundle\\": "src/Oro/Bundle/DemoDataBundle",
+            "Oro\\Bundle\\ReportCRMBundle\\": "src/Oro/Bundle/ReportCRMBundle",
+            "Oro\\Bundle\\SalesBundle\\": "src/Oro/Bundle/SalesBundle",
+            "Oro\\Bundle\\TestFrameworkCRMBundle\\": "src/Oro/Bundle/TestFrameworkCRMBundle"
+        },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "oro/platform": "4.2.*",
+        "oro/crm-task-bundle": "4.2.*",
+        "oro/crm-call-bundle": "4.2.*",
+        "oro/calendar-bundle": "4.2.*",
+        "oro/marketing": "4.2.*"
+    },
+    "require-dev": {
+        "behat/behat": "~3.8.1",
+        "behat/gherkin": "~4.7.1",
+        "behat/mink": "~1.8.1",
+        "behat/mink-extension": "~2.3.1",
+        "behat/mink-selenium2-driver": "~1.4.0",
+        "behat/symfony2-extension": "~2.1.5",
+        "nelmio/alice": "~3.8.0",
+        "theofidry/alice-data-fixtures": "~1.4.0",
+        "phpunit/phpunit": "~9.5.1",
+        "johnkary/phpunit-speedtrap": "~3.3.0",
+        "squizlabs/php_codesniffer": "3.5.*",
+        "phpmd/phpmd": "2.8.*",
+        "sebastian/phpcpd": "6.0.*",
+        "symfony/phpunit-bridge": "~4.4.24",
+        "symfony/browser-kit": "~4.4.24",
+        "symfony/css-selector": "~4.4.24",
+        "symfony/debug": "~4.4.24",
+        "symfony/debug-bundle": "~4.4.24",
+        "symfony/dom-crawler": "~4.4.24",
+        "symfony/stopwatch": "~4.4.24",
+        "symfony/var-dumper": "~4.4.24",
+        "symfony/var-exporter": "~4.4.24",
+        "symfony/web-profiler-bundle": "~4.4.24",
+        "friendsofphp/php-cs-fixer": "~2.18.2",
+        "oro/twig-inspector": "1.0.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony": {
+            "require": "4.4.*"
+        },
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

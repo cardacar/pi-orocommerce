@@ -1,0 +1,51 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\PricingBundle\Command\CombinedPriceListScheduleCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_config.manager'
+            - '@oro_pricing.resolver.combined_product_schedule_resolver'
+            - '@oro_pricing.model.combined_price_list_trigger_handler'
+            - '@oro_pricing.builder.combined_price_list_builder_facade'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\PricingBundle\Command\PriceListImportCommand:
+        arguments:
+            - '@oro_importexport.file.file_manager'
+            - '@oro_importexport.handler.import'
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_user.manager'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\PricingBundle\Command\PriceListRecalculateCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_pricing.builder.product_price_builder'
+            - '@oro_pricing.provider.dependent_price_lists'
+            - '@oro_pricing.model.combined_price_list_trigger_handler'
+            - '@oro_pricing.pricing_strategy.strategy_register'
+            - '@oro_pricing.builder.combined_price_list_builder_facade'
+            - '@oro_pricing.database_triggers.manager.combined_prices'
+            - '@oro_pricing.builder.price_list_product_assignment_builder'
+        calls:
+            - ['setInsertQueryExecutors', ['@oro_entity.orm.insert_from_select_query_executor', '@oro_pricing.orm.insert_from_select_query_executor', true]]
+            - ['setInsertQueryExecutors', ['@oro_entity.orm.multi_insert_query_executor', '@oro_pricing.orm.multi_insert_shard_query_executor', false]]
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\PricingBundle\Command\PriceListStorageReorganizeCommand:
+        arguments:
+            - '@oro_pricing.shard_manager'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\PricingBundle\Command\SwitchPricingStorageCommand:
+        arguments:
+            - '@oro_config.global'
+            - '@oro_pricing.pricing_storage_switch_handler'
+        tags:
+            - { name: console.command }

@@ -1,0 +1,97 @@
+include:
+    - '@OroCustomerBundle:BuyerCustomerFixture.yml'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    locvalue1:
+        string: 'Product 1'
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    localNewCategory:
+        string: 'NewCategory'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    precision1:
+        unit: '@item'
+        precision: '1'
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        sku: 'PSKU1'
+        status: 'enabled'
+        type: 'simple'
+        organization: '@organization'
+        owner: '@business_unit'
+        primaryUnitPrecision: '@precision1'
+        attributeFamily: '@defaultProductFamily'
+        __calls:
+            - addName: ['@locvalue1']
+        inventoryStatus: '@enumInventoryStatuses'
+
+Oro\Bundle\CatalogBundle\Entity\Category:
+    categoryLightingProducts:
+        __calls:
+            - addTitle: ['@localNewCategory']
+            - setParentCategory: ['@root_category']
+            - addProduct: ['@product1']
+
+Oro\Bundle\PricingBundle\Entity\PriceList:
+    priceListForWebsite:
+        name: 'priceListForWebsite'
+        __calls:
+            - addCurrencyByCode: ['USD']
+    priceListForGroup:
+        name: 'priceListForGroup'
+        __calls:
+            - addCurrencyByCode: ['USD']
+    priceListForCustomer:
+        name: 'priceListForCustomer'
+        __calls:
+            - addCurrencyByCode: ['USD']
+    priceListForCustomerGroup2:
+        name: 'priceListForCustomerGroup2'
+        __calls:
+            - addCurrencyByCode: ['USD']
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    price1:
+        product: '@product1'
+        priceList: '@priceListForCustomer'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 6
+    price2:
+        product: '@product1'
+        priceList: '@priceListForGroup'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 5
+    price3:
+        product: '@product1'
+        priceList: '@priceListForWebsite'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 4
+    price4:
+        product: '@product1'
+        priceList: '@priceListForCustomerGroup2'
+        currency: 'USD'
+        quantity: 2
+        unit: '@item'
+        value: 10
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+    priceRelation1:
+        product: '@product1'
+        priceList: '@priceListForGroup'
+    priceRelation2:
+        product: '@product1'
+        priceList: '@priceListForCustomer'
+    priceRelation3:
+        product: '@product1'
+        priceList: '@priceListForWebsite'
+    priceRelation4:
+        product: '@product1'
+        priceList: '@priceListForCustomerGroup2'

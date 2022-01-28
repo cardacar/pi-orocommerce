@@ -1,0 +1,24 @@
+/* @theme: blank; */
+
+@import "~bootstrap/scss/modal";
+
+.modal-dialog {
+    &__body {
+        padding: 50px;
+    }
+}
+
+.modal-backdrop {
+    &.show {
+        opacity: $modal-backdrop-opacity;
+    }
+}
+
+
+@include breakpoint('mobile') {
+    .modal-dialog {
+        &__body {
+            padding: 25px;
+        }
+    }
+}

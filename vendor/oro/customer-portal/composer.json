@@ -1,0 +1,47 @@
+{
+    "name": "oro/customer-portal",
+    "homepage": "https://github.com/oroinc/customer-portal",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocommerce.com"
+        }
+    ],
+    "require": {
+        "oro/platform": "4.2.*",
+        "oro/platform-serialised-fields": "4.2.*",
+        "oro/calendar-bundle": "4.2.*",
+        "oro/marketing": "4.2.*",
+        "oro/commerce": "4.2.*"
+    },
+    "extra": {
+        "npm": {
+            "prismjs": "^1.23.0"
+        },
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Oro\\Bridge\\CRMCustomerPortal\\": "src/Oro/Bridge/CRMCustomerPortal",
+            "Oro\\Bundle\\CommerceMenuBundle\\": "src/Oro/Bundle/CommerceMenuBundle",
+            "Oro\\Bundle\\CustomerBundle\\": "src/Oro/Bundle/CustomerBundle",
+            "Oro\\Bundle\\FrontendAttachmentBundle\\": "src/Oro/Bundle/FrontendAttachmentBundle",
+            "Oro\\Bundle\\FrontendBundle\\": "src/Oro/Bundle/FrontendBundle",
+            "Oro\\Bundle\\FrontendImportExportBundle\\": "src/Oro/Bundle/FrontendImportExportBundle",
+            "Oro\\Bundle\\StyleBookBundle\\": "src/Oro/Bundle/StyleBookBundle",
+            "Oro\\Bundle\\WebsiteBundle\\": "src/Oro/Bundle/WebsiteBundle"
+        },
+        "exclude-from-classmap": ["/Tests/"]
+    }
+}

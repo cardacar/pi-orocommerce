@@ -1,0 +1,65 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% oro_title_set({ params : {"%application.name%": form.vars.data.name} }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path(form.vars.data.frontend ? 'oro_oauth2_frontend_index' : 'oro_oauth2_index')) }}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': form.vars.data.frontend ? 'oro_oauth2_frontend_view' : 'oro_oauth2_view',
+        'params': {'id': '$id'}
+    }) %}
+
+    {% set html = html ~ UI.saveAndStayButton({
+        'route': form.vars.data.frontend ? 'oro_oauth2_frontend_update' : 'oro_oauth2_update',
+        'params': {'id': '$id'}
+    }) %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set title = 'oro.ui.update_entity'|trans({'%entityName%':
+        (form.vars.data.frontend
+            ? 'oro.oauth2server.client.entity_frontend_label'
+            : 'oro.oauth2server.client.entity_label'
+        )|trans
+    }) %}
+    {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'oauth-application' %}
+
+    {% set grantsRow %}
+        {% if 'hidden' in form.grants.vars.block_prefixes %}
+            <div data-validation-ignore="true">{{ form_row(form.grants) }}</div>
+        {% else %}
+            {{ form_row(form.grants, {'group_attr': {'class': 'client-grants'}}) }}
+        {% endif %}
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    form.organization is defined ? form_row(form.organization) : '',
+                    form_row(form.identifier),
+                    form_row(form.name),
+                    form_row(form.active),
+                    grantsRow,
+                    form.redirectUris is defined ? form_row_collection(form.redirectUris) : '',
+                    form.owner is defined ? form_row(form.owner) : ''
+                ]
+            }
+        ]
+    }] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\PlatformBundle\Command\OptionalListenersCommand:
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+        tags:
+            - { name: console.command }

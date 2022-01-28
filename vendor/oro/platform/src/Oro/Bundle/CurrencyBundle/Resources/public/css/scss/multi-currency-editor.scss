@@ -1,0 +1,71 @@
+/* @theme: admin.oro; */
+
+.multi-currency-editor {
+    &.multi-currency-editor__single-currency {
+        min-width: $multi-currency-editor-single-width;
+
+        .add-on {
+            display: flex;
+            align-items: center;
+            height: auto;
+            min-width: initial;
+            padding: $multi-currency-editor-single-add-on-inner-offset;
+            margin-left: -$multi-currency-editor-single-border-width;
+
+            border: $multi-currency-editor-single-border;
+            background-color: $multi-currency-editor-single-color;
+            line-height: $oro-datagrid-body-cell-line-height;
+        }
+    }
+
+    &.multi-currency-editor__multi-currency {
+        min-width: $multi-currency-editor-multi-width;
+
+        .add-on {
+            display: none;
+        }
+
+        .select2-choice {
+
+            &:after {
+                display: none;
+            }
+        }
+
+        .select2-container {
+            width: auto;
+        }
+
+        .select2-container-active {
+            &:after {
+                left: $multi-currency-editor-multi-choice-offset;
+            }
+        }
+    }
+
+    .inline-editor__fields {
+        input[type="text"] {
+            text-align: right;
+        }
+    }
+
+    .form-control {
+        &.error,
+        &:focus {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .select2-container {
+        margin-left: -$input-border-width;
+    }
+
+    .select2-container-active {
+        z-index: $multi-currency-editor-multi-choice-active-z-index;
+
+        &:before {
+            left: -$input-border-width;
+        }
+    }
+}

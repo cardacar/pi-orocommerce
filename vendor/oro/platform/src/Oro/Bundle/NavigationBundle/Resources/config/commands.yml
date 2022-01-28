@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        public: false
+
+    Oro\Bundle\NavigationBundle\Command\ClearNavigationHistoryCommand:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\NavigationBundle\Command\ResetMenuUpdatesCommand:
+        arguments:
+            - '@oro_user.manager'
+            - '@oro_scope.scope_manager'
+            - '@oro_navigation.manager.menu_update'
+            - 'menu_default_visibility'
+        tags:
+            - { name: console.command }

@@ -1,0 +1,11 @@
+# Configuration for https://github.com/oroinc/phpstan-rules/
+trusted_data:
+    variables:
+        Oro\Bundle\ContactBundle\Entity\Repository\ContactRepository:
+            getPrimaryEmailsQb:
+                fullNameQueryPart: true
+            getSecondaryEmailsQb:
+                fullNameQueryPart: true
+    safe_methods:
+        Oro\Bundle\ContactBundle\Handler\ContactEmailAddressHandler:
+            getEmailAddressClass: true

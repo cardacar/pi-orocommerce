@@ -1,0 +1,34 @@
+system_configuration:
+    groups:
+        account_settings:
+            title: oro.customer_account_bridge.system_configuration.groups.account_settings.title
+            icon: 'fa-book'
+        customer_account_settings:
+            title: oro.customer_account_bridge.system_configuration.groups.customer_account_settings.title
+
+    fields:
+        oro_customer_account_bridge.customer_account_settings:
+            data_type: string
+            type: Oro\Bridge\CustomerAccount\Form\Type\CustomerAccountConfigChoice
+            search_type: choice
+            options:
+                label: oro.customer_account_bridge.system_configuration.fields.strategy_creating_customers_account.label
+                tooltip: oro.customer_account_bridge.system_configuration.fields.strategy_creating_customers_account.tooltip
+                choices:
+                    oro.customer_account_bridge.system_configuration.fields.strategy_creating_customers_account.choices.each: each
+                    oro.customer_account_bridge.system_configuration.fields.strategy_creating_customers_account.choices.root: root
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            account_settings:
+                                children:
+                                    customer_account_settings:
+                                        children:
+                                            - oro_customer_account_bridge.customer_account_settings

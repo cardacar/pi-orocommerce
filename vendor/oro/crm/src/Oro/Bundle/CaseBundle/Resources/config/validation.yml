@@ -1,0 +1,19 @@
+Oro\Bundle\CaseBundle\Entity\CaseEntity:
+    properties:
+        subject:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        source:
+            - NotBlank: ~
+        status:
+            - NotBlank: ~
+        priority:
+            - NotBlank: ~
+
+Oro\Bundle\CaseBundle\Entity\CaseComment:
+    properties:
+        message:
+            - NotBlank: ~
+        case:
+            - NotBlank: ~

@@ -1,0 +1,186 @@
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+  businessUnit:
+    name: Common Business Unit
+    organization: '@organization'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    first_precision_product1:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    second_precision_product1:
+        unit: '@piece'
+        precision: '1'
+        sell: true
+    first_precision_product2:
+        unit: '@item'
+        precision: '1'
+        sell: true
+    second_precision_product2:
+        unit: '@piece'
+        precision: '1'
+        sell: true
+    first_precision_product3:
+        unit: '@item'
+        precision: '1'
+    first_precision_product4:
+        unit: '@item'
+        precision: '1'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+    name_product1:
+        string: 'Product1'
+    name_product2:
+        string: 'Product2'
+    name_product3:
+        string: 'Product3'
+    name_product4:
+        string: 'Product4'
+
+Oro\Bundle\CatalogBundle\Entity\CategoryTitle:
+    name_category:
+        string: 'NewCategory'
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    product1:
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        sku: 'AAA1'
+        primaryUnitPrecision: '@first_precision_product1'
+        __calls:
+            - addName: ['@name_product1']
+            - addAdditionalUnitPrecision: ['@second_precision_product1']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product2:
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        sku: 'BBB2'
+        primaryUnitPrecision: '@first_precision_product2'
+        __calls:
+            - addName: ['@name_product2']
+            - addAdditionalUnitPrecision: ['@second_precision_product2']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'enabled'
+    product3:
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        sku: 'CCC3'
+        primaryUnitPrecision: '@first_precision_product3'
+        __calls:
+            - addName: ['@name_product3']
+        inventoryStatus: '@enumInventoryStatuses'
+        status: 'disabled'
+    product4:
+        type: 'simple'
+        organization: '@organization'
+        owner: '@businessUnit'
+        attributeFamily: '@defaultProductFamily'
+        sku: 'DDD4'
+        primaryUnitPrecision: '@first_precision_product4'
+        __calls:
+            - addName: ['@name_product4']
+        inventoryStatus: '@enumInventoryStatusOutOfStock'
+        status: 'enabled'
+
+Doctrine\Common\Collections\ArrayCollection:
+    products:
+        __construct: [['@product1', '@product2', '@product3', '@product4']]
+
+Oro\Bundle\CatalogBundle\Entity\Category:
+    category:
+        __calls:
+            - addTitle: ['@name_category']
+            - setParentCategory: ['@root_category']
+            - setProducts: ['@products']
+
+Oro\Bundle\PricingBundle\Entity\PriceListToWebsite:
+    priceListToWebsite:
+        pricelist: '@defaultPriceList'
+        website: '@website1'
+        sortOrder: 200
+
+Oro\Bundle\PricingBundle\Entity\PriceListToCustomer:
+    priceListToCustomer:
+        customer: '@customer1'
+        pricelist: '@defaultPriceList'
+        website: '@website1'
+        sortOrder: 200
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    product1ItemPrice:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 11
+    product1PiecePrice:
+        product: '@product1'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@piece'
+        value: 201
+    product2ItemPrice:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 22
+    product2PiecePrice:
+        product: '@product2'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@piece'
+        value: 404
+    product3ItemPrice:
+        product: '@product3'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 10
+    product4ItemPrice:
+        product: '@product4'
+        priceList: '@defaultPriceList'
+        currency: 'USD'
+        quantity: 1
+        unit: '@item'
+        value: 10
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+    priceRelationDefaultPriceListToProduct{1..4}:
+        product: '@product<current()>'
+        priceList: '@defaultPriceList'
+
+Oro\Bundle\ShoppingListBundle\Entity\ShoppingList:
+    shoppinglist1:
+        label: 'List 1'
+        customerUser: '@amanda'
+        organization: '@organization'
+        website: '@website1'
+
+Oro\Bundle\ShoppingListBundle\Entity\LineItem:
+    lineitem1:
+        product: '@product1'
+        quantity: 15
+        unit: '@piece'
+        customerUser: '@amanda'
+        shoppingList: '@shoppinglist1'
+        organization: '@organization'
+    lineitem2:
+        product: '@product2'
+        quantity: 25
+        unit: '@item'
+        customerUser: '@amanda'
+        shoppingList: '@shoppinglist1'
+        organization: '@organization'

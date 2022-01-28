@@ -1,0 +1,87 @@
+/* @theme: admin.oro; */
+
+.tags-select-editor {
+    min-width: $tag-selector-item-min-width; // ignore min-width
+
+    .select2-container {
+        border-radius: 0;
+        height: auto;
+        box-shadow: none;
+        border: $border-width solid $primary-750;
+
+        &.select2-container-active {
+            border-color: $input-focus-border-color;
+        }
+    }
+
+    .select2-choices {
+        max-height: $tag-selector-item-max-height;
+        background: $primary-inverse;
+        width: $tag-selector-items-width;
+
+        &:before {
+            content: ' ';
+            float: right;
+            width: $tag-selector-actions-width;
+            height: $tag-selector-item-line-height;
+            font-size: $tag-selector-item-font-size;
+            margin: 0 0 $tag-selector-item-offset-vertical 0;
+        }
+
+        .select2-search-field {
+            padding: 0;
+
+            input:last-child {
+                padding: $tag-selector-item-input-inner-offset;
+                height: auto;
+                font-size: $tag-selector-item-font-size;
+                line-height: $tag-selector-item-line-height;
+            }
+        }
+
+        &.select2-first-row {
+            .select2-search-field input:last-child {
+                margin-right: -$tag-selector-actions-width;
+                padding-right: $tag-selector-actions-width;
+                padding-left: $tag-selector-item-input-inner-offset-start;
+            }
+        }
+
+        .select2-search-choice {
+            box-shadow: none;
+
+            .select2-search-choice-close {
+                top: 0;
+                border: none;
+                bottom: $tag-selector-item-offset-vertical;
+                width: $tag-selector-item-close-icon-width;
+                height: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:before {
+                    color: $tag-selector-item-color;
+                    line-height: 1;
+                }
+            }
+
+            &.select2-locked {
+                padding: $tag-selector-item-padding-vertical $tag-selector-item-padding-horizontal !important;
+            }
+        }
+    }
+
+    .inline-editor__actions {
+        display: flex;
+
+        .btn {
+            line-height: $select2-search-field-line-height;
+            padding-top: $tag-selector-item-offset-vertical;
+            padding-bottom: 0;
+            font-size: $tag-selector-actions-font-size;
+            height: $tag-selector-action-height;
+            width: $tag-selector-action-width;
+        }
+    }
+}

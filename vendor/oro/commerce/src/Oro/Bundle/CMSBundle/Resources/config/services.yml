@@ -1,0 +1,483 @@
+services:
+    oro_cms.form.autocomplete.page.search_handler:
+        public: false
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Oro\Bundle\CMSBundle\Entity\Page'
+            - [ "defaultTitle.string"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: Oro\Bundle\CMSBundle\Form\Type\PageType, acl_resource: oro_cms_page_view }
+
+    oro_cms.provider.login_page_data_provider:
+        class: 'Oro\Bundle\CMSBundle\Layout\DataProvider\LoginPageProvider'
+        arguments:
+            - "@doctrine"
+        calls:
+            - [setLoginPageClass, ['Oro\Bundle\CMSBundle\Entity\LoginPage']]
+        tags:
+            - { name: layout.data_provider, alias: oro_cms_login_page }
+
+    oro_cms.content_block.resolver:
+        class: 'Oro\Bundle\CMSBundle\ContentBlock\ContentBlockResolver'
+        arguments:
+            - "@doctrine"
+
+    oro_cms.content_block.default_content_variant_scopes_resolver:
+        class: 'Oro\Bundle\CMSBundle\ContentBlock\DefaultContentVariantScopesResolver'
+        public: false
+
+    oro_cms.provider.content_block_provider:
+        class: 'Oro\Bundle\CMSBundle\Layout\DataProvider\ContentBlockDataProvider'
+        arguments:
+            - "@oro_cms.content_block.resolver"
+            - "@doctrine"
+            - "@oro_scope.scope_manager"
+            - "@logger"
+            - 'Oro\Bundle\CMSBundle\Entity\ContentBlock'
+            - "cms_content_block"
+        tags:
+            - { name: layout.data_provider, alias: content_block }
+            - { name: monolog.logger, channel: oro_cms }
+
+    oro_cms.layout_theme_config_extension.widgets:
+        class: 'Oro\Bundle\CMSBundle\Layout\Extension\WidgetsThemeConfigurationExtension'
+        tags:
+            - { name: layout.theme_config_extension }
+
+    oro_cms.loader.content_widget_path_provider:
+        class: Oro\Bundle\CMSBundle\Layout\PathProvider\ContentWidgetPathProvider
+        arguments:
+            - '@oro_layout.theme_manager'
+        tags:
+            - { name: layout.resource.path_provider }
+
+    oro_cms.theme_extension.visitor.import:
+        class: Oro\Component\Layout\Extension\Theme\Visitor\ImportVisitor
+        arguments:
+            - '@oro_layout.loader'
+            - '@oro_layout.dependency_initializer'
+            - '@oro_layout.theme_extension.resource_provider.theme'
+            - '@oro_layout.theme_manager'
+        calls:
+            - [setRootName, ['content_widget_root']]
+
+    oro_cms.layout_extension.content_widget:
+        class: Oro\Bundle\CMSBundle\Layout\Extension\ContentWidgetExtension
+        arguments:
+            - '@oro_layout.loader'
+            - '@oro_layout.dependency_initializer'
+            - '@oro_layout.loader.path_provider'
+            - '@oro_layout.theme_extension.resource_provider.theme'
+        calls:
+            - [addVisitor, ['@oro_cms.theme_extension.visitor.import']]
+
+    oro_rfp.layout.data_provider.content_widget:
+        class: 'Oro\Bundle\CMSBundle\Layout\DataProvider\ContentWidgetDataProvider'
+        arguments:
+            - '@oro_cms.content_widget.type_registry'
+            - '@twig'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: layout.data_provider, alias: content_widget_data }
+            - { name: monolog.logger, channel: oro_cms }
+
+    oro_cms.content_variant_type.cms_page:
+        class: Oro\Bundle\CMSBundle\ContentVariantType\CmsPageContentVariantType
+        public: false
+        arguments:
+            - '@security.authorization_checker'
+            - '@property_accessor'
+        tags:
+            - { name: oro_web_catalog.content_variant_type }
+
+    oro_cms.provider.routing_information_provider:
+        class: Oro\Bundle\CMSBundle\Provider\PageRoutingInformationProvider
+        arguments:
+            - '@oro_config.global'
+        tags:
+            - { name: oro_redirect.routing_information_provider, alias: 'Oro\Bundle\CMSBundle\Entity\Page' }
+
+    oro_cms.config.event_listener.direct_url_prefix_change:
+        class: Oro\Bundle\RedirectBundle\EventListener\ConfigRegenerateDirectUrlListener
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_redirect.form.storage.redirect_storage'
+            - '@oro_redirect.direct_url_message_factory'
+            - 'oro_cms.landing_page_direct_url_prefix'
+            - 'Oro\Bundle\CMSBundle\Entity\Page'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onUpdateAfter }
+
+    oro_cms.localization_scope_criteria_provider:
+        class: 'Oro\Bundle\LocaleBundle\Provider\LocalizationScopeCriteriaProvider'
+        public: false
+        arguments:
+            - "@oro_locale.provider.current_localization"
+        tags:
+            - { name: oro_scope.provider, scopeType: cms_content_block, priority: 1 }
+
+    oro_cms.twig.content_security_policy:
+        class: Twig\Sandbox\SecurityPolicy
+        arguments:
+            # tags
+            - [ 'app', 'for', 'if', 'spaceless' ]
+            # filters
+            - [ 'default', 'date', 'escape', 'format', 'length', 'lower', 'nl2br', 'number_format', 'title', 'trim', 'upper', 'slice' ]
+            # methods
+            - []
+            # properties
+            - []
+            # functions
+            - [ 'date', 'widget', 'content_block', 'wysiwyg_image', 'wysiwyg_file' ]
+
+    oro_cms.twig.sandbox_extension:
+        class: Twig\Extension\SandboxExtension
+        arguments:
+            - '@oro_cms.twig.content_security_policy'
+            - true # use sandbox globally in instance
+
+    oro_cms.twig.widget_extension:
+        class: 'Oro\Bundle\CMSBundle\Twig\WidgetExtension'
+        arguments:
+            - '@oro_cms.content_widget.renderer'
+
+    oro_cms.twig.content_widget_type_extension:
+        class: 'Oro\Bundle\CMSBundle\Twig\ContentWidgetTypeExtension'
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_cms.twig.content_block_extension:
+        class: 'Oro\Bundle\CMSBundle\Twig\ContentBlockExtension'
+        arguments:
+            - '@oro_cms.content_block.renderer'
+        tags:
+            - { name: twig.extension }
+
+    oro_cms.twig.digital_asset_extension:
+        class: 'Oro\Bundle\CMSBundle\Twig\DigitalAssetExtension'
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_cms.twig.array_loader:
+        class: 'Twig\Loader\ArrayLoader'
+
+    oro_cms.twig.renderer:
+        class: 'Twig\Environment'
+        arguments:
+            - '@oro_cms.twig.array_loader'
+        calls:
+            - [addExtension, ['@oro_cms.twig.widget_extension']]
+            - [addExtension, ['@oro_cms.twig.content_block_extension']]
+            - [addExtension, ['@oro_cms.twig.digital_asset_extension']]
+            - [addExtension, ['@oro_cms.twig.sandbox_extension']]
+
+    oro_crm.twig.twig_in_variables_extension:
+        class: 'Oro\Bundle\CMSBundle\Twig\TwigInVariablesExtension'
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: twig.extension }
+            - { name: monolog.logger, channel: oro_cms }
+
+    oro_cms.entity_listener.page:
+        class: Oro\Bundle\CMSBundle\Entity\EntityListener\PageEntityListener
+        public: false
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\CMSBundle\Entity\Page', event: preRemove }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\CMSBundle\Entity\Page', event: postRemove }
+
+    oro_cms.parser.twig:
+        class: Oro\Bundle\CMSBundle\Parser\TwigParser
+        arguments:
+            - '@oro_cms.twig.renderer'
+
+    oro_cms.wysiwyg.chain_twig_function_processor:
+        class: 'Oro\Bundle\CMSBundle\WYSIWYG\ChainTwigFunctionProcessor'
+        public: true
+        arguments:
+            - !tagged_iterator oro_cms.wysiwyg.twig_function_processor
+
+    oro_cms.wysiwyg.content_widget_twig_function_processor:
+        class: 'Oro\Bundle\CMSBundle\WYSIWYG\ContentWidgetTwigFunctionProcessor'
+        arguments:
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: oro_cms.wysiwyg.twig_function_processor }
+
+    oro_cms.wysiwyg.digital_asset_twig_function_processor:
+        class: 'Oro\Bundle\CMSBundle\WYSIWYG\DigitalAssetTwigFunctionProcessor'
+        arguments:
+            - '@oro_security.acl_helper'
+            - '@validator'
+        tags:
+            - { name: oro_cms.wysiwyg.twig_function_processor }
+
+    oro_cms.event_listener.wysiwyg_field_twig_listener:
+        class: Oro\Bundle\CMSBundle\EventListener\WYSIWYGFieldTwigListener
+        arguments:
+            - '@Psr\Container\ContainerInterface'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: preClear }
+            - { name: kernel.event_listener, event: kernel.terminate, method: onTerminate }
+            - { name: kernel.event_listener, event: console.terminate, method: onTerminate }
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: oro_cms.parser.twig }
+            - { name: container.service_subscriber, id: oro_cms.wysiwyg.chain_twig_function_processor }
+
+    oro_cms.event_listener.async.extension.wysiwyg_field_twig:
+        class: Oro\Bundle\CMSBundle\Async\Extension\WYSIWYGFieldTwigConsumptionExtension
+        arguments:
+            - '@oro_cms.event_listener.wysiwyg_field_twig_listener'
+        tags:
+           # Must be called before oro_message_queue.consumption.docrine_clear_identity_map_extension
+           - { name: oro_message_queue.consumption.extension }
+
+    oro_cms.entity_listener.image_slide:
+        class: Oro\Bundle\CMSBundle\Entity\EntityListener\ImageSlideEntityListener
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\CMSBundle\Entity\ImageSlide', event: preRemove }
+
+    oro_cms.content_widget.type_registry:
+        class: Oro\Bundle\CMSBundle\ContentWidget\ContentWidgetTypeRegistry
+        arguments:
+            - !tagged_iterator oro_cms.content_widget.type
+
+    Oro\Bundle\CMSBundle\ContentWidget\ContentWidgetTypeRegistry:
+        alias: oro_cms.content_widget.type_registry
+
+    oro_cms.autocomplete.content_widget_type.search_handler:
+        class: Oro\Bundle\CMSBundle\Autocomplete\ContentWidgetTypeSearchHandler
+        arguments:
+            - '@oro_cms.content_widget.type_registry'
+            - '@translator'
+            - '@property_accessor'
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: 'oro_cms_content_widget_types' }
+
+    oro_cms.provider.content_widget_type:
+        class: Oro\Bundle\CMSBundle\Provider\ContentWidgetTypeProvider
+        public: true
+        arguments:
+            - '@oro_cms.content_widget.type_registry'
+            - '@translator'
+
+    oro_cms.provider.content_widget_entity_name:
+        class: Oro\Bundle\CMSBundle\Provider\ContentWidgetEntityNameProvider
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }
+
+    oro_cms.provider.content_widget_layout:
+        class: Oro\Bundle\CMSBundle\Provider\ContentWidgetLayoutProvider
+        arguments:
+            - '@oro_layout.theme_manager'
+            - '@oro.cache.memory_cache_chain'
+
+    Oro\Bundle\CMSBundle\Provider\ContentWidgetLayoutProvider:
+        alias: oro_cms.provider.content_widget_layout
+
+    oro_cms.acl.voter.frontend_quote_permission_voter:
+        class: Oro\Bundle\CMSBundle\Acl\Voter\ContentWidgetVoter
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: security.voter }
+
+    oro_cms.content_block.renderer:
+        class: Oro\Bundle\CMSBundle\ContentBlock\ContentBlockRenderer
+        arguments:
+            - '@oro_cms.provider.content_block_provider'
+            - '@twig'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: oro_cms }
+
+    oro_cms.layout_factory_builder:
+        synthetic: true
+
+    oro_cms.layout_manager:
+        synthetic: true
+
+    oro_cms.content_widget.renderer:
+        class: Oro\Bundle\CMSBundle\ContentWidget\ContentWidgetRenderer
+        arguments:
+            - '@doctrine'
+            - '@oro_cms.layout_manager'
+            - '@oro_cms.content_widget.type_registry'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: oro_cms }
+
+    oro_cms.tools.wysiwyg_content_checker:
+        class: Oro\Bundle\CMSBundle\Tools\WYSIWYGContentChecker
+        arguments:
+            - '@oro_cms.provider.html_purifier_scope_provider'
+            - '@oro_ui.html_tag_helper'
+            - '@oro_cms.twig.renderer'
+            - '@translator'
+
+    Oro\Bundle\CMSBundle\Tools\WYSIWYGContentChecker:
+        alias: oro_cms.tools.wysiwyg_content_checker
+
+    oro_cms.event_listener.content_widget_datagrid.inline:
+        class: Oro\Bundle\CMSBundle\EventListener\ContentWidgetDatagridListener
+        arguments:
+            - '@oro_cms.content_widget.type_registry'
+            - true
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.cms-inline-content-widget-grid, method: onPreBuild }
+
+    oro_cms.event_listener.content_widget_datagrid.block:
+        class: Oro\Bundle\CMSBundle\EventListener\ContentWidgetDatagridListener
+        arguments:
+            - '@oro_cms.content_widget.type_registry'
+            - false
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.cms-block-content-widget-grid, method: onPreBuild }
+
+    oro_cms.attribute_type.wysiwyg:
+        class: Oro\Bundle\CMSBundle\Attribute\Type\WYSIWYGAttributeType
+        public: false
+        arguments:
+            - '@oro_ui.html_tag_helper'
+        tags:
+            - { name: oro_entity_config.attribute_type, type: wysiwyg }
+
+    oro_cms.validator.wysiwyg:
+        class: Oro\Bundle\CMSBundle\Validator\Constraints\WYSIWYGValidator
+        arguments:
+            - '@oro_ui.html_tag_helper'
+            - '@oro_cms.provider.html_purifier_scope_provider'
+            - '@translator'
+            - '@logger'
+        tags:
+            - { name: validator.constraint_validator, alias: wysiwyg_validator }
+
+    oro_cms.validator.twig_content:
+        class: Oro\Bundle\CMSBundle\Validator\Constraints\TwigContentValidator
+        arguments:
+            - '@oro_cms.twig.renderer'
+        tags:
+            - { name: validator.constraint_validator }
+
+    oro_cms.event_listener.restrict_content_variant_by_page:
+        class: Oro\Bundle\CMSBundle\EventListener\RestrictContentVariantByPageEventListener
+        tags:
+            - { name: kernel.event_listener, event: oro_web_catalog.restrict_content_variant_by_entity, method: applyRestriction }
+
+    oro_cms.provider.html_purifier_scope_provider:
+        class: Oro\Bundle\CMSBundle\Provider\HTMLPurifierScopeProvider
+        public: false
+        arguments:
+            - '@oro_security.token_accessor'
+            - '%oro_cms.content_restrictions_mode%'
+            - '%oro_cms.lax_content_restrictions%'
+        calls:
+            - [addScopeMapping, ['secure', 'default']]
+            - [addScopeMapping, ['selective', 'lax']]
+            - [addScopeMapping, ['unsecure', null]]
+
+    oro_cms.listener.wysiwyg_block_listener:
+        class: Oro\Bundle\CMSBundle\EventListener\WYSIWYGBlockListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity_config.provider.entity'
+            - '@translator'
+        tags:
+            - { name: kernel.event_listener, event: entity_form.render.before, method: onBeforeFormRender, priority: -255 }
+
+    oro_cms.content_widget_type.image_slider:
+        class: Oro\Bundle\CMSBundle\ContentWidget\ImageSliderContentWidgetType
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_cms.content_widget.type }
+
+    oro_cms.event_listener.content_widget_form:
+        class: Oro\Bundle\CMSBundle\EventListener\ContentWidgetFormEventListener
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_entity_flush.oro_cms_content_widget, method: onBeforeFlush }
+
+    oro_cms.provider.preview_metadata:
+        decorates: oro_digital_asset.provider.preview_metadata
+        class: Oro\Bundle\CMSBundle\Provider\PreviewMetadataProvider
+        arguments:
+            - '@oro_cms.provider.preview_metadata.inner'
+            - '@oro_attachment.provider.file_url'
+            - '@oro_attachment.tools.mime_type_checker'
+
+    oro_cms.provider.attachment_entity_config:
+        decorates: oro_attachment.provider.attachment_entity_config
+        class: Oro\Bundle\CMSBundle\Provider\AttachmentEntityConfigProvider
+        arguments:
+            - '@doctrine'
+            - '@oro_cms.provider.attachment_entity_config.inner'
+
+    oro_cms.provider.draftable_fields_exclusion:
+        class: Oro\Bundle\CMSBundle\Provider\DraftableFieldsExclusionProvider
+        public: false
+        tags:
+            - { name: oro_draft.provider.draftable_fields_exclusion }
+
+    oro_cms.provider.wysiwyg_fields_provider:
+        class: Oro\Bundle\CMSBundle\Provider\WYSIWYGFieldsProvider
+        arguments:
+            - '@doctrine'
+            - '@oro_entity_config.config_manager'
+
+    oro_cms.importexport.normalizer.localized_fallback_value_collection_normalizer.decorator:
+        decorates: oro_locale.importexport.normalizer.localized_fallback_value_collection_normalizer
+        parent: oro_locale.importexport.normalizer.localized_fallback_value_collection_normalizer
+        class: Oro\Bundle\CMSBundle\ImportExport\Normalizer\LocalizedFallbackValueCollectionNormalizer
+
+    oro_cms.provider.page_slug_source_entity:
+        class: Oro\Bundle\CMSBundle\Provider\PageSlugSourceEntityProvider
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_redirect.slug_source_entity_provider }
+
+    oro_cms.tools.digital_asset_twig_tags_converter:
+        class: Oro\Bundle\CMSBundle\Tools\DigitalAssetTwigTagsConverter
+        arguments:
+            - '@doctrine'
+            - '@oro_attachment.provider.file_url'
+
+    Oro\Bundle\CMSBundle\Tools\DigitalAssetTwigTagsConverter:
+        alias: oro_cms.tools.digital_asset_twig_tags_converter
+
+    Oro\Bundle\CMSBundle\Provider\MysqlTemporaryPrivilegeRequirementProvider:
+        class: Oro\Bundle\CMSBundle\Provider\MysqlTemporaryPrivilegeRequirementProvider
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro.requirements_provider }
+
+    oro_cms.event_listener.command.sanitize_wysiwyg_notice_on_platform_update:
+        class: Oro\Bundle\CMSBundle\EventListener\SanitizeWysiwygNoticeOnPlatformUpdateListener
+        arguments:
+            - '@oro_config.global'
+        tags:
+            - { name: kernel.event_listener, event: console.terminate, method: onConsoleTerminate }

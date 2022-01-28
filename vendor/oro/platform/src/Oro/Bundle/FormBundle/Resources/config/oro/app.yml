@@ -1,0 +1,169 @@
+oro_form:
+    html_purifier_modes:
+        default:
+            allowed_uri_schemes:
+                - 'http'
+                - 'https'
+                - 'mailto'
+                - 'ftp'
+                - 'data'
+                - 'tel'
+
+            allowed_iframe_domains:
+                - 'youtube.com/embed/'
+                - 'www.youtube.com/embed/'
+                - 'youtube-nocookie.com/embed/'
+                - 'www.youtube-nocookie.com/embed/'
+                - 'player.vimeo.com/video/'
+                - 'maps.google.com/maps'
+            allowed_html_elements:
+                iframe:
+                    attributes:
+                        - allowfullscreen
+                        - frameborder
+                        - height
+                        - marginheight
+                        - marginwidth
+                        - name
+                        - scrolling
+                        - src
+                        - width
+                        - allow
+                table:
+                    attributes:
+                        - cellspacing
+                        - cellpadding
+                        - border
+                        - align
+                        - width
+                thead:
+                    attributes:
+                        - align
+                        - valign
+                tbody:
+                    attributes:
+                        - align
+                        - valign
+                tr:
+                    attributes:
+                        - align
+                        - valign
+                td:
+                    attributes:
+                        - align
+                        - valign
+                        - rowspan
+                        - colspan
+                        - bgcolor
+                        - nowrap
+                        - width
+                        - height
+                th:
+                    attributes:
+                        - align
+                        - valign
+                        - rowspan
+                        - colspan
+                        - bgcolor
+                        - nowrap
+                        - width
+                        - height
+                a:
+                    attributes:
+                        - "!href"
+                        - target
+                        - title
+                dl: ~
+                dt: ~
+                div:
+                    attributes:
+                        - data-title
+                        - data-type
+                ul:
+                    attributes:
+                        - type
+                ol:
+                    attributes:
+                        - type
+                li: ~
+                em: ~
+                strong: ~
+                b: ~
+                p: ~
+                u: ~
+                font:
+                    attributes:
+                        - color
+                i: ~
+                br:
+                    hasClosingTag: false
+                span:
+                    attributes:
+                        - data-title
+                        - data-type
+                img:
+                    attributes:
+                        - src
+                        - width
+                        - height
+                        - alt
+                    hasClosingTag: false
+                h1: ~
+                h2: ~
+                h3: ~
+                h4: ~
+                h5: ~
+                h6: ~
+                hgroup: ~
+                abbr: ~
+                address: ~
+                article: ~
+                audio: ~
+                bdo: ~
+                blockquote:
+                    attributes:
+                        - cite
+                caption: ~
+                cite: ~
+                code: ~
+                col: ~
+                colgroup: ~
+                dd: ~
+                del: ~
+                details: ~
+                dfn: ~
+                figure: ~
+                figcaption: ~
+                picture: ~
+                footer: ~
+                header: ~
+                hr: ~
+                ins: ~
+                kbd: ~
+                mark: ~
+                menu: ~
+                nav: ~
+                pre: ~
+                q: ~
+                samp: ~
+                section: ~
+                small: ~
+                strike: ~
+                source:
+                    attributes:
+                        - srcset
+                        - media
+                sub: ~
+                sup: ~
+                time: ~
+                tfoot: ~
+                var: ~
+                video:
+                    attributes:
+                        - allowfullscreen
+                        - autoplay
+                        - loop
+                        - poster
+                        - src
+                        - controls
+                aside: ~

@@ -1,0 +1,56 @@
+entity_config:
+    activity:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#activity
+        entity:
+            items:
+                activities:
+                    options:
+                        require_schema_update: true
+                        priority:           250
+                    form:
+                        type:               Oro\Bundle\ActivityBundle\Form\Type\MultipleAssociationChoiceType
+                        options:
+                            block:          associations
+                            required:       false
+                            label:          oro.activity.activities
+                            association_class: activity
+                            tooltip:        oro.activity.entity_config.activity.entity.items.activities.tooltip
+
+                inheritance_targets:
+                    options: []
+
+                immutable:
+                    options:
+                        auditable:          false
+
+                route:
+                    options:
+                        auditable:          false
+
+                acl:
+                    options:
+                        auditable:          false
+
+                priority:
+                    options:
+                        auditable:          false
+
+                action_button_widget:
+                    options:
+                        auditable:          false
+
+                show_on_page:
+                    options:
+                        default_value:      '\Oro\Bundle\ActivityBundle\EntityConfig\ActivityScope::VIEW_PAGE'
+
+                action_link_widget:
+                    options:
+                        auditable:          false
+
+    grid:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config.html#grid
+        entity:
+            items:
+                context:
+                    options:
+                        auditable:          false

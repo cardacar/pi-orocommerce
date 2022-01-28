@@ -1,0 +1,17 @@
+services:
+    oro_task.event_listener.form_assign_activity:
+        class: Oro\Bundle\TaskBundle\EventListener\FormAssignActivityEventListener
+        arguments:
+            - '@oro_activity.manager'
+            - '@oro_entity.routing_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_entity_flush.oro_task, method: assignActivityWithTask }
+
+    oro_task.event_listener.form_set_owner:
+        class: Oro\Bundle\TaskBundle\EventListener\FormSetOwnerEventListener
+        arguments:
+            - '@oro_entity.routing_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_form_data_set.oro_task, method: setOwnerAndLockForm }

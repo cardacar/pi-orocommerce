@@ -1,0 +1,20 @@
+{% set options = {
+    class: cssClass is defined ? cssClass : '',
+    aCss: 'no-hash',
+    iCss: 'icon-hangouts',
+    label: 'oro.hangoutscall.call.hangouts_call'|trans,
+    pageComponent: {
+        module: 'orohangoutscall/js/app/components/invite-hangout-component',
+        options: {
+            modalOptions: {
+                hangoutOptions: hangoutOptions is defined ? hangoutOptions : {}
+            }
+        }|merge(extraComponentOptions is defined ? extraComponentOptions : {})
+    }
+} %}
+
+{% block action_controll %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {{ UI.clientLink(options) }}
+{% endblock %}

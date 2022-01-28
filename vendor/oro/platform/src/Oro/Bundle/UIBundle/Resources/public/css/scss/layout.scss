@@ -1,0 +1,299 @@
+/* @theme: admin.oro; */
+
+@mixin responsive-inline-position() {
+    float: left;
+    width: 50%;
+}
+
+@mixin responsive-block-position() {
+    float: none;
+    width: 100%;
+}
+
+// by default, huge screen, cells: inline, blocks: inline
+.responsive-section {
+    .responsive-cell {
+        margin-bottom: 35px;
+
+        @include responsive-inline-position();
+    }
+
+    .responsive-block {
+        &:empty {
+            display: none;
+        }
+
+        ol,
+        ul,
+        dl {
+            &:not(.extra-list) {
+                margin: 0 0 $content-padding-medium $content-padding;
+
+                word-break: break-word;
+            }
+        }
+
+        @include responsive-inline-position();
+    }
+
+    .responsive-cell,
+    .responsive-block {
+        &:only-child {
+            @include responsive-block-position();
+        }
+    }
+
+    &.responsive-big {
+        .responsive-cell {
+            &:not(:only-child) {
+                .responsive-block {
+                    @include responsive-block-position();
+                }
+            }
+        }
+    }
+
+    &.responsive-medium {
+        &:not(.responsive-section-no-blocks) {
+            .responsive-cell {
+                @include responsive-block-position();
+            }
+
+            // remove horizontal separator if cells are wrapped
+            .row-fluid.row-fluid-divider {
+                background: none;
+            }
+        }
+
+        .responsive-block {
+            @include responsive-inline-position();
+        }
+    }
+
+    &.responsive-small {
+        .responsive-cell,
+        .responsive-block {
+            @include responsive-block-position();
+        }
+
+        // remove horizontal separator if cells are wrapped
+        .row-fluid.row-fluid-divider {
+            background: none;
+        }
+    }
+}
+
+.responsive-section {
+    figure {
+        display: table;
+        margin: 5px auto 1rem;
+    }
+
+    figcaption {
+        display: table-caption;
+        caption-side: bottom;
+        margin: 10px 0 0;
+
+        font-size: .88rem;
+        text-align: center;
+    }
+
+    .cms-page__figure_right,
+    .cms-page__figure_left {
+        clear: both;
+    }
+
+    .cms-page__figure_right {
+        float: right;
+        margin-left: 20px;
+    }
+
+    .cms-page__figure_left {
+        float: left;
+        margin-right: 20px;
+    }
+}
+
+.container-fluid {
+    > .responsive-section {
+        &:not(.responsive-small) {
+            .responsive-cell {
+                &:first-child {
+                    padding-right: $horizontal-padding;
+                }
+
+                &:last-child {
+                    padding-left: $horizontal-padding;
+                }
+
+                &:only-child {
+                    padding-right: 0;
+                    padding-left: 0;
+                    padding-bottom: 0;
+                }
+            }
+        }
+
+        &.responsive-big,
+        &.responsive-medium,
+        &:not(.responsive-small) {
+            form[name="oro_product"] & {
+                .responsive-cell {
+                    padding-bottom: $content-padding-medium;
+                }
+            }
+        }
+
+        &.responsive-medium {
+            &:not(.responsive-section-no-blocks) {
+                .responsive-cell {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &.responsive-small {
+            .responsive-cell {
+                padding-right: 0;
+
+                &:not(:last-child) {
+                    margin-bottom: 16px;
+                }
+            }
+        }
+
+        .responsive-cell {
+            &:only-child {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+body.backdrop {
+    .select2-drop,
+    #ui-datepicker-div {
+        z-index: 10001 !important;
+    }
+
+    &:before {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, .1);
+        z-index: 9999;
+    }
+}
+
+.ui-dialog {
+    max-width: 100%;
+
+    .row-fluid.row-fluid-divider {
+        background: none;
+    }
+}
+
+@mixin oro-page-menu-items {
+    list-style: none;
+    margin: 0;
+    line-height: 21px;
+
+    > li {
+        &:not(:last-child) {
+            border-bottom: 1px solid $additional-extra-lighten;
+        }
+
+        a {
+            display: flex;
+            align-items: center;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        [class^="fa-"] {
+            color: $primary-100;
+            height: $dropdown-item-icon-fa-font-size;
+        }
+
+        &.selected {
+            position: relative;
+
+            @include fa-icon($fa-var-chevron-right, after, true) {
+                position: absolute;
+                top: 50%;
+                right: 8px;
+
+                margin-top: -$base-font-size--m / 2;
+                font-size: $base-font-size--m;
+                line-height: 1;
+            }
+
+            a {
+                padding-right: 24px;
+                font-weight: bold;
+                background-color: $primary-800;
+                color: $primary-100;
+            }
+        }
+
+        .search-label {
+            @include text-line-truncate(null);
+        }
+    }
+}
+
+.oro-page-menu-items {
+    @include oro-page-menu-items;
+}
+
+.oro-page {
+    border-top: 1px solid $page-border-color;
+    background: $page-sidebar-background-color;
+    border-bottom: 1px solid $page-border-color;
+
+    .oro-page-sidebar {
+        width: 236px;
+        margin-right: -1px;
+        float: left;
+        border-right: 1px solid $page-border-color;
+        border-bottom: 1px solid $page-border-color;
+        background: $page-sidebar-background-color;
+    }
+
+    .oro-page-body {
+        float: right;
+        width: calc(100% - 235px);
+        border-left: 1px solid $page-border-color;
+        padding: 10px;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    &.collapsible-sidebar {
+        .oro-page-sidebar {
+
+            > .dropdown-toggle {
+                display: none;
+            }
+
+            > .dropdown-menu {
+                @include oro-page-menu-items;
+
+                top: auto;
+                left: none;
+                position: relative;
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                background: transparent;
+                width: 235px;
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+api:
+    entities:
+        Oro\Bundle\OrderBundle\Entity\Order:
+            documentation_resource: '@OroPromotionBundle/Resources/doc/api/order.md'
+            fields:
+                discount:
+                    data_type: float
+                    property_path: _
+                    form_options:
+                        mapped: false
+                    depends_on:
+                        - disablePromotions
+                        - appliedPromotions.type
+                        - appliedPromotions.appliedDiscounts.amount
+                shippingDiscount:
+                    data_type: float
+                    property_path: _
+                    form_options:
+                        mapped: false
+                    depends_on:
+                        - disablePromotions
+                        - appliedPromotions.type
+                        - appliedPromotions.appliedDiscounts.amount

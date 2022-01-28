@@ -1,0 +1,38 @@
+Oro\Bundle\TestFrameworkBundle\Entity\TestProduct:
+    alias: test_product_WEBSITE_ID
+    fields:
+        name:
+            name: name
+            type: text
+
+Oro\Bundle\TestFrameworkBundle\Entity\Item:
+    alias: oro_test_item_WEBSITE_ID
+    fields:
+        -
+            name: title_LOCALIZATION_ID
+            type: text
+        -
+            name: stringValue
+            type: text
+        -
+            name: integerValue
+            type: integer
+        -
+            name: decimalValue
+            type: decimal
+        -
+            name: floatValue
+            type: decimal
+        -
+            name: datetimeValue
+            type: datetime
+        -
+            name: blobValue
+            type: text
+            fulltext: false
+        -
+            name: phone
+            type: text
+        -
+            name: relevance_weight
+            type: decimal

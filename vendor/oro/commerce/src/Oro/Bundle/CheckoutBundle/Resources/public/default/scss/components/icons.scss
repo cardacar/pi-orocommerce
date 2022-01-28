@@ -1,0 +1,64 @@
+/* @theme: default; */
+
+.credit-card-icon {
+    $paymentIconUrl: $global-url + '/orofrontend/default/images/payments';
+
+    display: inline-block;
+    vertical-align: middle;
+
+    &_paypal {
+        width: 39px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/paypal.png') no-repeat;
+    }
+
+    &_mastercard {
+        width: 39px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/mastercard.png') no-repeat;
+    }
+
+    &_visa {
+        width: 41px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/visa.png') no-repeat;
+    }
+
+    &_american_express {
+        width: 40px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/american_express.png') no-repeat;
+    }
+
+    &_discover {
+        width: 40px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/discover.png') no-repeat;
+    }
+
+    &_jcb {
+        width: 40px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/jcb.png') no-repeat;
+    }
+
+    &_diners_club {
+        width: 40px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/diners_club.png') no-repeat;
+    }
+
+    &_china_union_pay {
+        width: 40px;
+        height: 25px;
+
+        background: url('#{$paymentIconUrl}/china_union_pay.png') no-repeat;
+    }
+}

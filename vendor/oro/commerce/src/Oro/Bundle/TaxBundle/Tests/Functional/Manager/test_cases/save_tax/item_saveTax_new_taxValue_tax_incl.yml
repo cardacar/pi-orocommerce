@@ -1,0 +1,52 @@
+method: saveTax
+reference: order_line_item_2
+configuration: { product_prices_include_tax: true, use_as_base_by_default: destination }
+databaseBefore:
+    'Oro\Bundle\OrderBundle\Entity\OrderAddress':
+        us_al_billing_address:
+            country: { class: 'Oro\Bundle\AddressBundle\Entity\Country', query: { iso2Code: 'US' } }
+            region: { class: 'Oro\Bundle\AddressBundle\Entity\Region', query: { combinedCode: 'US-AL' } }
+    'Oro\Bundle\OrderBundle\Entity\Order':
+        simple_order:
+            poNumber: simple_order
+            customer: { class: 'Oro\Bundle\CustomerBundle\Entity\Customer', query: { name: 'customer.orphan' } }
+            currency: USD
+            billingAddress: '@us_al_billing_address'
+            shippingAddress: '@us_al_billing_address'
+    'Oro\Bundle\CurrencyBundle\Entity\Price':
+        usd_price_15.99:
+            value: 15.99
+            currency: USD
+        usd_price_5.55:
+            value: 5.55
+            currency: USD
+    'Oro\Bundle\OrderBundle\Entity\OrderLineItem':
+        order_line_item_1:
+            productSku: order_line_item_1
+            order: '@simple_order'
+            quantity: 6
+            price: '@usd_price_15.99'
+            product: { class: 'Oro\Bundle\ProductBundle\Entity\Product', query: { sku: 'product-1' } }
+        order_line_item_2:
+            productSku: order_line_item_2
+            order: '@simple_order'
+            quantity: 7
+            price: '@usd_price_5.55'
+            product: { class: 'Oro\Bundle\ProductBundle\Entity\Product', query: { sku: 'product-2' } }
+databaseBeforeSecondPart: []
+disableTaxCalculation: false
+expectedResult:
+    row:
+        includingTax: '38.85'   # 5.55 * 7
+        excludingTax: '35.19'   # 5.027174 * 7 = 35.190218
+        taxAmount: '3.66'       # 5.55 * 0.104 / 1.104 * 7 = 3.659783
+        adjustment: '-0.000217' # 3.659783 - 3.66 = -0.000217
+        currency: 'USD'
+    unit:
+        includingTax: '5.55'
+        excludingTax: '5.03'    # 5.55 - 0.522826 = 5.027174
+        taxAmount: '0.52'       # 5.55 * 0.104 / 1.104 = 0.522826
+        adjustment: '0.002826'  # 0.522826 - 0.52 = 0.002826
+        currency: 'USD'
+    taxes:
+        - { tax: 'TAX1', rate: '0.104', taxableAmount: '35.19', taxAmount: '3.66', currency: 'USD' }

@@ -1,0 +1,38 @@
+Oro\Bundle\NavigationBundle\Entity\PageState:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: pageHash
+    properties:
+        pageId:
+            - NotBlank:     ~
+            - Length:
+                max:        10920
+        user:
+            - NotBlank:     ~
+        data:
+            - NotBlank:     ~
+
+Oro\Bundle\NavigationBundle\Entity\MenuUpdate:
+    constraints:
+        - Oro\Bundle\NavigationBundle\Validator\Constraints\MaxNestedLevel: ~
+    properties:
+        titles:
+            - Valid: ~
+        uri:
+            - NotBlank:
+                groups: [UserDefined]
+
+            - Oro\Bundle\SecurityBundle\Validator\Constraints\NotDangerousProtocol:
+                  message: oro.navigation.validator.menu_update.not_dangerous_protocol.message
+
+Oro\Bundle\NavigationBundle\Entity\PinbarTab:
+    constraints:
+        - Oro\Bundle\NavigationBundle\Validator\Constraints\UniquePinbarTabUrl: ~
+    properties:
+        item:
+            - NotBlank: ~
+        title:
+            - Length:
+                  max: 255
+        titleShort:
+            - Length:
+                  max: 255

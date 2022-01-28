@@ -1,0 +1,58 @@
+styles:
+    inputs:
+        - 'bundles/orofrontend/default/scss/settings/global-settings.scss'
+
+        # Bootstrap Required
+        - 'bundles/orofrontend/default/scss/settings/bootstrap/variables.scss'
+
+        # Bootstrap Configs
+        - 'bundles/orofrontend/default/scss/variables/bootstrap/buttons-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/bootstrap/dropdown-toggle-split.scss'
+
+        - 'bundles/orofrontend/default/scss/settings/global-settings.scss'
+        - 'bundles/orofrontend/default/scss/variables/base-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/focus-via-arrows-keys-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/custom-icons-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/breadcrumbs-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/collapse-view-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/link-config.scss'
+
+        - 'bundles/orofrontend/default/scss/variables/filters/filters-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/filters/filters-dropdown-mode-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/filters/filters-fullscreen-popup-mode-config.scss'
+
+        - 'bundles/orofrontend/default/scss/variables/highlight-text-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-title-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-subtitle-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-main-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-container-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-content-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-header-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/page-footer-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/copyright-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/section-title-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/notifications-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/primary-menu-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/notification-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/loader-mask-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/embedded-list/embedded-list-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/datagrid-manager-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/ui/dialog-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/badge-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/search-container-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/search-widget-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/frontend-datagrid-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/controls-list-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/uploader-config.scss'
+        - 'bundles/orofrontend/default/scss/variables/switcher-info-config.scss'
+
+        # Bootstrap Optional Components
+        - 'bundles/orofrontend/default/scss/components/bootstrap/bootstrap.scss'
+
+        - 'bundles/orofrontend/default/scss/components/custom-icons.scss'
+        - 'bundles/orofrontend/default/scss/components/focus-via-arrows-keys.scss'
+        - 'bundles/orofrontend/default/scss/components/clear-search-button.scss'
+        - 'bundles/orofrontend/default/scss/styles.scss'
+    output: 'css/styles.css'
+    auto_rtl_inputs:
+        - 'bundles/oro*/**'

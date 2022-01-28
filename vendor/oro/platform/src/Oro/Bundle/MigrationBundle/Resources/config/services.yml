@@ -1,0 +1,89 @@
+services:
+    oro_migration.db_id_name_generator:
+        class: Oro\Bundle\MigrationBundle\Tools\DbIdentifierNameGenerator
+
+    oro_migration.service_container:
+        class: Oro\Bundle\MigrationBundle\Container\MigrationContainer
+        public: true
+        arguments:
+            - '@?parameter_bag'
+            - '@service_container'
+            - !service
+                class: Symfony\Component\DependencyInjection\ServiceLocator
+                arguments: [[]]
+
+    oro_migration.data_fixtures.loader:
+        class: Oro\Bundle\MigrationBundle\Migration\Loader\DataFixturesLoader
+        public: false
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_migration.service_container'
+
+    oro_migration.data_fixtures.executor:
+        class: Oro\Bundle\MigrationBundle\Migration\DataFixturesExecutor
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    oro_migration.migrations.loader:
+        class: Oro\Bundle\MigrationBundle\Migration\Loader\MigrationsLoader
+        public: false
+        arguments:
+            - '@kernel'
+            - '@doctrine.dbal.default_connection'
+            - '@oro_migration.service_container'
+            - '@event_dispatcher'
+
+    oro_migration.migrations.query_executor:
+        class: Oro\Bundle\MigrationBundle\Migration\MigrationQueryExecutor
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    oro_migration.migrations.executor:
+        class: Oro\Bundle\MigrationBundle\Migration\MigrationExecutorWithNameGenerator
+        arguments:
+            - '@oro_migration.migrations.query_executor'
+            - '@oro_cache.oro_data_cache_manager'
+        calls:
+            - [setExtensionManager, ['@oro_migration.migrations.extension_manager']]
+            - [setNameGenerator, ['@oro_migration.db_id_name_generator']]
+
+    oro_migration.migration.pre_up.listener:
+        class: Oro\Bundle\MigrationBundle\EventListener\PreUpMigrationListener
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.pre_up, method: onPreUp }
+
+    oro_migration.migrations.extension_manager:
+        class: Oro\Bundle\MigrationBundle\Migration\MigrationExtensionManager
+
+    oro_migration.migration.extension.rename:
+        class: Oro\Bundle\MigrationBundle\Migration\Extension\RenameExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: rename }
+
+    oro_migration.migration.extension.data_storage:
+        class: Oro\Bundle\MigrationBundle\Migration\Extension\DataStorageExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: data_store }
+
+    oro_migration.tools.schema_dumper:
+        class: Oro\Bundle\MigrationBundle\Tools\SchemaDumper
+        arguments:
+            - '@twig'
+        lazy: true
+
+    oro_migration.twig.schema_dumper:
+        class: Oro\Bundle\MigrationBundle\Twig\SchemaDumperExtension
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_migration.listener.console_command_listener:
+        class: Oro\Bundle\MigrationBundle\EventListener\ConsoleCommandListener
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
+
+    oro_migration.locator.fixture_path_locator:
+        class: Oro\Bundle\MigrationBundle\Locator\FixturePathLocator

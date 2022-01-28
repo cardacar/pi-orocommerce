@@ -1,0 +1,212 @@
+api:
+    entities:
+        Oro\Bundle\PricingBundle\Entity\PriceList:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list.md'
+            fields:
+                prices:
+                    exclude: true
+                priceListCurrencies:
+                    data_type: currency[]
+                    property_path: currencies
+                    depends_on: [ currencies.currency ]
+                    # remove exclusion that is set automatically because
+                    # Oro\Bundle\PricingBundle\Entity\PriceListCurrency is not enabled for API
+                    exclude: false
+                containSchedule:
+                    form_options:
+                        mapped: false
+            subresources:
+                priceRules:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                schedules:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+            actions:
+                create:
+                    fields:
+                        priceListCurrencies:
+                            property_path: priceListCurrencies
+                update:
+                    fields:
+                        priceListCurrencies:
+                            property_path: priceListCurrencies
+                update_list: true
+
+        Oro\Bundle\PricingBundle\Entity\PriceListSchedule:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list_schedule.md'
+            actions:
+                update:
+                    fields:
+                        priceList:
+                            form_options:
+                                mapped: false
+                update_list: true
+            subresources:
+                priceList:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceRule:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_rule.md'
+            actions:
+                update:
+                    fields:
+                        priceList:
+                            form_options:
+                                mapped: false
+                update_list: true
+            subresources:
+                priceList:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceAttributeProductPrice:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_attribute_product_price.md'
+            fields:
+                productSku:
+                    exclude: true
+                quantity:
+                    exclude: true
+                value:
+                    form_options:
+                        mapped: false
+                currency:
+                    form_options:
+                        mapped: false
+            actions:
+                update_list: true
+
+        Oro\Bundle\PricingBundle\Entity\PriceAttributePriceList:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_attribute_price_list.md'
+            fields:
+                prices:
+                    exclude: true
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+            subresources:
+                organization:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceListToCustomerGroup:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list_to_customer_group.md'
+            actions:
+                update:
+                    fields:
+                        website:
+                            form_options:
+                                mapped: false
+                        customerGroup:
+                            form_options:
+                                mapped: false
+            subresources:
+                website:
+                    actions:
+                        update_relationship: false
+                priceList:
+                    actions:
+                        update_relationship: false
+                customerGroup:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceListCustomerGroupFallback:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list_customer_group_fallback.md'
+            actions:
+                update:
+                    fields:
+                        website:
+                            form_options:
+                                mapped: false
+                        customerGroup:
+                            form_options:
+                                mapped: false
+            subresources:
+                website:
+                    actions:
+                        update_relationship: false
+                customerGroup:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceListToCustomer:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list_to_customer.md'
+            actions:
+                update:
+                    fields:
+                        website:
+                            form_options:
+                                mapped: false
+                        customer:
+                            form_options:
+                                mapped: false
+            subresources:
+                website:
+                    actions:
+                        update_relationship: false
+                priceList:
+                    actions:
+                        update_relationship: false
+                customer:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\PriceListCustomerFallback:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/price_list_customer_fallback.md'
+            actions:
+                update:
+                    fields:
+                        website:
+                            form_options:
+                                mapped: false
+                        customer:
+                            form_options:
+                                mapped: false
+            subresources:
+                website:
+                    actions:
+                        update_relationship: false
+                customer:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\PricingBundle\Entity\ProductPrice:
+            documentation_resource: '@OroPricingBundle/Resources/doc/api/product_price.md'
+            fields:
+                id:
+                    data_type: string
+                value:
+                    form_options:
+                        mapped: false
+                currency:
+                    form_options:
+                        mapped: false
+                productSku:
+                    exclude: true
+                priceRule:
+                    exclude: true
+                version:
+                    exclude: true
+            filters:
+                fields:
+                    priceList:
+                        operators: ['=']
+                        allow_array: false
+            actions:
+                update_relationship: false
+                get_subresource: false
+                get_relationship: false
+                delete_relationship: false
+                add_relationship: false
+                update:
+                    fields:
+                        priceList:
+                            form_options:
+                                mapped: false
+                update_list: true

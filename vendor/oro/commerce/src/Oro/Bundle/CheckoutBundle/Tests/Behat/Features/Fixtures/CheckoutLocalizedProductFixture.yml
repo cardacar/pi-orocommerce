@@ -1,0 +1,73 @@
+include:
+  - '@OroLocaleBundle:ZuluLocalization.yml'
+
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+  businessUnit:
+    name: 'Common Business Unit'
+    organization: '@organization'
+
+Oro\Bundle\CurrencyBundle\Entity\Price:
+  price:
+    value: '10'
+    currency: 'USD'
+
+Oro\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+  precision:
+    unit: '@item'
+    precision: '1'
+
+Oro\Bundle\ProductBundle\Entity\ProductName:
+  locValue:
+    string: 'PG-PA103'
+  zuluValue:
+    string: 'PG-PA103(MG-MA103)'
+    localization: '@localization_zulu'
+
+Oro\Bundle\ProductBundle\Entity\Product:
+  product:
+    sku: 'SKU123'
+    type: 'simple'
+    primaryUnitPrecision: '@precision'
+    __calls:
+        - setNames: [['@locValue', '@zuluValue']]
+    attributeFamily: '@defaultProductFamily'
+    inventoryStatus: '@enumInventoryStatuses'
+    organization: '@organization'
+    owner: '@businessUnit'
+    status: 'enabled'
+
+Oro\Bundle\PricingBundle\Entity\PriceList:
+  pricelistShipping:
+    name: 'pricelist_shipping'
+    default: true
+    __calls:
+      - setCurrencies: [['USD']]
+    active: true
+
+Oro\Bundle\PricingBundle\Entity\PriceListToProduct:
+  priceRelationSku123ToShippingPl:
+    product: '@product'
+    priceList: '@pricelistShipping'
+
+Oro\Bundle\PricingBundle\Entity\PriceListToWebsite:
+  priceListToWebsite:
+    pricelist: '@pricelistShipping'
+    website: '@website1'
+    sortOrder: 200
+
+Oro\Bundle\PricingBundle\Entity\PriceListToCustomer:
+  priceListToCustomer:
+    customer: '@customer'
+    pricelist: '@pricelistShipping'
+    website: '@website1'
+    sortOrder: 200
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+  productPrice:
+    pricelist: '@pricelistShipping'
+    product: '@product'
+    productSku: 'SKU123'
+    quantity: 5
+    unit: '@item'
+    value: 2
+    currency: 'USD'

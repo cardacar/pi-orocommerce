@@ -1,0 +1,50 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%taxCode%": entity.code } }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_tax_jurisdiction_index'),
+        'indexLabel': 'oro.tax.taxjurisdiction.entity_plural_label'|trans,
+        'entityTitle': entity.code|default('N/A'|trans)
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set zipCodes %}
+        {% set codes = [] %}
+        {% for zipCode in entity.zipCodes %}
+            {% if zipCode.zipCode is not null %}
+                {% set codes = codes|merge([zipCode.zipCode]) %}
+            {% elseif zipCode.zipRangeStart is not null and zipCode.zipRangeEnd is not null %}
+                {% set codes = codes|merge([zipCode.zipRangeStart ~ '-' ~ zipCode.zipRangeEnd]) %}
+            {% endif %}
+        {% endfor %}
+        {{ codes|join(', ') }}
+    {% endset %}
+    {% set taxJurisdictionInfo %}
+        {{ UI.renderProperty('oro.tax.taxjurisdiction.code.label'|trans, entity.code, null, null, {'dir': 'ltr'}) }}
+        {{ UI.renderProperty('oro.tax.taxjurisdiction.description.label'|trans, entity.description) }}
+        {{ UI.renderProperty('oro.tax.taxjurisdiction.region.label'|trans, entity.regionName) }}
+        {{ UI.renderProperty('oro.tax.taxjurisdiction.country.label'|trans, entity.country) }}
+        {{ UI.renderProperty('oro.tax.taxjurisdiction.zip_codes.label'|trans, zipCodes, null, null, {'dir': 'ltr'}) }}
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'oro.tax.sections.general'|trans,
+        'subblocks': [
+            {'data' : [taxJurisdictionInfo]},
+        ]
+    }] %}
+
+    {% set id = 'tax-jusrisdiction-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}

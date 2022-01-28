@@ -1,0 +1,111 @@
+{% extends 'OroNavigationBundle:Menu:menu.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroNavigationBundle::macros.html.twig' as Navigation %}
+
+{% block list_wrapper %}
+    {# render the list of children #}
+    {%- set childrenClasses = childrenClasses|merge(['menu', 'menu-level-' ~ item.level]) %}
+    {%- set listAttributes = childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+
+    {% if item.hasChildren %}
+        {% if item.level == 1 %}
+            <div class="dropdown-menu-wrapper dropdown-menu-wrapper__scrollable">
+                {{- block('list') -}}
+            </div>
+        {% elseif item.level == 2 %}
+            <div class="dropdown-menu-wrapper dropdown-menu-wrapper__child">
+                {{- block('list') -}}
+            </div>
+        {% else %}
+            {{- block('list') -}}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.hasChildren and item.displayChildren %}
+        {%- set classes = classes|merge(['dropdown', 'dropdown-level-' ~ item.level]) %}
+        {%- if item.level != 1 %}
+        {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
+        {% endif -%}
+    {% elseif item.level == 1 %}
+        {%- set classes = classes|merge(['dropdown', 'dropdown-empty', 'dropdown-level-' ~ item.level]) %}
+    {% endif %}
+    {% if item.extras is defined and item.extras.routes is defined and item.extras.routes[0] is defined %}
+        {% if item.extras.routes|length > 1 %}
+            {% set itemAttributes = itemAttributes|merge({'data-routes': item.extras.routes|slice(1)|json_encode })%}
+        {% endif %}
+        {% set itemAttributes = itemAttributes|merge({'data-route': item.extras.routes[0]})%}
+    {% endif %}
+
+    {% if item.level == 1 %}
+        {% set hasValidChildren = false %}
+
+        {% for sub_item in item if not hasValidChildren %}
+            {%- set showNonAuthorized = sub_item.extras.show_non_authorized is defined and sub_item.extras.show_non_authorized -%}
+            {%- set displayable = sub_item.extras.isAllowed or showNonAuthorized -%}
+            {% if sub_item.displayed and displayable and not sub_item.getExtra('divider') %}
+                {% set hasValidChildren = true %}
+            {% endif %}
+        {% endfor %}
+
+        {% if (item.uri is empty or item.uri != '#') or (item.hasChildren and item.displayChildren and hasValidChildren) %}
+            {{ block('item_renderer') }}
+        {% endif %}
+    {% else %}
+        {{ block('item_renderer') }}
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}
+    {% import 'OroNavigationBundle:Menu:menu.html.twig' as oro_menu %}
+
+    {% if item.hasChildren and item.displayChildren and item.level is same as(0) %}
+        {% set linkAttributes = linkAttributes|merge({
+            'class':       oro_menu.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']),
+            'data-toggle': 'dropdown'
+        }) %}
+    {% endif %}
+
+    {% if item.uri is empty or item.uri=='#' %}
+        {% set linkAttributes = linkAttributes|merge({
+            'class': oro_menu.add_attribute_values(linkAttributes, 'class', ['unclickable'])
+        }) %}
+
+        {% if item.level > 1 %}
+            {% set linkAttributes = linkAttributes|merge({
+                'tabindex': -1
+            }) %}
+        {% endif %}
+    {% endif %}
+
+    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>
+        <span class="title {{ 'title-level-' ~ item.getLevel()}}" title="{{ item.getLabel()|trans }}">{{ block('label')|trim|raw }}</span>
+    </a>
+{% endblock %}
+
+{% block item_content %}
+   {% if item.level == 1 %}
+       {% set linkAttributes = item.linkAttributes %}
+       {{ block('linkElement') }}
+
+       <div class="dropdown-menu">
+           {%- set wrapperContent = block('list_wrapper') -%}
+           {% if item.uri != '#' or wrapperContent %}
+               {{- wrapperContent|raw -}}
+           {% endif %}
+       </div>
+   {% else %}
+       {{ parent() }}
+   {% endif %}
+{% endblock %}
+
+{% block label %}
+    {%- if item.level == 1 and not item.getExtra('icon') %}
+        <span class="fa-th menu-icon" aria-hidden="true"></span>
+        {{ parent() }}
+    {% else %}
+        {{ parent() }}
+    {% endif -%}
+{% endblock %}
+

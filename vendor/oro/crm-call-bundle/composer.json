@@ -1,0 +1,33 @@
+{
+    "name": "oro/crm-call-bundle",
+    "description": "Oro Call Bundle",
+    "homepage": "https://github.com/oroinc/OroCRMCallBundle.git",
+    "keywords": ["Oro", "Call"],
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "require": {
+        "oro/platform": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": { "Oro\\Bundle\\CallBundle\\": "" },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

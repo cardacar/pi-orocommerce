@@ -1,0 +1,37 @@
+services:
+    # Extensions
+    oro_reminder.form.extension.reminder:
+        class: Oro\Bundle\ReminderBundle\Form\Extension\ReminderExtension
+        arguments:
+            - '@Psr\Container\ContainerInterface'
+        tags:
+            - { name: form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+            - { name: container.service_subscriber, id: oro_reminder.entity.manager }
+
+    # Form types
+    oro_reminder.form.type.reminder:
+        class: Oro\Bundle\ReminderBundle\Form\Type\ReminderType
+        tags:
+            - { name: form.type, alias: oro_reminder }
+
+    oro_reminder.form.type.reminder_collection:
+        class: Oro\Bundle\ReminderBundle\Form\Type\ReminderCollectionType
+        tags:
+            - { name: form.type, alias: oro_reminder_collection }
+
+    oro_reminder.form.type.method:
+        class: Oro\Bundle\ReminderBundle\Form\Type\MethodType
+        arguments:
+            - '@oro_reminder.send_processor_registry'
+        tags:
+            - { name: form.type, alias: oro_reminder_method }
+
+    oro_reminder.form.type.reminder_interval:
+        class: Oro\Bundle\ReminderBundle\Form\Type\ReminderIntervalType
+        tags:
+            - { name: form.type, alias: oro_reminder_interval }
+
+    oro_reminder.form.type.reminder_interval.unit:
+        class: Oro\Bundle\ReminderBundle\Form\Type\ReminderInterval\UnitType
+        tags:
+            - { name: form.type, alias: oro_reminder_interval_unit }

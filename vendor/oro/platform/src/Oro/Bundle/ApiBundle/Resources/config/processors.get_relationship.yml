@@ -1,0 +1,53 @@
+services:
+    oro_api.get_relationship.processor:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\GetRelationshipProcessor
+        arguments:
+            - '@oro_api.processor_bag'
+            - get_relationship
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.get_relationship.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\GetRelationship\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: get_relationship, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # build_query
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # data_security_check
+    #
+
+    #
+    # normalize_data
+    #
+
+    #
+    # finalize
+    #
+
+    #
+    # normalize_result
+    #

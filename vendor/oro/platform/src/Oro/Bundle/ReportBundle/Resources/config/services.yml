@@ -1,0 +1,124 @@
+parameters:
+    # Cache keys
+    oro_report.cache.report_grid_config_key: 'oro_report.report_grid_config_key'
+
+services:
+    oro_report.entity_provider:
+        alias: oro_entity.entity_provider
+        public: true
+
+    oro_report.datagrid.configuration.provider:
+        class: Oro\Bundle\ReportBundle\Grid\ReportDatagridConfigurationProvider
+        arguments:
+            - '@oro_report.grid.datagrid_configuration_builder'
+            - '@doctrine'
+            - '@oro_report.cache'
+            - '%oro_report.cache.report_grid_config_key%'
+        tags:
+            - { name: oro_datagrid.configuration.provider }
+
+    Oro\Bundle\ReportBundle\Grid\ReportDatagridConfigurationProvider:
+        alias: oro_report.datagrid.configuration.provider
+
+    oro_report.cache:
+          parent: oro.cache.abstract
+          public: false
+          calls:
+              - [setNamespace, [ 'oro_report' ] ]
+
+    oro_report.listener.navigation_listener:
+        class: Oro\Bundle\ReportBundle\EventListener\NavigationListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity_config.provider.entity'
+            - '@oro_security.token_accessor'
+            - '@oro_security.acl_helper'
+            - '@oro_featuretoggle.checker.feature_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    oro_report.listener.report_cache_cleaner_listener:
+        class: Oro\Bundle\ReportBundle\EventListener\ReportCacheCleanerListener
+        public: false
+        arguments:
+            - '@oro_report.cache'
+            - '%oro_report.cache.report_grid_config_key%'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ReportBundle\Entity\Report', event: postUpdate }
+
+    oro_report.report_manager:
+        class: Oro\Bundle\ReportBundle\Entity\Manager\ReportManager
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    oro_report.grid.base_configuration_builder:
+        class: Oro\Bundle\ReportBundle\Grid\BaseReportConfigurationBuilder
+        public: false
+        parent: oro_query_designer.grid.datagrid_configuration_builder
+        calls:
+            - [setConfigManager, ['@oro_entity_config.config_manager']]
+
+    oro_report.grid.datagrid_configuration_builder:
+        class: Oro\Bundle\ReportBundle\Grid\ReportDatagridConfigurationBuilder
+        public: false
+        parent: oro_report.grid.base_configuration_builder
+        calls:
+            - [setDateGroupingBuilder, ['@oro_report.grid.date_grouping_builder']]
+
+    oro_report.grid.date_grouping_builder:
+        class: Oro\Bundle\ReportBundle\Grid\DatagridDateGroupingBuilder
+        arguments:
+            - 'Oro\Bundle\ReportBundle\Entity\CalendarDate'
+            - '@oro_datagrid.helper.date'
+
+    oro_report.listener.segment_subscriber:
+        class: Oro\Bundle\ReportBundle\EventListener\SegmentSubscriber
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_report.grid.extension.store_sql:
+        class: Oro\Bundle\ReportBundle\Grid\StoreSqlExtension
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_report.event_listener.store_sql:
+        class: Oro\Bundle\ReportBundle\EventListener\StoreSqlListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after, method: onResultAfter }
+
+    oro_report.provider.report_entity_name:
+        class: 'Oro\Bundle\ReportBundle\Provider\ReportEntityNameProvider'
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 0 }
+
+    oro_report.calendar_date_manager:
+        class: Oro\Bundle\ReportBundle\Entity\Manager\CalendarDateManager
+        public: true
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_locale.settings'
+
+    oro_report.datagrid.extension.empty_link_remover:
+        class: Oro\Bundle\ReportBundle\Extension\Link\DateGroupingActionRemoverExtension
+        arguments:
+            - 'Oro\Bundle\ReportBundle\Entity\CalendarDate'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_report.event_listener.timezone_change:
+        class: Oro\Bundle\ReportBundle\EventListener\TimezoneChangeListener
+        arguments:
+            - '@oro_report.calendar_date_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onConfigUpdate }
+
+    oro_report.grid.event_listener.column_format_normalization:
+        class: Oro\Bundle\ReportBundle\Grid\EventListener\ColumnCurrencyNormalization
+        public: false
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before, method: onBuildBefore }

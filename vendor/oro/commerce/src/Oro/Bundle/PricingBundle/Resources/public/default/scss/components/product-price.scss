@@ -1,0 +1,60 @@
+/* @theme: default; */
+
+.product-price {
+    width: $product-price-width;
+
+    &__main-box {
+        font-size: $product-price-main-box-font-size;
+    }
+
+    &__value {
+        color: $product-price-value-color;
+    }
+
+    &__your,
+    &__listed {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    &__label,
+    &__listed-label {
+        padding-right: $offset-y-m;
+    }
+
+    &__value,
+    &__listed-value {
+        font-weight: $product-price-value-font-weight;
+    }
+
+    &__listed {
+        padding-top: $offset-y-s;
+    }
+
+    // Modifier for simple view(only main price)
+    &--simple & {
+        &__value {
+            font-size: $product-price-simple-value-font-size;
+        }
+
+        &__listed-value {
+            color: $product-price-simple-listed-value-color;
+        }
+    }
+}
+
+.product-view {
+    .product-price {
+        max-width: $product-price-max-width;
+        margin: $product-price-margin;
+    }
+}
+
+@include breakpoint('tablet') {
+    .product-price {
+        &--simple {
+            text-align: $product-price-simple-text-align-tablet;
+        }
+    }
+}

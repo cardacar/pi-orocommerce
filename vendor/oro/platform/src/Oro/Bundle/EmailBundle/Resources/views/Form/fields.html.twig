@@ -1,0 +1,420 @@
+{% block _email_configuration_oro_email___smtp_settings_password_row %}
+    {% spaceless %}
+        {{ form_row(form) }}
+
+        {% if form.parent.parent is not null %}
+            {% set data = form.parent.parent.vars.value %}
+        {% else %}
+            {% set data = form.parent.vars.value %}
+        {% endif %}
+
+        {% set options = form.vars.options|default({})|merge({
+            elementNamePrototype: full_name,
+            id: form.vars.value and form.vars.value.id is defined ? form.vars.value.id : null,
+            forEntity: 'user',
+            organization: data and data.organization is defined and data.organization ? data.organization.id : null,
+            parentElementSelector: 'fieldset',
+            showLoading: true
+        }) %}
+        <div class="control-group">
+            <div class="controls">
+                <span class="form-text">
+                    <button class="btn btn-primary check-connection-messages"
+                            data-role="check-smtp-connection"
+                            data-page-component-module="{{ 'oroemail/js/app/components/check-smtp-connection-component' }}"
+                            data-page-component-options="{{ options|merge({view: 'new'})|json_encode }}"
+                    >{{ 'oro.email.system_configuration.smtp_settings.check_connection.label'|trans }}</button>
+                </span>
+                <span class="form-text">
+                    <button class="btn btn-primary check-connection-messages"
+                            data-role="check-saved-smtp-connection"
+                            data-page-component-module="{{ 'oroemail/js/app/components/check-smtp-connection-component' }}"
+                            data-page-component-options="{{ options|merge({view: 'saved'})|json_encode }}"
+                    >{{ 'oro.email.system_configuration.smtp_settings.check_saved_connection.label'|trans }}</button>
+                </span>
+                <div class="check-connection-messages check-smtp-connection-messages"></div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _email_configuration_oro_email___attachment_sync_max_size_value_widget %}
+    {{ form_widget(form) }}
+    {% if is_granted('oro_config_system') %}
+    <span class="form-text">
+        <a class="btn btn-block btn-danger"
+           href="{{ path('oro_email_purge_emails_attachments') }}"
+           data-request-method="POST"
+           data-page-component-module="{{ 'oroui/js/app/components/hidden-redirect-component' }}"
+           data-page-component-options="{{ {showLoading: true}|json_encode }}"
+        >{{ 'oro.email.system_configuration.attachment_configuration.remove_larger_attachments.label'|trans }}</a>
+    </span>
+    {% endif %}
+{% endblock %}
+
+{% block _oro_email_autoresponserule_template_new_entity_translations_widget %}
+    {% import 'OroEmailBundle::macros.html.twig' as email %}
+    {% set entityNameForm = form.parent.entityName %}
+
+    {{ form_widget(form) }}
+    {{ email.renderAvailableVariablesWidget(entityNameForm.vars.value, entityNameForm.vars.id) }}
+{% endblock %}
+
+{% block oro_email_template_list_row %}
+    <script type="text/template" id="emailtemplate-chooser-template">
+        <% _.each(entities, function(entity, i) { %>
+        <option value="<%- entity.get('id') %>"><%- entity.get('name') %></option>
+        <% }); %>
+    </script>
+
+    {{ form_row(form) }}
+
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = {
+        targetSelector: '#' ~ id,
+        _sourceElement: '[name$="[' ~ depends_on_parent_field ~ ']"]',
+        collectionOptions: {
+            route: data_route,
+            routeId: data_route_parameter,
+            includeNonEntity: includeNonEntity is defined and includeNonEntity ? true : false,
+            includeSystemTemplates: includeSystemTemplates is defined and not includeSystemTemplates ? false : true
+        }
+    } %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        view: 'oroemail/js/app/views/email-template-view',
+        options: options
+    }) }}></div>
+{% endblock %}
+
+{% block oro_email_link_to_scope_row %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = {
+        enableAttachmentSelector: '[data-ftid=oro_entity_config_type_attachment_enabled]',
+        _sourceElement: '#' ~ form.vars.id,
+    } %}
+
+    {{ form_row(form) }}
+
+    <div {{ UI.renderPageComponentAttributes({
+        view: 'oroemail/js/app/views/email-attachment-context-view',
+        options: options
+    }) }}></div>
+{% endblock %}
+
+{% block oro_email_attachments_row %}
+    {% set entityAttachmentsArray = [] %}
+    {% for attachment in options.entityAttachments %}
+        {% set entityAttachmentArray = {
+            'id': attachment.id,
+            'type': attachment.type,
+            'fileName': attachment.fileName,
+            'icon': attachment.icon,
+            'errors': attachment.errors
+        } %}
+        {% set entityAttachmentsArray = entityAttachmentsArray|merge([entityAttachmentArray]) %}
+    {% endfor %}
+
+    {% set attachmentsAvailableArray = [] %}
+    {% for attachment in options.attachmentsAvailable %}
+        {% set attachmentAvailableArray = {
+            'id': attachment.id,
+            'type': attachment.type,
+            'fileName': attachment.fileName,
+            'fileSize': attachment.fileSize,
+            'modified': attachment.modified,
+            'icon': attachment.icon,
+            'preview': attachment.preview
+        } %}
+        {% set attachmentsAvailableArray = attachmentsAvailableArray|merge([attachmentAvailableArray]) %}
+    {% endfor %}
+
+    {% set options = options|merge({
+        containerId: id,
+        inputName: full_name,
+        entityAttachments: entityAttachmentsArray,
+        attachmentsAvailable: attachmentsAvailableArray,
+        fileIcons: oro_file_icons_config()
+    }) %}
+
+    <div data-page-component-module="oroemail/js/app/components/email-attachment-component"
+         data-page-component-options="{{ options|json_encode }}"
+         class="attachment-container">
+        {{ form_row(form) }}
+    </div>
+{% endblock %}
+
+{% block oro_email_emailtemplate_localizations_widget %}
+    {% import _self as emailFormFealds %}
+
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <div class="emailtemplate-translatation oro-tabs tabbable" {{ UI.renderPageComponentAttributes({
+        view: 'oroemail/js/app/views/email-translation-view'
+    }) }}>
+        {% set tabId = 'email-translation-'|uniqid %}
+        {% set tabContentId = tabId %}
+        <div class="oro-tabs__head"  {{ UI.renderPageComponentAttributes({
+            module: 'oroui/js/app/components/tabs-component'
+        }) }}>
+            <ul class="nav nav-tabs" role="tablist">
+                {% spaceless %}
+                    {% for templateLocalization in form %}
+                        {{ emailFormFealds.renderTabNavItem(templateLocalization, loop.first, tabId ~ '-' ~ loop.index) }}
+                    {% endfor %}
+                {% endspaceless %}
+            </ul>
+        </div>
+        <div class="oro-tabs__content">
+            <div class="tab-content">
+                {% spaceless %}
+                    {% for templateLocalization in form %}
+                        {{ emailFormFealds.renderTab(templateLocalization, loop.first, tabContentId ~ '-' ~ loop.index) }}
+                    {% endfor %}
+                {% endspaceless %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block oro_email_email_folder_tree_row %}
+    {% if form.vars.value is not null and form.vars.value|length > 0 %}
+        {{ form_row(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block oro_email_email_folder_tree_widget %}
+    {% import _self as emailFormFealds %}
+
+    {% set options = {
+        dataInputSelector: 'input[name="' ~ full_name ~ '"]',
+        checkAllSelector: '.check-all',
+        relatedCheckboxesSelector: '.folder-list :checkbox'
+    } %}
+    <div class="folder-tree-widget"
+         data-page-component-module="oroemail/js/app/components/folder-tree-component"
+         data-page-component-options="{{ options|json_encode }}"
+         data-layout="separate"
+    >
+        <label class="folder-label">
+            <input class="check-all" type="checkbox">
+            {{ "oro.email.imap.folder.checkAll"|trans }}
+        </label>
+        <div class="folder-list">
+            {% for key, folder in form.vars.value if folder.parentFolder is null and folder.outdatedAt is null %}
+                {{ emailFormFealds.renderFolder(key, folder, form.vars.full_name) }}
+            {% endfor %}
+        </div>
+        <input name="{{ full_name }}" type="hidden">
+    </div>
+{% endblock %}
+
+{% block oro_email_mailbox_grid_row %}
+    {{ form_label(form) }}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block oro_email_mailbox_grid_label %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% set redirectData = {
+        'route': app.request.attributes.get('_route'),
+        'parameters': app.request.attributes.get('_route_params'),
+    } %}
+    {% if is_granted('oro_organization_update') %}
+        <div class="row user-fieldset-block-actions">
+            <div class="btn-group">
+                {{ UI.addButton({
+                    'path': path('oro_email_mailbox_create', {redirectData: redirectData}),
+                    'label': 'oro.email.system_configuration.mailbox_configuration.add_mailbox.label'|trans
+                }) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block oro_email_mailbox_grid_widget %}
+    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+    {% set redirectData = {
+        'route': app.request.attributes.get('_route'),
+        'parameters': app.request.attributes.get('_route_params')
+    } %}
+    <div class="row user-fieldset-block-body">
+        {{ dataGrid.renderGrid('base-mailboxes-grid', {
+            'redirectData': redirectData, 'organization_ids': [get_current_organization().getId()]
+        }) }}
+    </div>
+{% endblock %}
+
+{% block oro_email_mailbox_widget %}
+    {% set imapAccountType %}
+        {% if  form.children.origin is defined %}
+            {{ form_widget(form.children.origin) }}
+            {{ form_errors(form.children.origin) }}
+        {% elseif form.children.imapAccountType is defined %}
+            {{ form_widget(form.children.imapAccountType) }}
+            {{ form_errors(form.children.imapAccountType) }}
+        {% endif %}
+    {% endset %}
+
+    {% set process = form_row(form.children.processType) ~
+        form_widget(form.children.processSettings) %}
+    {% set access = form_row(form.children.authorizedUsers) ~
+        form_row(form.children.authorizedRoles)
+    %}
+    {% set options = {
+        el: '#' ~ form.vars.id
+    } %}
+    <div data-page-component-module="oroemail/js/app/views/mailbox-update-view"
+         data-page-component-options="{{ options|json_encode }}">
+        <fieldset class="form-horizontal form-horizontal-large">
+            <h5 class="user-fieldset">
+                <span>{{ 'oro.email.mailbox.general.label'|trans }}</span>
+            </h5>
+            <div class="control-group-wrapper">
+                {{ form_widget(form) }}
+            </div>
+        </fieldset>
+        <fieldset class="form-horizontal form-horizontal-large">
+            <h5 class="user-fieldset">
+                <span>{{ 'oro.email.mailbox.origin.label'|trans }}</span>
+            </h5>
+            <div class="control-group-wrapper">
+                {{ imapAccountType|raw }}
+            </div>
+        </fieldset>
+        <fieldset class="form-horizontal form-horizontal-large">
+            <h5 class="user-fieldset">
+                <span>{{ 'oro.email.mailbox.process.label'|trans }}</span>
+            </h5>
+            <div class="control-group-wrapper">
+                {{ process|raw }}
+            </div>
+        </fieldset>
+        <fieldset class="form-horizontal form-horizontal-large">
+            <h5 class="user-fieldset">
+                <span>{{ 'oro.email.mailbox.access.label'|trans }}</span>
+            </h5>
+            <div class="control-group-wrapper">
+                {{ access|raw }}
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}
+
+{% block oro_email_emailtemplate_localization_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {{ form_row(form.subject) }}
+        {% if form.subjectFallback is defined %}
+            {{- form_row(form.subjectFallback) }}
+        {% endif %}
+
+        {{ form_row(form.content) }}
+        {% if form.contentFallback is defined %}
+            {{- form_row(form.contentFallback) }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block _oro_email_emailtemplate_translations_template_fallback_checkbox_row %}
+    <div class="control-group control-group-checkbox">
+        <div class="control-label wrap">&nbsp;</div>
+        <div class="controls">
+            {{ form_widget(form) }}
+            {{ form_label(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _oro_email_autoresponserule_template_new_entity_oro_email_emailtemplate_template_fallback_checkbox_row %}
+    <div class="control-group control-group-checkbox">
+        <div class="control-label wrap">&nbsp;</div>
+        <div class="controls">
+            {{ form_widget(form) }}
+            {{ form_label(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{#
+    Renders tab `li` tag for bootstrap tab panels
+    paramters:
+        form         - instance of FormView, it's a view for localized field
+        isActive - is current tab active
+        uniqid       - is unique identifier
+#}
+{% macro renderTabNavItem(form, isActive = false, uniqid = null) %}
+    <li class="nav-item">
+        <a href="#"
+           class="nav-link {% if isActive %}active{% endif %}"
+           data-role="change-localization"
+           data-target=".emailtemplate-translatation-fields-{{ form.vars.name }}"
+           data-toggle="tab"
+           data-related="{{ form.vars.name }}"
+           role="tab"
+           aria-selected="{{ isActive ? 'true' : 'false' }}"
+                {% if uniqid %}
+                    id="{{ uniqid ~ '-tab'}}"
+                    aria-controls="{{ uniqid }}"
+                {% endif %}
+        >
+            {%- if form.vars.localization_title is not empty -%}
+                {{ form.vars.localization_title }}
+            {%- else -%}
+                {{ 'oro.email.emailtemplatetranslation.form.default_localization'|trans }}
+            {%- endif -%}
+        </a>
+    </li>
+{% endmacro %}
+
+{#
+    Renders content of bootstrap tab panel
+    paramters:
+        form   - instance of FormView, it's a view for localized field
+        isActive - is current tab active
+        uniqid - is unique identifier
+#}
+{% macro renderTab(form, isActive = false, uniqid = null) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div class="emailtemplate-translatation-fields-{{ form.vars.name }} tab-pane{% if isActive %} active{% endif %}"
+         role="tabpanel"
+            {% if uniqid %}
+                id="{{ uniqid }}"
+                aria-labelledby="{{ uniqid ~ '-tab' }}"
+            {% endif %}
+            {{ UI.renderPageComponentAttributes({
+                view: 'oroemail/js/app/views/email-template-localization-view',
+                options: {
+                    'localization': {
+                        'id': form.vars.localization_id,
+                        'parentId': form.vars.localization_parent_id,
+                    }
+                }
+            }) }}
+    >
+        {{ form_widget(form) }}
+    </div>
+{% endmacro %}
+
+{% macro renderFolder(key, folder, namePrefix, maxDepth = 10) %}
+    {% import _self as emailFormFealds %}
+    {% if maxDepth %}
+        <div>
+            <label class="folder-label">
+                <input type="checkbox" data-name="syncEnabled"{% if folder.syncEnabled %}checked="checked"{% endif %}>
+                {{ folder.name }}
+            </label>
+            <input type="hidden" data-name="fullName" value="{{ folder.fullName }}">
+            <input type="hidden" data-name="name" value="{{ folder.name }}">
+            <input type="hidden" data-name="type" value="{{ folder.type }}">
+            {% if maxDepth > 1 and folder.subFolders|length > 0 %}
+                <div class="folder-sub-folders">
+                    {% for subKey, subFolder in folder.subFolders %}
+                        {{ emailFormFealds.renderFolder(subKey, subFolder, namePrefix ~ '[' ~ key ~ '][subFolders]', maxDepth - 1) }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endmacro %}

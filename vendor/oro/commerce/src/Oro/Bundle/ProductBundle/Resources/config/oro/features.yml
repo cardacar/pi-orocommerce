@@ -1,0 +1,54 @@
+features:
+    quick_order_form:
+        label: oro.product.feature.quick_order_form.label
+        description: oro.product.feature.quick_order_form.description
+        toggle: oro_product.enable_quick_order_form
+        routes:
+            - 'oro_product_frontend_quick_add'
+            - 'oro_product_frontend_quick_add_import'
+            - 'oro_product_frontend_quick_add_copy_paste'
+            - 'oro_product_frontend_quick_add_validation_result'
+        configuration:
+            - 'guest_quick_order_form'
+
+    guest_quick_order:
+        label: oro.product.feature.guest_quick_order_form.label
+        description: oro.product.feature.quick_order_form.description
+        strategy: affirmative
+
+    guest_quick_order_config:
+        label: oro.product.feature.guest_quick_order_form.label
+        description: oro.product.feature.quick_order_form.description
+        toggle: oro_product.guest_quick_order_form
+
+    guest_quick_order_form:
+        label: oro.product.feature.guest_quick_order_form.label
+        description: oro.product.feature.quick_order_form.description
+        routes:
+            - 'oro_product_frontend_quick_add'
+            - 'oro_product_frontend_quick_add_import'
+            - 'oro_product_frontend_quick_add_copy_paste'
+            - 'oro_product_frontend_quick_add_validation_result'
+        dependencies:
+            - 'guest_quick_order'
+
+    frontend_products_data_export:
+        label: oro.product.feature.frontend_products_data_export.label
+        description: oro.product.feature.frontend_products_data_export.description
+        toggle: oro_product.product_data_export_enabled
+        routes:
+            - 'oro_product_frontend_export'
+        configuration:
+            - 'oro_product.product_prices_export_enabled'
+            - 'oro_product.product_price_tiers_export_enabled'
+
+    simple_variations_view_restriction:
+        label: oro.product.feature.simple_variations_view_restriction.label
+        description: oro.product.feature.simple_variations_view_restriction.description
+
+    simple_variations_view_restriction_bc:
+        label: oro.product.feature.simple_variations_view_restriction_bc.label
+        description: oro.product.feature.simple_variations_view_restriction_bc.description
+        toggle: oro_product.display_simple_variations_hide_completely_bc
+        dependencies:
+            - 'simple_variations_view_restriction'

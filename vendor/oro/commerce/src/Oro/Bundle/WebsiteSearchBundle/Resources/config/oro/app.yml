@@ -1,0 +1,15 @@
+doctrine:
+    orm:
+        entity_managers:
+            search:
+                mappings:
+                    OroWebsiteSearchBundle: ~
+
+oro_api:
+    filters:
+        websiteSearchQuery:
+            factory: ['@oro_website_search.api.filter_factory.website_search_query', 'createFilter']
+            supported_operators: ['=']
+        websiteSearchAggregation:
+            factory: ['@oro_website_search.api.filter_factory.website_search_aggregation', 'createFilter']
+            supported_operators: ['=']

@@ -1,0 +1,361 @@
+services:
+    oro_datagrid.datagrid.manager:
+        class: Oro\Bundle\DataGridBundle\Datagrid\Manager
+        public: true
+        arguments:
+            - '@oro_datagrid.configuration.provider.chain'
+            - '@oro_datagrid.datagrid.builder'
+            - '@oro_datagrid.datagrid.request_parameters_factory'
+            - '@oro_datagrid.datagrid.name_strategy'
+
+    Oro\Bundle\DataGridBundle\Datagrid\Manager:
+        alias: 'oro_datagrid.datagrid.manager'
+
+    oro_datagrid.datagrid.name_strategy:
+        class: Oro\Bundle\DataGridBundle\Datagrid\NameStrategy
+        arguments:
+            - '@request_stack'
+
+    oro_datagrid.datagrid.manager.link:
+        tags:
+            - { name: oro_service_link,  service: oro_datagrid.datagrid.manager }
+
+    oro_datagrid.event.dispatcher:
+        class: Oro\Bundle\DataGridBundle\Event\EventDispatcher
+        arguments: ['@event_dispatcher']
+
+    oro_datagrid.results.cache:
+        parent: oro.cache.provider.memory_cache
+
+    oro_datagrid.cache.serializer.normalizer:
+        class: Oro\Bundle\DataGridBundle\Serializer\ParameterBagNormalizer
+        parent: oro.cache.serializer.normalizer
+        tags:
+            - { name: 'oro_cache_generator_normalizer' }
+
+    oro_datagrid.datagrid.builder:
+        class: Oro\Bundle\DataGridBundle\Datagrid\Builder
+        arguments:
+            - 'Oro\Bundle\DataGridBundle\Datagrid\Datagrid'
+            - 'Oro\Bundle\DataGridBundle\Extension\Acceptor'
+            - '@oro_datagrid.event.dispatcher'
+            - ~ # service locator for data sources
+            - [] # extensions
+        calls:
+            - ['setMemoryCacheProvider', ['@oro_datagrid.results.cache']]
+        lazy: true
+
+    oro_datagrid.datagrid.request_parameters_factory:
+        class: Oro\Bundle\DataGridBundle\Datagrid\RequestParameterBagFactory
+        arguments:
+            - 'Oro\Bundle\DataGridBundle\Datagrid\ParameterBag'
+            - '@request_stack'
+
+    Oro\Bundle\DataGridBundle\Datagrid\RequestParameterBagFactory:
+        alias: 'oro_datagrid.datagrid.request_parameters_factory'
+
+    oro_datagrid.datagrid.guesser:
+        class: Oro\Bundle\DataGridBundle\Datagrid\DatagridGuesser
+        arguments:
+            - !tagged_iterator oro_datagrid.column_options_guesser
+
+    oro_datagrid.datagrid.primary_key_column_options_guesser:
+        class: Oro\Bundle\DataGridBundle\Datagrid\PrimaryKeyColumnOptionsGuesser
+        public: true
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_datagrid.column_options_guesser }
+
+    oro_datagrid.datagrid.column_options_guesser:
+        class: Oro\Bundle\DataGridBundle\Datagrid\DefaultColumnOptionsGuesser
+        public: true
+        tags:
+            - { name: oro_datagrid.column_options_guesser }
+
+    oro_datagrid.provider.resolver:
+        class: Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+        arguments:
+            - '@service_container'
+
+    oro_datagrid.configuration.provider:
+        class: Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider
+        public: false
+        arguments:
+            - '@oro_datagrid.configuration.provider.raw'
+            - '@oro_datagrid.provider.resolver'
+        tags:
+            - { name: oro_datagrid.configuration.provider, priority: -10 }
+
+    oro_datagrid.configuration.provider.raw:
+        class: Oro\Bundle\DataGridBundle\Provider\RawConfigurationProvider
+        public: false
+        parent: oro.static_config_provider.abstract
+        arguments:
+            - '%kernel.cache_dir%/oro/datagrids'
+            - '%kernel.debug%'
+
+    oro_datagrid.configuration.provider.chain:
+        class: Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider
+        arguments:
+            - !tagged_iterator oro_datagrid.configuration.provider
+
+    Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface:
+        alias: oro_datagrid.configuration.provider.chain
+
+    oro_datagrid.twig.datagrid:
+        class: Oro\Bundle\DataGridBundle\Twig\DataGridExtension
+        public: false
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_datagrid.event_listener.datasource_bind_parameters:
+        class: Oro\Bundle\DataGridBundle\EventListener\DatasourceBindParametersListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    oro_datagrid.event_listener.ormdatasource_acl:
+        class: Oro\Bundle\DataGridBundle\EventListener\OrmDatasourceAclListener
+        arguments:
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before, method: onResultBefore }
+
+    oro_datagrid.event_listener.row_selection:
+        class: Oro\Bundle\DataGridBundle\EventListener\RowSelectionListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    oro_datagrid.event_listener.cell_selection:
+        class: Oro\Bundle\DataGridBundle\EventListener\CellSelectionListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    oro_datagrid.event_listener.mixin:
+        class: Oro\Bundle\DataGridBundle\EventListener\MixinListener
+        arguments:
+            - '@oro_datagrid.mixin_configuration.helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre, method: onPreBuild, priority: 255 }
+
+    oro_datagrid.event_listener.grid_views_load:
+        class: Oro\Bundle\DataGridBundle\EventListener\GridViewsLoadListener
+        arguments:
+            - '@doctrine'
+            - '@security.authorization_checker'
+            - '@oro_security.token_accessor'
+            - '@oro_security.acl_helper'
+            - '@translator'
+            - '@oro_datagrid.grid_view.manager'
+            - '@oro_datagrid.appearance_type.manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.grid_views_load, method: onViewsLoad }
+
+    oro_datagrid.form.type.grid_view_type:
+        class: Oro\Bundle\DataGridBundle\Form\Type\GridViewType
+        tags:
+            - { name: form.type, alias: oro_datagrid_grid_view }
+
+    oro_datagrid.form.type.sorting_type:
+        class: Oro\Bundle\DataGridBundle\Form\Type\GridSortingType
+        tags:
+            - { name: form.type, alias: oro_datagrid_sorting }
+
+    oro_datagrid.grid_view.manager:
+        class: Oro\Bundle\DataGridBundle\Entity\Manager\GridViewManager
+        public: true
+        arguments:
+            - '@oro_security.acl_helper'
+            - '@doctrine'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.board.restriction_manager'
+
+    oro_datagrid.appearance_type.manager:
+        class: Oro\Bundle\DataGridBundle\Entity\Manager\AppearanceTypeManager
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    oro_datagrid.grid_view.manager.link:
+        tags:
+            - { name: oro_service_link,  service: oro_datagrid.grid_view.manager }
+
+    oro_datagrid.grid_view.manager.api:
+        class: Oro\Bundle\DataGridBundle\Entity\Manager\GridViewApiEntityManager
+        public: true
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\DataGridBundle\Entity\GridView'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_datagrid.grid_view.manager'
+
+    oro_datagrid.form.grid_view.api:
+        class: Symfony\Component\Form\Form
+        public: true
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - Oro\Bundle\DataGridBundle\Form\Type\GridViewType
+
+    oro_datagrid.grid_view.form.handler.api:
+        class: Oro\Bundle\DataGridBundle\Form\Handler\GridViewApiHandler
+        public: true
+        arguments:
+            - '@oro_datagrid.form.grid_view.api'
+            - '@request_stack'
+            - '@doctrine'
+            - '@oro_datagrid.grid_view.manager'
+            - '@security.token_storage'
+
+    oro_datagrid.datagrid.inline_edit_column_options_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptionsGuesser
+        arguments:
+            - !tagged_iterator oro_datagrid.inline_edit_column_options_guesser
+            - '@validator'
+        calls:
+            - [setConstraintConverter, ['@oro_form.extension.js_validation.constraint_converter']]
+
+    oro_datagrid.datagrid.inline_edit_column_options.text_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptions\TextGuesser
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: oro_datagrid.inline_edit_column_options_guesser }
+
+    oro_datagrid.datagrid.inline_edit_column_options.choices_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptions\ChoicesGuesser
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_datagrid.choice.helper'
+        tags:
+            - { name: oro_datagrid.inline_edit_column_options_guesser }
+
+    oro_datagrid.datagrid.inline_edit_column_options.multi_select_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiSelectGuesser
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_datagrid.choice.helper'
+        tags:
+            - { name: oro_datagrid.inline_edit_column_options_guesser }
+
+    oro_datagrid.datagrid.inline_edit_column_options.relation_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptions\RelationGuesser
+        tags:
+            - { name: oro_datagrid.inline_edit_column_options_guesser }
+
+    oro_datagrid.datagrid.inline_edit_column_options.multi_relation_guesser:
+        class: Oro\Bundle\DataGridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiRelationGuesser
+        tags:
+            - { name: oro_datagrid.inline_edit_column_options_guesser }
+
+    oro_datagrid.handler.export:
+        class: Oro\Bundle\DataGridBundle\Handler\ExportHandler
+        calls:
+            - [setFileManager, ['@oro_importexport.file.file_manager']]
+            - [setLogger, ['@logger']]
+
+    oro_datagrid.mixin_configuration.helper:
+        class: Oro\Bundle\DataGridBundle\Tools\MixinConfigurationHelper
+        arguments:
+             - '@oro_datagrid.configuration.provider'
+
+    oro_datagrid.datagrid.appearance.configuration:
+        class: Oro\Bundle\DataGridBundle\Extension\Appearance\Configuration
+
+    oro_datagrid.datagrid.board.configuration:
+        class: Oro\Bundle\DataGridBundle\Extension\Board\Configuration
+
+    oro_datagrid.datagrid.board.processor.default:
+        class: Oro\Bundle\DataGridBundle\Extension\Board\Processor\DefaultProcessor
+        arguments:
+            - '@doctrine'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_datagrid.choice.helper'
+        tags:
+            - { name: oro_datagrid.board_processor, alias: default }
+
+    oro_datagrid.datagrid.board.restriction_manager:
+        class: Oro\Bundle\DataGridBundle\Extension\Board\RestrictionManager
+        arguments:
+            - "@oro_workflow.registry"
+            - '@oro_ui.user_agent_provider'
+            - '@oro_entity.orm.entity_class_resolver'
+
+    oro_datagrid.choice.helper:
+        class: Oro\Bundle\DataGridBundle\Tools\ChoiceFieldHelper
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
+
+    oro_datagrid.helper.route:
+        class: Oro\Bundle\DataGridBundle\Tools\DatagridRouteHelper
+        public: true
+        arguments:
+            - '@router.default'
+
+    oro_datagrid.async.pre_export:
+        class: Oro\Bundle\DataGridBundle\Async\Export\PreExportMessageProcessor
+        parent: oro_importexport.async.pre_export_abstract
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+        calls:
+            - [setExportHandler, ['@oro_datagrid.handler.export']]
+            - [setExportIdFetcher, ['@oro_datagrid.importexport.export_id_fetcher']]
+
+    oro_datagrid.async.export:
+        class: Oro\Bundle\DataGridBundle\Async\Export\ExportMessageProcessor
+        parent: oro_importexport.async.export_abstract
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+        calls:
+            - [setExportHandler, ['@oro_datagrid.handler.export']]
+            - [setExportConnector, ['@oro_datagrid.importexport.export_connector']]
+            - [setExportProcessor, ['@oro_datagrid.importexport.processor.export']]
+            - [setWriterChain, ['@oro_importexport.writer.writer_chain']]
+
+    oro_datagrid.layout_context_configurator.data:
+        class: Oro\Bundle\DataGridBundle\Layout\Extension\DatagridConfigContextConfigurator
+        arguments:
+            - '@oro_datagrid.datagrid.manager'
+        tags:
+            - { name: layout.context_configurator }
+
+    oro_datagrid.multi_grid_provider:
+        class: Oro\Bundle\DataGridBundle\Provider\MultiGridProvider
+        public: true
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_entity_config.config_manager'
+            - '@oro_datagrid.datagrid.manager'
+
+    Oro\Bundle\DataGridBundle\Provider\MultiGridProvider:
+        alias: oro_datagrid.multi_grid_provider
+
+    oro_datagrid.multi_grid_provider.link:
+        tags:
+            - { name: oro_service_link, service: oro_datagrid.multi_grid_provider }
+
+    oro_datagrid.helper.date:
+        class: Oro\Bundle\DataGridBundle\Tools\DateHelper
+        public: true
+        arguments:
+            - '@oro_locale.settings'
+
+    oro_datagrid.converter.url_converter:
+        class: Oro\Bundle\DataGridBundle\Converter\UrlConverter
+        public: false
+        arguments:
+            - '@router'
+
+    oro_datagrid.event_listener.default_grid_view_load:
+        class: Oro\Bundle\DataGridBundle\EventListener\DefaultGridViewLoadListener
+        arguments:
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_search.provider.search_mapping'
+            - '@oro_entity_config.config_manager'
+            - '@translator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.grid_views_load, method: onViewsLoad }

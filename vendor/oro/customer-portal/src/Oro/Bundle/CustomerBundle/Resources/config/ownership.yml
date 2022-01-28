@@ -1,0 +1,115 @@
+parameters:
+    oro_customer.entity.owners:
+        business_unit: 'Oro\Bundle\CustomerBundle\Entity\Customer'
+        user: 'Oro\Bundle\CustomerBundle\Entity\CustomerUser'
+
+    # default ttl for frontend owner tree provider cache is set to one week
+    oro_customer.frontend_owner_tree_provider.cache_ttl: 604800
+
+services:
+    oro_customer.owner.frontend_ownership_metadata_provider:
+        class: 'Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadataProvider'
+        public: false
+        arguments:
+            - '%oro_customer.entity.owners%'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_security.token_accessor'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider.cache'
+        tags:
+            - { name: oro_security.owner.metadata_provider, alias: frontend_ownership }
+
+    oro_customer.owner.frontend_ownership_metadata_provider.cache:
+        parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'oro_acl_entity_ownership_frontend' ] ]
+
+    oro_customer.owner.decision_maker:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\EntityOwnershipDecisionMaker'
+        arguments:
+            - '@oro_security.ownership_tree_provider.chain'
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.token_accessor'
+            - '@doctrine'
+            - '@property_accessor'
+        tags:
+           - { name: oro_security.owner.ownership_decision_maker, priority: 10 }
+
+    oro_customer.owner.anonymous_decision_maker:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\AnonymousOwnershipDecisionMaker'
+        arguments:
+            - '@oro_security.ownership_tree_provider.chain'
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.token_accessor'
+        tags:
+           - { name: oro_security.owner.ownership_decision_maker, priority: 20 }
+
+    oro_customer.owner.tree_provider:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\FrontendOwnerTreeProvider'
+        arguments:
+            - '@doctrine'
+            - '@oro_customer.owner.database_checker'
+            - '@oro_customer.owner.frontend_ownership_tree_provider.cache'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider'
+            - '@security.token_storage'
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_customer.model.owner_tree_message_factory'
+        calls:
+            - [setCacheTtl, ['%oro_customer.frontend_owner_tree_provider.cache_ttl%']]
+        tags:
+            - { name: oro_security.ownership.tree_provider, priority: 10 }
+
+    oro_customer.owner.database_checker:
+        public: false
+        class: 'Oro\Bundle\EntityBundle\Tools\DatabaseChecker'
+        arguments:
+            - '@doctrine'
+            - ['oro_customer_user']
+            - '%installed%'
+        tags:
+            - { name: oro_entity.database_checker }
+
+    oro_customer.owner.frontend_ownership_tree_provider.cache:
+        parent: oro.cache.abstract
+        public: true
+        calls:
+            - [ setNamespace, [ 'oro_acl_owner_tree_frontend' ] ]
+
+    oro_customer.model.business_unit_message_factory:
+        class: Oro\Bundle\CustomerBundle\Model\BusinessUnitMessageFactory
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    oro_customer.model.owner_tree_message_factory:
+        class: Oro\Bundle\CustomerBundle\Model\OwnerTreeMessageFactory
+
+    oro_customer.async.owner_tree_cache_job_processor:
+        class: Oro\Bundle\CustomerBundle\Async\OwnerTreeCacheJobProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.client.message_producer'
+            - '@doctrine'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider'
+            - '@oro_customer.model.business_unit_message_factory'
+            - '@oro_customer.model.owner_tree_message_factory'
+            - '@logger'
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    oro_customer.async.business_unit_owner_tree_cache_job_processor:
+        class: Oro\Bundle\CustomerBundle\Async\BusinessUnitOwnerTreeCacheJobProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_customer.owner.tree_provider'
+            - '@oro_customer.model.business_unit_message_factory'
+            - '@logger'
+        tags:
+            - { name: oro_message_queue.client.message_processor }

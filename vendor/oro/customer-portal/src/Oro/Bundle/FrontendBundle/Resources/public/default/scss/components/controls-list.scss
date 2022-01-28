@@ -1,0 +1,45 @@
+/* @theme: default; */
+
+.controls-list {
+    & + .controls-list {
+        border-left: $controls-list-separator-width solid $controls-list-separator-color;
+        margin-left: $offset-x-m;
+        padding-left: $offset-x-m;
+    }
+
+    li {
+        display: inline-block;
+        margin-left: $offset-x-m;
+        padding-left: $offset-x-m;
+        vertical-align: top;
+
+        font-size: $base-font-size;
+        line-height: normal;
+
+        border-left: $controls-list-separator-width solid $controls-list-separator-color;
+
+        &:first-child {
+            margin-left: 0;
+            padding-left: 0;
+
+            border-left: 0;
+        }
+    }
+
+    [class^="fa-"],
+    [class*=" fa-"] {
+        vertical-align: baseline;
+    }
+
+    i {
+        margin-right: 3px;
+
+        font-size: $font-icon-button-m;
+    }
+
+    .btn {
+        padding: 0;
+
+        line-height: inherit;
+    }
+}

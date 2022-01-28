@@ -1,0 +1,91 @@
+Oro\Bundle\SalesBundle\Entity\Opportunity:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        probability:
+            - Oro\Bundle\FormBundle\Validator\Constraints\PercentRange:
+                min: 0
+                max: 100
+        status:
+            - NotBlank: ~
+
+Oro\Bundle\SalesBundle\Entity\Lead:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        firstName:
+            - Length:
+                max: 255
+        lastName:
+            - Length:
+                max: 255
+        emails:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.address.validation.emails.contains_primary
+        status:
+            - NotBlank: ~
+        addresses:
+            - Valid: ~
+        phones:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.address.validation.phones.contains_primary
+        numberOfEmployees:
+            - Regex: # For frontend validation
+                pattern: '/^[\d+]*$/'
+                message: "This value should contain only numbers."
+        website:
+            - Url:
+                protocols: ['http', 'https']
+                message: oro.sales.validation.lead.website_url.message
+
+Oro\Bundle\SalesBundle\Entity\LeadAddress:
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\RegionText: ~
+    properties:
+        country:
+            - NotBlank: ~
+        owner:
+            - NotBlank: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField:
+                message: oro.address.validation.owner_changed
+                groups: [api]
+
+Oro\Bundle\SalesBundle\Entity\SalesFunnel:
+    properties:
+        startDate:
+            - NotBlank: ~
+            - Date: ~
+
+Oro\Bundle\SalesBundle\Entity\B2bCustomer:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        dataChannel:
+            - NotBlank: ~
+        shippingAddress:
+            - Valid: ~
+        billingAddress:
+            - Valid: ~
+        phones:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.address.validation.phones.contains_primary
+        emails:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: oro.address.validation.emails.contains_primary
+
+Oro\Bundle\SalesBundle\Entity\Customer:
+    properties:
+        account:
+            - NotBlank: ~
+            - Valid: ~

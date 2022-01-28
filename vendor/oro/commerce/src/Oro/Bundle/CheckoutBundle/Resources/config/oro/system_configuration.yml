@@ -1,0 +1,118 @@
+system_configuration:
+    groups:
+        orders_history:
+            title: oro.order.system_configuration.groups.orders_history.title
+            icon: fa-book
+        orders_history_open_orders:
+            title: oro.checkout.system_configuration.groups.open_orders.title
+        checkout:
+            title: oro.checkout.system_configuration.groups.checkout.title
+            icon: fa-credit-card
+            page_reload: true
+        guest_checkout:
+            title: oro.checkout.system_configuration.groups.guest_checkout.title
+        guest_checkout_owner_section:
+            title: oro.checkout.system_configuration.groups.guest_checkout_owner.title
+        checkout_customer_users_registration:
+            title: oro.checkout.system_configuration.groups.customer_users_registration.title
+            icon: 'fa-user-plus'
+        allow_checkout_without_email_confirmation_section:
+            title: oro.checkout.system_configuration.groups.allow_checkout_without_email_confirmation.title
+            icon: 'fa-user-plus'
+        checkout_options:
+            title: oro.checkout.system_configuration.groups.checkout_options.title
+
+    fields:
+        oro_checkout.frontend_show_open_orders:
+            data_type: boolean
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            priority: 15
+            options:
+                label: oro.checkout.system_configuration.fields.frontend_show_open_orders.title
+                choices:
+                     No: 0
+                     Yes: 1
+        oro_checkout.frontend_open_orders_separate_page:
+            data_type: boolean
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            priority: 10
+            options:
+                label: oro.checkout.system_configuration.fields.frontend_open_orders_separate_page.title
+                choices:
+                     No: 0
+                     Yes: 1
+        oro_checkout.guest_checkout:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 10
+            options:
+                label: oro.checkout.system_configuration.fields.guest_checkout.title
+                tooltip: oro.checkout.system_configuration.fields.guest_checkout.tooltip
+        oro_checkout.registration_allowed:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 20
+            options:
+                label: oro.checkout.system_configuration.fields.registration_allowed.title
+                tooltip: oro.checkout.system_configuration.fields.registration_allowed.tooltip
+        oro_checkout.default_guest_checkout_owner:
+            ui_only: true
+            data_type: string
+            type: Oro\Bundle\UserBundle\Form\Type\UserSelectType
+            priority: 30
+            options:
+                label: oro.checkout.system_configuration.fields.default_guest_checkout_owner.title
+                tooltip: oro.checkout.system_configuration.fields.default_guest_checkout_owner.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_checkout.allow_checkout_without_email_confirmation:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 15
+            options:
+                label: oro.checkout.system_configuration.fields.allow_checkout_without_email_confirmation.title
+                tooltip: oro.checkout.system_configuration.fields.allow_checkout_without_email_confirmation.tooltip
+
+        oro_checkout.checkout_max_line_items_per_page:
+            data_type: integer
+            type: Symfony\Component\Form\Extension\Core\Type\IntegerType
+            search_type: text
+            options:
+                label: oro.checkout.system_configuration.fields.checkout_max_line_items_per_page.label
+                tooltip: oro.checkout.system_configuration.fields.checkout_max_line_items_per_page.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Range:
+                        min: 200
+                        max: 1000
+
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    sales:
+                        children:
+                            checkout:
+                                children:
+                                    checkout_customer_users_registration:
+                                        children:
+                                            - oro_checkout.registration_allowed
+                                            - oro_checkout.allow_checkout_without_email_confirmation
+                                    guest_checkout:
+                                        children:
+                                            - oro_checkout.guest_checkout
+                                    guest_checkout_owner_section:
+                                        children:
+                                            - oro_checkout.default_guest_checkout_owner
+                                    checkout_options:
+                                        children:
+                                            - oro_checkout.checkout_max_line_items_per_page
+                            orders_history:
+                                children:
+                                    orders_history_open_orders:
+                                        children:
+                                            - oro_checkout.frontend_show_open_orders
+                                            - oro_checkout.frontend_open_orders_separate_page

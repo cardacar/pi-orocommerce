@@ -1,0 +1,91 @@
+parameters:
+    # the time in seconds determines how often a database ping service being called
+    oro_sync.db_ping.interval: 20
+    # the time in seconds determines how often a websocket ping service being called
+    oro_sync.websocket_ping.interval: 50
+
+services:
+    oro_sync.manager.topic_manager:
+        class: Oro\Bundle\SyncBundle\Manager\TopicManager
+        parent: gos_web_socket.wamp.topic_manager
+        decorates: gos_web_socket.wamp.topic_manager
+
+    oro_sync.periodic.db_ping:
+        class: Oro\Bundle\SyncBundle\Periodic\DbPingPeriodic
+        arguments:
+            - '@doctrine'
+            - '%oro_sync.db_ping.interval%'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: gos_web_socket.periodic }
+            - { name: monolog.logger, channel: oro_websocket }
+
+    oro_sync.topic.websocket_ping:
+        class: Oro\Bundle\SyncBundle\Topic\WebsocketPingTopic
+        arguments:
+            - 'oro_sync.ping'
+            - '%oro_sync.websocket_ping.interval%'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+        tags:
+            - { name: gos_web_socket.topic }
+            - { name: monolog.logger, channel: oro_websocket }
+
+    oro_sync.twig.sync_extension:
+        class: Oro\Bundle\SyncBundle\Twig\OroSyncExtension
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_sync.client.connection_checker:
+        class: Oro\Bundle\SyncBundle\Client\ConnectionChecker
+        public: true
+        arguments:
+            - '@oro_sync.websocket_client.basic'
+
+    oro_sync.event_listener.maintenance:
+        class: Oro\Bundle\SyncBundle\EventListener\MaintenanceListener
+        arguments:
+            - '@oro_sync.websocket_client'
+            - '@oro_sync.client.connection_checker'
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: kernel.event_listener, event: maintenance.on, method: onModeOn }
+            - { name: kernel.event_listener, event: maintenance.off, method: onModeOff }
+
+    oro_sync.topic.maintenance:
+        class: Oro\Bundle\SyncBundle\Topic\BroadcastTopic
+        arguments:
+            - 'oro_sync.maintenance'
+        tags:
+            - { name: gos_web_socket.topic }
+
+    oro_sync.authentication.origin_provider:
+        class: Oro\Bundle\SyncBundle\Authentication\Origin\ChainOriginProvider
+        arguments:
+            - !tagged_iterator oro_sync.origin_provider
+
+    oro_sync.authentication.application_origin_provider:
+        class: Oro\Bundle\SyncBundle\Authentication\Origin\ApplicationOriginProvider
+        arguments:
+            - '@oro_config.global'
+            - '@oro_sync.authentication.origin_extractor'
+        tags:
+            - { name: oro_sync.origin_provider }
+
+    oro_sync.authentication.origin_registry.factory:
+        class: Oro\Bundle\SyncBundle\Authentication\Origin\OriginRegistryFactory
+        arguments:
+            - '@oro_sync.authentication.origin_provider'
+
+    oro_sync.loader.yaml:
+        class:  Oro\Bundle\SyncBundle\Loader\YamlFileLoader
+        public: false
+        parent: gos_pubsub_router.loader.yaml
+        tags:
+            - { name: gos_pubsub_router.routing.loader }
+
+    oro_sync.authentication.origin_extractor:
+        class: Oro\Bundle\SyncBundle\Authentication\Origin\OriginExtractor

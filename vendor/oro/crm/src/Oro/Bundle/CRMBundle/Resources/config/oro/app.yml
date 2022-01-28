@@ -1,0 +1,13 @@
+oro_email:
+    email_sync_exclusions: ['Oro\Bundle\UserBundle\Entity\User']
+
+oro_theme:
+    themes:
+        oro:
+            logo: bundles/orocrm/images/oro-crm-logo.svg
+        demo:
+            logo: bundles/orocrm/images/oro-crm-logo.svg
+
+oro_translation:
+    package_names:
+        - OroCRM

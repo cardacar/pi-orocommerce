@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\ImportExportBundle\OroImportExportBundle, priority: -1 }

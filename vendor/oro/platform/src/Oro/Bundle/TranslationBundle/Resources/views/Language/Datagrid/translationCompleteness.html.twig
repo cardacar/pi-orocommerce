@@ -1,0 +1,12 @@
+{% set translationCompleteness = record.getValue('translationCompleteness') %}
+
+{% if translationCompleteness is not null %}
+    <div class="translation-completeness">
+        <div class="progress">
+            <div class="progress-bar success" style="width: {{ translationCompleteness * 100 }}%;"></div>
+        </div>
+        <b class="progress-label">{{ (translationCompleteness * 100)|round(0, 'floor') }}%</b>
+    </div>
+{% else %}
+    {{ 'N/A'|trans }}
+{% endif %}

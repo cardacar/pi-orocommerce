@@ -1,0 +1,4 @@
+css:
+    inputs:
+      - 'bundles/orosales/css/scss/main.scss'
+      - 'bundles/orosales/css/scss/oro-sales.scss'

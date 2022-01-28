@@ -1,0 +1,40 @@
+data:
+    -
+        type: leads
+        id: '<toString(@lead1->id)>'
+        attributes:
+            name: 'Lead 1'
+        relationships:
+            account:
+                data:
+                    type: accounts
+                    id: '<toString(@account1->id)>'
+            customer:
+                data:
+                    type: b2bcustomers
+                    id: '<toString(@b2b_customer1->id)>'
+    -
+        type: leads
+        id: '<toString(@lead2->id)>'
+        attributes:
+            name: 'Lead 2'
+        relationships:
+            account:
+                data:
+                    type: accounts
+                    id: '<toString(@account1->id)>'
+            customer:
+                data:
+                    type: b2bcustomers
+                    id: '<toString(@b2b_customer1->id)>'
+included:
+    -
+        type: accounts
+        id: '<toString(@account1->id)>'
+        attributes:
+            name: 'Account 1'
+        relationships:
+            organization:
+                data:
+                    type: organizations
+                    id: '<toString(@organization->id)>'

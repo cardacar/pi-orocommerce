@@ -1,0 +1,35 @@
+{
+    "name": "oro/crm-dotmailer",
+    "description": "Oro Dotmailer integration",
+    "homepage": "https://github.com/oroinc/OroCRMDotmailerBundle.git",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Oro\\Bundle\\DotmailerBundle\\": ""},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "ext-curl": "*",
+        "oro/crm": "4.2.*",
+        "romanpitak/dotmailer-api-v2-client": "4.2.*",
+        "oro/marketing" : "4.2.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.2-dev"
+        }
+    }
+}

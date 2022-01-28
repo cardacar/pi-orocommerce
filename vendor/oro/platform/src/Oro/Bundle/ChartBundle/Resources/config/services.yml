@@ -1,0 +1,60 @@
+services:
+    oro_chart.config_provider:
+        class: Oro\Bundle\ChartBundle\Model\ConfigProvider
+        parent: oro.static_config_provider.abstract
+        arguments:
+            - '%kernel.cache_dir%/oro/charts.php'
+            - '%kernel.debug%'
+
+    Oro\Bundle\ChartBundle\Model\ConfigProvider:
+        alias: oro_chart.config_provider
+
+    oro_chart.view_builder:
+        class: Oro\Bundle\ChartBundle\Model\ChartViewBuilder
+        shared: false
+        arguments:
+            - '@oro_chart.config_provider'
+            - '@oro_chart.data_transformer.factory'
+            - '@twig'
+
+    Oro\Bundle\ChartBundle\Model\ChartViewBuilder:
+        alias: oro_chart.view_builder
+
+    oro_chart.form.type.settings:
+        class: Oro\Bundle\ChartBundle\Form\Type\ChartSettingsType
+        arguments:
+            - '@oro_chart.config_provider'
+        tags:
+            - { name: form.type, alias: oro_chart_setting }
+
+    oro_chart.form.type.settings.collection:
+        class: Oro\Bundle\ChartBundle\Form\Type\ChartSettingsCollectionType
+        tags:
+            - { name: form.type, alias: oro_chart_settings_collection }
+
+    oro_chart.form.type:
+        class: Oro\Bundle\ChartBundle\Form\Type\ChartType
+        arguments:
+            - '@oro_chart.config_provider'
+        tags:
+            - { name: form.type, alias: oro_chart }
+        calls:
+             - [setEventListener,  ['@oro_chart.form.event_listener.chart']]
+
+    oro_chart.form.event_listener.chart:
+        class: Oro\Bundle\ChartBundle\Form\EventListener\ChartTypeEventListener
+
+    oro_chart.data_transformer.factory:
+        class: Oro\Bundle\ChartBundle\Model\Data\Transformer\TransformerFactory
+        arguments:
+            - '@service_container'
+
+    oro_chart.data_transformer.pie_chart:
+        class: Oro\Bundle\ChartBundle\Model\Data\Transformer\PieChartDataTransformer
+        public: true
+
+    oro_chart.options_builder:
+        class: Oro\Bundle\ChartBundle\Model\ChartOptionsBuilder
+
+    Oro\Bundle\ChartBundle\Model\ChartOptionsBuilder:
+        alias: oro_chart.options_builder

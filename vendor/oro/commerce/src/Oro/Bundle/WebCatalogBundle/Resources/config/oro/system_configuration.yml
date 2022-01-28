@@ -1,0 +1,43 @@
+system_configuration:
+    fields:
+        oro_web_catalog.web_catalog:
+            ui_only: true
+            data_type: integer
+            type: Oro\Bundle\WebCatalogBundle\Form\Type\WebCatalogSelectType
+            priority: 110
+            options:
+                label: oro.webcatalog.system_configuration.fields.web_catalog.label
+                tooltip: oro.webcatalog.system_configuration.fields.web_catalog.tooltip
+                required: false
+                create_enabled: false
+            page_reload: true
+        oro_web_catalog.navigation_root:
+            data_type: integer
+            type: Oro\Bundle\WebCatalogBundle\Form\Type\ContentNodeSelectSystemConfigType
+            priority: 100
+            options:
+                label: oro.webcatalog.system_configuration.fields.navigation_root.label
+                tooltip: oro.webcatalog.system_configuration.fields.navigation_root.tooltip
+                required: false
+                data_transformer: oro_web_catalog.form.data_transformer.navigation_root_option
+        oro_web_catalog.enable_web_catalog_canonical_url:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            priority: 250
+            options:
+                label: oro.webcatalog.system_configuration.fields.enable_web_catalog_canonical_url.label
+                tooltip: oro.webcatalog.system_configuration.fields.enable_web_catalog_canonical_url.tooltip
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    websites:
+                        children:
+                            routing:
+                                children:
+                                    websites_routing_general:
+                                        children:
+                                            - oro_web_catalog.enable_web_catalog_canonical_url
+                                            - oro_web_catalog.web_catalog
+                                            - oro_web_catalog.navigation_root

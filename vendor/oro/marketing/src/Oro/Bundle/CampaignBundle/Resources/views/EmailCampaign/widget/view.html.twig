@@ -1,0 +1,37 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+{% import 'OroEmailBundle::macros.html.twig' as email %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ ui.renderProperty('oro.campaign.emailcampaign.name.label'|trans, entity.name) }}
+            {{ ui.renderProperty('oro.campaign.emailcampaign.sender_email.label'|trans, entity.senderEmail, null, null, {'dir': 'ltr'}) }}
+            {{ ui.renderProperty('oro.campaign.emailcampaign.sender_name.label'|trans, entity.senderName) }}
+            {{ ui.renderProperty('oro.campaign.emailcampaign.schedule.label'|trans, ('oro.campaign.emailcampaign.schedule.' ~ entity.schedule)|trans ) }}
+
+            {% if entity.schedule == constant('Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign::SCHEDULE_DEFERRED') %}
+                {{ ui.renderProperty('oro.campaign.emailcampaign.scheduled_for.label'|trans, entity.scheduledFor ? entity.scheduledFor|oro_format_datetime : '') }}
+            {% endif %}
+
+            {% if entity.sent %}
+                {{ ui.renderProperty('oro.campaign.emailcampaign.sent_at.label'|trans, entity.sentAt ? entity.sentAt|oro_format_datetime : '') }}
+            {% endif %}
+
+            {%- if entity.campaign is not empty -%}
+                {{ ui.renderHtmlProperty(
+                    'oro.campaign.emailcampaign.campaign.label'|trans,
+                    ui.entityViewLink(entity.campaign, entity.campaign.name, 'oro_campaign_view')
+                ) }}
+            {%- endif -%}
+
+            {%- if entity.marketingList is not empty -%}
+                {{ ui.renderHtmlProperty(
+                    'oro.campaign.emailcampaign.marketing_list.label'|trans,
+                    ui.entityViewLink(entity.marketingList,entity.marketingList.name, 'oro_marketing_list_view')
+                ) }}
+            {%- endif -%}
+
+            {{ ui.renderHtmlProperty('oro.campaign.emailcampaign.description.label'|trans, entity.description|oro_html_sanitize) }}
+        </div>
+    </div>
+</div>

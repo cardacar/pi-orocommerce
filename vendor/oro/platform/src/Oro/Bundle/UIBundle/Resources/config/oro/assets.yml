@@ -1,0 +1,36 @@
+css:
+    inputs:
+        # Bootstrap port
+        - 'bundles/oroui/css/scss/bootstrap/bootstrap.scss'
+
+        # libraries' styles
+        - 'bundles/oroui/css/scss/font-awesome/font-awesome.scss'
+        - 'bundles/oroui/lib/simplecolorpicker/jquery.simplecolorpicker.css'
+        - 'bundles/oroui/lib/simplecolorpicker/jquery.simplecolorpicker-fontawesome.css'
+        - 'bundles/oroui/lib/minicolors/jquery.minicolors.css'
+
+        # customized libraries' styles
+        - 'bundles/oroui/css/jquery-ui.grid.css'
+        - 'bundles/oroui/css/jquery-ui.custom.css'
+        - 'bundles/oroui/css/lightgallery/lightgallery.scss'
+
+        # custom styles
+        - 'bundles/oroui/css/scss/main.scss'
+        - 'bundles/oroui/css/all.css'
+    output: css/oro.css
+
+css_rtl_ready:
+    inputs:
+        - "~timepicker/jquery.timepicker.css"
+        - "~jstree/dist/themes/default/style.min.css"
+        - "~lightgallery/dist/css/lg-transitions.css"
+        - "~lightgallery/dist/css/lightgallery.css"
+        - "~overlayscrollbars/css/OverlayScrollbars.css"
+        - "~jquery-ui-multiselect-widget/jquery.multiselect.css"
+        - "~jquery-ui-multiselect-widget/jquery.multiselect.filter.css"
+    output: css/oro-rtl-ready.css
+
+css_ie:
+    inputs:
+        - 'bundles/oroui/css/scss/ie/main-ie.scss'
+    output: css/oro-ie.css

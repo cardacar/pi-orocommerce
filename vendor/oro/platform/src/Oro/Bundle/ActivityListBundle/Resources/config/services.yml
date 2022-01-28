@@ -1,0 +1,203 @@
+services:
+    oro_activity_list.manager:
+        class: Oro\Bundle\ActivityListBundle\Entity\Manager\ActivityListManager
+        public: true
+        arguments:
+            - "@security.authorization_checker"
+            - "@oro_entity.entity_name_resolver"
+            - "@oro_config.user"
+            - "@oro_activity_list.provider.chain"
+            - "@oro_activity_list.provider.identifiers"
+            - "@oro_comment.comment.api_manager"
+            - "@oro_entity.doctrine_helper"
+            - "@event_dispatcher"
+            - "@oro_workflow.data_helper"
+            - "@oro_ui.html_tag_helper"
+
+    Oro\Bundle\ActivityListBundle\Entity\Manager\ActivityListManager:
+        alias: 'oro_activity_list.manager'
+
+    oro_activity_list.provider.identifiers:
+        class: Oro\Bundle\ActivityListBundle\Provider\ActivityListIdProvider
+        public: false
+        arguments:
+            - "@oro_config.user"
+            - "@oro_activity_list.provider.chain"
+            - "@oro_activity_list.filter.helper"
+            - "@oro_activity_list.helper.activity_inheritance_targets"
+            - "@oro_security.acl_helper"
+
+    oro_activity_list.collect_manager:
+        class: Oro\Bundle\ActivityListBundle\Entity\Manager\CollectListManager
+        arguments:
+            - "@oro_activity_list.provider.chain"
+
+    oro_activity_list.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\ActivityListBundle\Entity\ActivityList'
+            - "@doctrine.orm.entity_manager"
+
+    oro_activity_list.placeholder.filter:
+        class: Oro\Bundle\ActivityListBundle\Placeholder\PlaceholderFilter
+        public: true
+        arguments:
+            - "@oro_activity_list.provider.chain"
+            - "@doctrine"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: kernel.event_listener, event: oro.ui.grouping_chain_widget.before, method: isAllowedButton }
+
+    oro_activity_list.event_listener.actitity_list_listener:
+        class: Oro\Bundle\ActivityListBundle\EventListener\ActivityListListener
+        arguments:
+            - "@oro_activity_list.collect_manager"
+            - "@oro_entity.doctrine_helper"
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    oro_activity_list.provider.chain:
+        public: true
+        class: Oro\Bundle\ActivityListBundle\Provider\ActivityListChainProvider
+        arguments:
+            - [] # activity classes
+            - [] # activity ACL classes
+            - ~ # service locator for activity list providers
+            - "@oro_entity.doctrine_helper"
+            - "@oro_entity_config.config_manager"
+            - "@translator"
+            - "@oro_entity.routing_helper"
+            - "@oro_security.token_accessor"
+
+    oro_activity_list.provider.email_recipients:
+        class: Oro\Bundle\ActivityListBundle\Provider\EmailRecipientsProvider
+        arguments:
+            - "@doctrine"
+            - "@oro_activity.manager"
+            - "@oro_email.related_emails.provider"
+            - "@oro_security.acl_helper"
+        tags:
+            - { name: oro_email.recipients_provider, priority: 10 }
+
+    oro_activity_list.event_listener.segment_condition_builder_options_listener:
+        class: Oro\Bundle\ActivityListBundle\EventListener\SegmentConditionBuilderOptionsListener
+        tags:
+            - { name: kernel.event_listener, event: oro_segment.condition_builder_options_load, method: onLoad }
+
+    oro_activity_list.entity_config_dumper.extension:
+        class: Oro\Bundle\ActivityListBundle\Tools\ActivityListEntityConfigDumperExtension
+        arguments:
+            - "@oro_activity_list.provider.chain"
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.association_builder"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_activity_list.entity_generator.extension:
+        class: Oro\Bundle\ActivityListBundle\Tools\ActivityListEntityGeneratorExtension
+        arguments:
+            - "@oro_activity_list.provider.chain"
+        tags:
+            - { name: oro_entity_extend.entity_generator_extension }
+
+    oro_activity_list.migration.extension.activity_list:
+        class: Oro\Bundle\ActivityListBundle\Migration\Extension\ActivityListExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: activity_list }
+
+    oro_activity_list.migration.activity_list.post_up.listener:
+        class: Oro\Bundle\ActivityListBundle\EventListener\ActivityListPostUpMigrationListener
+        arguments:
+            - "@oro_activity_list.provider.chain"
+            - "@oro_activity_list.migration.extension.activity_list"
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - "@oro_migration.db_id_name_generator"
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -110 }
+
+    oro_activity_list.filter.helper:
+        class: Oro\Bundle\ActivityListBundle\Filter\ActivityListFilterHelper
+        arguments:
+            - "@oro_filter.extension.orm_filter_bag"
+            - "@oro_entity.routing_helper"
+            - "@oro_activity_list.provider.chain"
+
+    oro_activity_list.filter.activity_list:
+        class: Oro\Bundle\ActivityListBundle\Filter\ActivityListFilter
+        public: false
+        arguments:
+            - "@form.factory"
+            - "@oro_filter.filter_utility"
+            - '@doctrine'
+            - "@oro_filter.execution_context"
+            - "@oro_activity.association_helper"
+            - "@oro_activity_list.provider.chain"
+            - "@oro_activity_list.filter.helper"
+            - "@oro_entity.routing_helper"
+            - "@oro_query_designer.query_designer.manager"
+            - "@oro_activity_list.filter.related_activity_datagrid_factory"
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: activityList }
+
+    oro_activity_list.filter.related_activity_datagrid_factory:
+        class: Oro\Bundle\ActivityListBundle\Filter\RelatedActivityDatagridFactory
+        lazy: true
+        arguments:
+            - "@oro_query_designer.grid.datagrid_configuration_builder"
+            - "@oro_datagrid.datagrid.builder"
+            - "@event_dispatcher"
+
+    oro_activity_list.helper.activity_inheritance_targets:
+        class: Oro\Bundle\ActivityListBundle\Helper\ActivityInheritanceTargetsHelper
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@doctrine"
+
+    # Strategies
+    oro_activity_list.strategy.replace:
+        class: Oro\Bundle\ActivityListBundle\Model\Strategy\ReplaceStrategy
+        arguments:
+            - "@oro_activity_list.manager"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_activity.manager"
+        tags:
+            - { name: oro_entity_merge.strategy }
+
+    oro_activity_list.strategy.unite:
+        class: Oro\Bundle\ActivityListBundle\Model\Strategy\UniteStrategy
+        arguments:
+            - "@oro_activity_list.manager"
+            - "@oro_entity.doctrine_helper"
+        tags:
+            - { name: oro_entity_merge.strategy }
+
+    # Merge accessor
+    oro_activity_list.accessor.activity:
+        class: Oro\Bundle\ActivityListBundle\Model\Accessor\ActivityAccessor
+        arguments:
+          - "@doctrine"
+        tags:
+            - { name: oro_entity_merge.accessor }
+
+    # Merge listener
+    oro_activity_list.listener.merge_listener:
+        class: Oro\Bundle\ActivityListBundle\EventListener\MergeListener
+        arguments:
+          - "@translator"
+          - "@oro_entity_config.provider.entity"
+          - "@oro_activity.manager"
+        tags:
+          - { name: kernel.event_listener, event: oro.entity_merge.build_metadata, method: onBuildMetadata, priority: -10 }
+
+    oro_activity_list.access_rule.activity_list:
+        class: Oro\Bundle\ActivityListBundle\AccessRule\ActivityListAccessRule
+        public: false
+        arguments:
+            - "@oro_security.orm.ownership_sql_walker_builder"
+            - "@oro_activity_list.provider.chain"
+        tags:
+            - { name: oro_security.access_rule, type: ORM, entityClass: Oro\Bundle\ActivityListBundle\Entity\ActivityList }

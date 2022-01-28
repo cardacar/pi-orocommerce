@@ -1,0 +1,257 @@
+services:
+    oro_dataaudit.filter.audit:
+        class: 'Oro\Bundle\DataAuditBundle\Filter\AuditFilter'
+        public: false
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@doctrine'
+            - '@oro_filter.execution_context'
+            - '@oro_query_designer.query_designer.manager'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: audit }
+
+    oro_dataaudit.loggable.audit_entity_mapper:
+        class: 'Oro\Bundle\DataAuditBundle\Loggable\AuditEntityMapper'
+        public: false
+        calls:
+            -
+                - 'addAuditEntryClasses'
+                -
+                    - 'Oro\Bundle\UserBundle\Entity\User'
+                    - 'Oro\Bundle\DataAuditBundle\Entity\Audit'
+                    - 'Oro\Bundle\DataAuditBundle\Entity\AuditField'
+
+    oro_dataaudit.converter.entity_to_entity_change_array:
+        class: 'Oro\Bundle\DataAuditBundle\Service\EntityToEntityChangeArrayConverter'
+        public: false
+        calls:
+            - [setAuditFieldTypeProvider,  ['@oro_dataaudit.provider.audit_field_type']]
+
+    oro_dataaudit.listener.send_changed_entities_to_message_queue:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\SendChangedEntitiesToMessageQueueListener'
+        arguments:
+            - '@oro_message_queue.message_producer'
+            - '@security.token_storage'
+            - '@oro_dataaudit.model.additional_entity_changes_to_audit_storage'
+            - '@oro_dataaudit.converter.entity_to_entity_change_array'
+            - '@oro_dataaudit.audit_config_provider'
+            - '@logger'
+            - '@oro_dataaudit.provider.audit_message_body_provider'
+        calls:
+            - [setEntityNameResolver, ['@oro_entity.entity_name_resolver']]
+            - [setPropertyAccessor, ['@property_accessor']]
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, priority: -255 }
+            - { name: doctrine.event_listener, event: postFlush, priority: -255 }
+
+    oro_dataaudit.datagrid.entity_type_provider:
+        class: 'Oro\Bundle\DataAuditBundle\Datagrid\EntityTypeProvider'
+        public: true
+        arguments:
+            - '@oro_entity.entity_class_name_provider'
+            - '@oro_dataaudit.audit_config_provider'
+
+    oro_dataaudit.datagrid.author_provider:
+        class: 'Oro\Bundle\DataAuditBundle\Datagrid\AuthorProvider'
+        public: true
+        arguments:
+            - '@translator'
+
+    oro_dataaudit.event_listener.dataaudit_history_grid_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\AuditHistoryGridListener'
+        arguments:
+            - ['objectClass', 'objectId']
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.audit-history-grid, method: onBuildAfter }
+
+    oro_dataaudit.event_listener.audit_grid_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\AuditGridOrganizationListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.audit-grid, method: addOrganizationSupport }
+
+    oro_dataaudit.event_listener.audit_grid_data_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\AuditGridDataListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_dataaudit.model.fields_transformer'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.audit-grid, method: addDataSupport }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.audit-history-grid, method: addDataSupport }
+
+    oro_dataaudit.event_listener.audit_grid_impersonation_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\AuditGridImpersonationListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.audit-grid, method: addImpersonationSupport }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.audit-history-grid, method: addImpersonationSupport }
+
+    oro_dataaudit.event_listener.segment_widget_options_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\SegmentWidgetOptionsListener'
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_dataaudit.segment_widget.context_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_segment.widget_options_load, method: onLoad }
+
+    oro_dataaudit.event_listener.segment_condition_builder_options_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\SegmentConditionBuilderOptionsListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_segment.condition_builder_options_load, method: onLoad }
+
+    oro_dataaudit.event_listener.entity_structure_options_listener:
+        class: 'Oro\Bundle\DataAuditBundle\EventListener\EntityStructureOptionsListener'
+        arguments:
+            - '@oro_dataaudit.audit_config_provider'
+        tags:
+            - { name: kernel.event_listener, event: oro_entity.structure.options, method: onOptionsRequest }
+
+    # Placeholder filter
+    oro_dataaudit.placeholder.filter:
+        class: 'Oro\Bundle\DataAuditBundle\Placeholder\AuditableFilter'
+        public: true
+        arguments:
+            - '@oro_entity_config.provider.dataaudit'
+
+    oro_dataaudit.audit.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        public: true
+        parent: 'oro_soap.manager.entity_manager.abstract'
+        arguments:
+            - 'Oro\Bundle\DataAuditBundle\Entity\Audit'
+            - '@doctrine.orm.entity_manager'
+
+    oro_dataaudit.migration.extension.audit_field:
+        class: 'Oro\Bundle\DataAuditBundle\Migration\Extension\AuditFieldExtension'
+        tags:
+            - { name: oro_migration.extension, extension_name: audit_field }
+
+    oro_dataaudit.segment_widget.context_checker:
+        class: 'Oro\Bundle\DataAuditBundle\SegmentWidget\ContextChecker'
+        public: true
+
+    oro_dataaudit.set_new_audit_version:
+        class: 'Oro\Bundle\DataAuditBundle\Service\SetNewAuditVersionService'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    oro_dataaudit.audit_config_provider:
+        class: 'Oro\Bundle\DataAuditBundle\Provider\AuditConfigProvider'
+        public: false
+        arguments:
+            - '@oro_entity_config.config_manager'
+
+    oro_dataaudit.entity_name_provider:
+        class: 'Oro\Bundle\DataAuditBundle\Provider\EntityNameProvider'
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_entity.entity_name_resolver'
+
+    oro_dataaudit.converter.record_validator:
+        class: 'Oro\Bundle\DataAuditBundle\Service\AuditRecordValidator'
+        public: false
+        arguments:
+            - '@logger'
+
+    oro_dataaudit.converter.change_set_to_audit_fields:
+        class: 'Oro\Bundle\DataAuditBundle\Service\ChangeSetToAuditFieldsConverter'
+        public: false
+        arguments:
+            - '@oro_dataaudit.audit_config_provider'
+            - '@oro_dataaudit.entity_name_provider'
+            - '@oro_dataaudit.converter.record_validator'
+        calls:
+            - [setAuditFieldTypeProvider,  ['@oro_dataaudit.provider.audit_field_type']]
+
+    oro_dataaudit.converter.entity_changes_to_audit_entry:
+        class: 'Oro\Bundle\DataAuditBundle\Service\EntityChangesToAuditEntryConverter'
+        arguments:
+            - '@doctrine'
+            - '@oro_dataaudit.loggable.audit_entity_mapper'
+            - '@oro_dataaudit.audit_config_provider'
+            - '@oro_dataaudit.entity_name_provider'
+            - '@oro_dataaudit.set_new_audit_version'
+            - '@oro_dataaudit.converter.record_validator'
+            - '@oro_dataaudit.converter.change_set_to_audit_fields'
+
+    oro_dataaudit.async.audit_changed_entities:
+        class: 'Oro\Bundle\DataAuditBundle\Async\AuditChangedEntitiesProcessor'
+        arguments:
+            - '@oro_dataaudit.converter.entity_changes_to_audit_entry'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_dataaudit.async.audit_changed_entities_relations:
+        class: 'Oro\Bundle\DataAuditBundle\Async\AuditChangedEntitiesRelationsProcessor'
+        arguments:
+            - '@oro_dataaudit.converter.entity_changes_to_audit_entry'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_dataaudit.async.audit_changed_entities_inverse_relations:
+        class: 'Oro\Bundle\DataAuditBundle\Async\AuditChangedEntitiesInverseRelationsProcessor'
+        arguments:
+            - '@doctrine'
+            - '@oro_dataaudit.converter.entity_changes_to_audit_entry'
+        calls:
+            - [setAuditConfigProvider,  ['@oro_dataaudit.audit_config_provider']]
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_dataaudit.async.audit_changed_entities_inverse_collections:
+        class: Oro\Bundle\DataAuditBundle\Async\AuditChangedEntitiesInverseCollectionsProcessor
+        arguments:
+            - '@doctrine'
+            - '@oro_dataaudit.converter.entity_changes_to_audit_entry'
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_dataaudit.async.audit_changed_entities_inverse_collections_chunk:
+        class: Oro\Bundle\DataAuditBundle\Async\AuditChangedEntitiesInverseCollectionsChunkProcessor
+        arguments:
+            - '@oro_dataaudit.converter.entity_changes_to_audit_entry'
+            - '@oro_message_queue.job.runner'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_dataaudit.migration.demo_data_fixtures_listener:
+        class: Oro\Bundle\DataAuditBundle\EventListener\DemoDataFixturesListener
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.data_fixtures.pre_load, method: onPreLoad }
+            - { name: kernel.event_listener, event: oro_migration.data_fixtures.post_load, method: onPostLoad }
+
+    oro_dataaudit.model.additional_entity_changes_to_audit_storage:
+        class: Oro\Bundle\DataAuditBundle\Model\AdditionalEntityChangesToAuditStorage
+
+    oro_dataaudit.provider.audit_message_body_provider:
+        class: Oro\Bundle\DataAuditBundle\Provider\AuditMessageBodyProvider
+        arguments:
+            - '@oro_entity.entity_name_resolver'
+        public: false
+
+    oro_dataaudit.autocomplete.impersonation_search_handler:
+        class: Oro\Bundle\DataAuditBundle\Autocomplete\ImpersonationSearchHandler
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@translator'
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: impersonations }
+
+    oro_dataaudit.model.fields_transformer:
+        class: 'Oro\Bundle\DataAuditBundle\Model\FieldsTransformer'
+        public: true
+
+    oro_dataaudit.provider.audit_field_type:
+        class: 'Oro\Bundle\DataAuditBundle\Provider\AuditFieldTypeProvider'

@@ -1,0 +1,102 @@
+api:
+    entities:
+        Oro\Bundle\ContactBundle\Entity\Contact:
+            documentation_resource: '@OroContactBundle/Resources/doc/api/contact.md'
+            fields:
+                email:
+                    exclude: true
+                phones:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        phone: ~
+                primaryPhone:
+                    data_type: string
+                    depends_on: [phones.phone, phones.primary]
+                    property_path: _
+                emails:
+                    data_type: objects
+                    exclusion_policy: all
+                    fields:
+                        email: ~
+                primaryEmail:
+                    data_type: string
+                    depends_on: [emails.email, emails.primary]
+                    form_options:
+                        constraints:
+                            - Email: ~
+                    property_path: _
+            filters:
+                fields:
+                    phones:
+                        data_type: string
+                        allow_array: true
+                        property_path: phones.phone
+                    primaryPhone:
+                        data_type: string
+                        type: primaryField
+                        property_path: phones
+                        options:
+                            data_field: phone
+                    emails:
+                        data_type: string
+                        allow_array: true
+                        property_path: emails.email
+                    primaryEmail:
+                        data_type: string
+                        property_path: emails
+                        type: primaryField
+                        options:
+                            data_field: email
+            sorters:
+                fields:
+                    phones:
+                        property_path: phones.phone
+                    emails:
+                        property_path: emails.email
+            subresources:
+                addresses:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false
+            actions:
+                update_list: true
+
+        Oro\Bundle\ContactBundle\Entity\ContactAddress:
+            documentation_resource: '@OroContactBundle/Resources/doc/api/contact_address.md'
+            fields:
+                createdAt:
+                    property_path: created
+                updatedAt:
+                    property_path: updated
+                customRegion:
+                    exclude: false # set manually because this field is marked as excluded in entity.yml
+                    property_path: regionText
+            actions:
+                update:
+                    fields:
+                        owner:
+                            form_options:
+                                mapped: false
+            subresources:
+                owner:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\ContactBundle\Entity\ContactEmail:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\ContactBundle\Entity\ContactPhone:
+            # this entity does not have own API resource
+            actions: false
+
+        Oro\Bundle\ContactBundle\Entity\Group:
+            documentation_resource: '@OroContactBundle/Resources/doc/api/group.md'
+
+        Oro\Bundle\ContactBundle\Entity\Method:
+            documentation_resource: '@OroContactBundle/Resources/doc/api/contact.md'
+
+        Oro\Bundle\ContactBundle\Entity\Source:
+            documentation_resource: '@OroContactBundle/Resources/doc/api/contact.md'
